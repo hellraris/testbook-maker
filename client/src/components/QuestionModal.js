@@ -82,6 +82,7 @@ class QuestionModal extends Component {
             }
         });
 
+        this.props.refreshQuestions();
         this.handleClose();
     }
 

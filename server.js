@@ -23,8 +23,6 @@ mongoose.connect('mongodb://localhost/testbook');
 
 app.post('/api/question', (req, res) => {
 
-console.log(req.body.title);
-
  var question = new Question({
      info: {
          title: req.body.title,
@@ -42,6 +40,17 @@ console.log(req.body.title);
   })
 
 });
+
+app.get('/api/question', (req, res) => {
+    Question.find ((err, question) => {
+        if(err) {
+            console.error(err);
+            res.json({result: 0})
+            return;
+          }
+        res.json(question);
+    })
+})
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
