@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -70,7 +72,16 @@ class QuestionModal extends Component {
     }
 
     addQuestion = () => {
-        this.props.addQuestion(this.state.title);
+        
+        axios({
+            method: 'post',
+            url: '/api/question',
+            data: {
+                title: this.state.title,
+                part: this.state.part
+            }
+        });
+
         this.handleClose();
     }
 
