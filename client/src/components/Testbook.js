@@ -12,10 +12,7 @@ class Testbook extends Component {
         super(props)
 
         this.state = {
-            question: [{info: {
-                title: 'aa',
-                part: 'bb'
-            }}]
+            question: []
         }
 
     }
@@ -33,20 +30,20 @@ class Testbook extends Component {
             <div>
                 <QuestionModal refreshQuestions={this.refreshQuestions}></QuestionModal>
                 <Table>
-                    {this.state.question.map((c) => {
-                        return <TableRow>
-                                <TableCell>{c.info.title}</TableCell>
-                                <TableCell>{c.info.part}</TableCell>
-                                <TableCell></TableCell>
-                            </TableRow>
-                    })}
                     <TableBody>
                         <TableRow>
-                            <TableCell>test-name</TableCell>
-                            <TableCell>part</TableCell>
-                            <TableCell></TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Part</TableCell>
+                            <TableCell>Tag</TableCell>
                         </TableRow>
                     </TableBody>
+                    {this.state.question.map((c) => {
+                        return <TableRow>
+                            <TableCell>{c.info.title}</TableCell>
+                            <TableCell>{c.info.part}</TableCell>
+                            <TableCell>{c.info.tag}</TableCell>
+                        </TableRow>
+                    })}
                 </Table>
             </div>
         );

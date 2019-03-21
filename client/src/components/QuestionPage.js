@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
+import Radio from '@material-ui/core/Radio';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
 
 const styles = theme => ({
     selection: {
-        width: theme.spacing.unit * 50
+        // width: theme.spacing.unit * 50,
+        display: "flex"
     },
     questionText: {
         width: theme.spacing.unit * 50
+    },
+    textField: {
+        width: theme.spacing.unit * 40
     }
 });
 
+
 class QuestionPage extends Component {
+
+    constructor(props) {
+        super(props)
+
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -22,35 +34,40 @@ class QuestionPage extends Component {
                     <TextField
                         className={classes.questionText}
                         label="Question"
+                        value={this.props.questionScript}
+                        onChange={this.props.handleTextChange}
                         multiline
                         rows="5"
                         margin="normal"
                         variant="outlined"
                     /><br />
-                    <TextField
-                        label="selection (A)"
-                        margin="normal"
-                        multiline
-                        className={classes.selection}
-                    /><br />
-                    <TextField
-                        label="selection (B)"
-                        margin="normal"
-                        multiline
-                        className={classes.selection}
-                    /><br />
-                    <TextField
-                        label="selection (C)"
-                        margin="normal"
-                        multiline
-                        className={classes.selection}
-                    /><br />
-                    <TextField
-                        label="selection (D)"
-                        margin="normal"
-                        multiline
-                        className={classes.selection}
-                    /><br />
+                </div>
+                <div>
+
+                    {
+                        this.props.selections.map((c) => {
+                            return (
+                                <div className={classes.selection} key={c.id}>
+                                    <Radio style={{ marginTop: "10px" }}
+                                        checked={c.answer === true}
+                                        onChange={()=> this.props.handleAnswerChange(c.id)}
+                                        value="b"
+                                        name="radio-button-demo"
+                                        aria-label="B"
+                                    />
+                                    <TextField
+                                        className={classes.textField}
+                                        placeholder="selection (C)"
+                                        margin="normal"
+                                        multiline
+                                        value={c.selection}
+                                        onChange={(e)=>this.props.handleSelectionChange(e.target.value, c.id)}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
+
                 </div>
             </div>
         );

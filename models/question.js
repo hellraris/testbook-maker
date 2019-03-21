@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const questionSchema = new Schema({
     info: {
         title: String,
-        part: String
+        part: String,
+        tag: String
     }
 });
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
-
 const styles = theme => ({
     questionText: {
         width: theme.spacing.unit * 50
@@ -16,22 +15,26 @@ class Answer extends Component {
         return (
             <div>
                 <TextField
+                    className={classes.questionText}
                     label="explanation"
+                    multiline
+                    rows="3"
                     margin="normal"
+                    variant="outlined"
                 /><br />
-                <TextField
-                    label="translation"
-                    margin="normal"
-                /><br />
-                <TextField
-                    label="word"
-                    margin="normal"
-                /><br ></br>
                 <TextField
                     className={classes.questionText}
-                    label="Memo"
+                    label="translation"
                     multiline
-                    rows="5"
+                    rows="3"
+                    margin="normal"
+                    variant="outlined"
+                /><br />
+                 <TextField
+                    className={classes.questionText}
+                    label="word"
+                    multiline
+                    rows="3"
                     margin="normal"
                     variant="outlined"
                 /><br />

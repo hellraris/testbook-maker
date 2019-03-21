@@ -26,7 +26,8 @@ app.post('/api/question', (req, res) => {
  var question = new Question({
      info: {
          title: req.body.title,
-         part: req.body.part
+         part: req.body.part,
+         tag: req.body.tag
      }
  });
 

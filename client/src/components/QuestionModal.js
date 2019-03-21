@@ -15,8 +15,9 @@ const styles = theme => ({
         position: 'absolute',
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 4,
+        padding: theme.spacing.unit * 3,
         outline: 'none',
+        width: theme.spacing.unit * 50
     },
     questionText: {
         width: theme.spacing.unit * 50
@@ -37,9 +38,6 @@ const footer = {
     left: '50%'
 }
 
-const page = {
-    height: '500px'
-}
 
 class QuestionModal extends Component {
 
@@ -49,13 +47,58 @@ class QuestionModal extends Component {
             open: true,
             navi: 0,
             title: '',
-            part: ''
+            part: '',
+            tag: '',
+            tagList: [],
+            questionScript: '',
+            selections: [
+                { id: 1, selection: '', answer: true},
+                { id: 2, selection: '', answer: false},
+                { id: 3, selection: '', answer: false},
+                { id: 4, selection: '', answer: false}
+            ]
+
         }
     }
 
-    handleInfoChange = (event) => {
+    handleCommonTextChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
+        })
+    }
+
+    handleSelectionChange = (value, id) => {
+        this.setState({
+            selections: this.state.selections.map(
+                c => id === c.id 
+                ? {...c, selection: value}
+                : c
+            )
+        })
+    }
+
+    handleAnswerChange = (id) => {
+        this.setState({
+            selections: this.state.selections.map(
+                c=> id === c.id
+                ? {...c, answer: true}
+                : {...c, answer: false}
+            )
+        })
+    }
+
+    addInfoTag = (tag) => {
+        this.setState({
+            tagList: this.state.tagList.concat(tag)
+        })
+        this.setState({
+            tag: ''
+        })
+    }
+
+    deleteInfoTag = (index) => {
+        this.setState({
+            tagList: this.state.tagList.filter((_, i) => i !== index)
         })
     }
 
@@ -65,20 +108,21 @@ class QuestionModal extends Component {
         })
     }
 
-    handleClose = () => {
+    handleModalClose = () => {
         this.setState({
             open: false
         })
     }
 
     addQuestion = () => {
-        
+
         axios({
             method: 'post',
             url: '/api/question',
             data: {
                 title: this.state.title,
-                part: this.state.part
+                part: this.state.part,
+                tag: this.state.tag
             }
         });
 
@@ -92,12 +136,26 @@ class QuestionModal extends Component {
         const selectPage = () => {
             if (this.state.navi === 0) {
                 return (
-                    <InfoPage title={this.state.title} part={this.state.part} handleInfoChange={this.handleInfoChange} />
+                    <InfoPage
+                        title={this.state.title}
+                        part={this.state.part}
+                        tag={this.state.tag}
+                        tagList={this.state.tagList}
+                        handleTextChange={this.handleCommonTextChange}
+                        addTag={this.addInfoTag}
+                        deleteTag={this.deleteInfoTag}
+                    />
                 )
             }
             if (this.state.navi === 1) {
                 return (
-                    <QuestionPage />
+                    <QuestionPage
+                        script={this.state.questionScript}
+                        selections={this.state.selections}
+                        handleCommonTextChange={this.handleTextChange}
+                        handleSelectionChange={this.handleSelectionChange}
+                        handleAnswerChange = {this.handleAnswerChange}
+                    />
                 );
             }
             if (this.state.navi === 2) {
@@ -121,12 +179,12 @@ class QuestionModal extends Component {
                             <BottomNavigationAction label="Question" />
                             <BottomNavigationAction label="Answer" />
                         </BottomNavigation>
-                        <div style={page}>
+                        <div>
                             {selectPage()}
                         </div>
                         <div style={footer}>
                             <Button onClick={this.addQuestion}>add</Button>
-                            <Button onClick={this.handleClose}>close</Button>
+                            <Button onClick={this.handleModalClose}>close</Button>
                         </div>
                     </div>
                 </Modal>
