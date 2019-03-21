@@ -33,7 +33,7 @@ class QuestionPage extends Component {
                 <div>
                     <TextField
                         className={classes.questionText}
-                        label="Question"
+                        label="Script"
                         value={this.props.questionScript}
                         onChange={this.props.handleTextChange}
                         multiline

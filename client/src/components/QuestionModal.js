@@ -50,14 +50,16 @@ class QuestionModal extends Component {
             part: '',
             tag: '',
             tagList: [],
-            questionScript: '',
+            script: '',
             selections: [
-                { id: 1, selection: '', answer: true},
-                { id: 2, selection: '', answer: false},
-                { id: 3, selection: '', answer: false},
-                { id: 4, selection: '', answer: false}
-            ]
-
+                { id: 1, selection: '', answer: false },
+                { id: 2, selection: '', answer: false },
+                { id: 3, selection: '', answer: false },
+                { id: 4, selection: '', answer: false }
+            ],
+            explanation: '',
+            translation: '',
+            word: ''
         }
     }
 
@@ -70,9 +72,9 @@ class QuestionModal extends Component {
     handleSelectionChange = (value, id) => {
         this.setState({
             selections: this.state.selections.map(
-                c => id === c.id 
-                ? {...c, selection: value}
-                : c
+                c => id === c.id
+                    ? { ...c, selection: value }
+                    : c
             )
         })
     }
@@ -80,9 +82,9 @@ class QuestionModal extends Component {
     handleAnswerChange = (id) => {
         this.setState({
             selections: this.state.selections.map(
-                c=> id === c.id
-                ? {...c, answer: true}
-                : {...c, answer: false}
+                c => id === c.id
+                    ? { ...c, answer: true }
+                    : { ...c, answer: false }
             )
         })
     }
@@ -116,18 +118,31 @@ class QuestionModal extends Component {
 
     addQuestion = () => {
 
+        console.log(this.state.translation);
+
         axios({
             method: 'post',
             url: '/api/question',
             data: {
-                title: this.state.title,
-                part: this.state.part,
-                tag: this.state.tag
+                info: {
+                    title: this.state.title,
+                    part: this.state.part,
+                    tagList: this.state.tagList
+                },
+                question: {
+                    script: this.state.script,
+                    selections: this.state.selections
+                },
+                answer: {
+                    explanation: this.state.explanation,
+                    translation: this.state.translation,
+                    word: this.state.word
+                }
             }
         });
 
         this.props.refreshQuestions();
-        this.handleClose();
+        this.handleModalClose();
     }
 
     render() {
@@ -150,17 +165,22 @@ class QuestionModal extends Component {
             if (this.state.navi === 1) {
                 return (
                     <QuestionPage
-                        script={this.state.questionScript}
+                        script={this.state.script}
                         selections={this.state.selections}
                         handleCommonTextChange={this.handleTextChange}
                         handleSelectionChange={this.handleSelectionChange}
-                        handleAnswerChange = {this.handleAnswerChange}
+                        handleAnswerChange={this.handleAnswerChange}
                     />
                 );
             }
             if (this.state.navi === 2) {
                 return (
-                    <AnswerPage />
+                    <AnswerPage
+                        explanation={this.state.explanation}
+                        translation={this.state.translation}
+                        word={this.state.word}
+                        handleTextChange={this.handleCommonTextChange}
+                    />
                 )
             }
         }

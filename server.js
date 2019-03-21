@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.port || 5000;
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const db = mongoose.connection;
@@ -23,32 +23,30 @@ mongoose.connect('mongodb://localhost/testbook');
 
 app.post('/api/question', (req, res) => {
 
- var question = new Question({
-     info: {
-         title: req.body.title,
-         part: req.body.part,
-         tag: req.body.tag
-     }
- });
+    var question = new Question({
+        info: req.body.info,
+        question: req.body.question,
+        answer: req.body.answer
+    });
 
-  question.save ((err) => {
-      if(err) {
-        console.error(err);
-        res.json({result: 0})
-        return;
-      }
-      res.json({result: 1});
-  })
+    question.save((err) => {
+        if (err) {
+            console.error(err);
+            res.json({ result: 0 })
+            return;
+        }
+        res.json({ result: 1 });
+    })
 
 });
 
 app.get('/api/question', (req, res) => {
-    Question.find ((err, question) => {
-        if(err) {
+    Question.find((err, question) => {
+        if (err) {
             console.error(err);
-            res.json({result: 0})
+            res.json({ result: 0 })
             return;
-          }
+        }
         res.json(question);
     })
 })
