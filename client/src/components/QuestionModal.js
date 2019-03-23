@@ -44,7 +44,6 @@ class QuestionModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: true,
             navi: 0,
             title: '',
             part: '',
@@ -111,19 +110,16 @@ class QuestionModal extends Component {
     }
 
     handleModalClose = () => {
-        this.setState({
-            open: false
-        })
+        this.props.handleModal();
     }
 
     addQuestion = () => {
 
-        console.log(this.state.translation);
-
         axios({
             method: 'post',
-            url: '/api/question',
+            url: '/api/book',
             data: {
+                tilte: this.props.bookTilte,
                 info: {
                     title: this.state.title,
                     part: this.state.part,
@@ -187,7 +183,7 @@ class QuestionModal extends Component {
 
         return (
             <div>
-                <Modal open={this.state.open}>
+                <Modal open={this.props.openModal}>
                     <div style={modalStyle} className={classes.paper}>
                         <BottomNavigation
                             value={this.state.navi}
