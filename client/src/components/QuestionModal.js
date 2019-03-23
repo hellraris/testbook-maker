@@ -226,7 +226,7 @@ class QuestionModal extends Component {
                     <QuestionPage
                         script={this.state.script}
                         selections={this.state.selections}
-                        handleCommonTextChange={this.handleTextChange}
+                        handleTextChange={this.handleCommonTextChange}
                         handleSelectionChange={this.handleSelectionChange}
                         handleAnswerChange={this.handleAnswerChange}
                     />
