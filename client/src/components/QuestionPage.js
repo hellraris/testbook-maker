@@ -34,7 +34,7 @@ class QuestionPage extends Component {
                     <TextField
                         className={classes.questionText}
                         label="Script"
-                        value={this.props.questionScript}
+                        value={this.props.script}
                         onChange={this.props.handleTextChange}
                         multiline
                         rows="5"

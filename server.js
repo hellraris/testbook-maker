@@ -21,10 +21,10 @@ db.once('open', () => {
 
 mongoose.connect('mongodb://localhost/testbook');
 
-/*
-app.post('/api/question', (req, res) => {
+app.post('/api/book/:bookId/question/add', (req, res) => {
 
     var question = new Question({
+        bookId: req.params.bookId,
         info: req.body.info,
         question: req.body.question,
         answer: req.body.answer
@@ -37,39 +37,107 @@ app.post('/api/question', (req, res) => {
             return;
         }
         res.json({ result: 1 });
+        console.log("successfully saved")
     })
 
 });
-*/
 
-app.post('/api/book', (req, res) => {
+/*
+app.post('/api/book/:bookId/question/add', (req, res) => {
 
     var question = new Question({
+        _id: mongoose.Types.ObjectId(),
         info: req.body.info,
         question: req.body.question,
         answer: req.body.answer
     });
 
-    Book.findOneAndUpdate(
-        { tilte: req.body.title},
-        { $push: { questions: question}},
-        () => { console.log("good!") }
+    Book.updateOne(
+        { _id: req.params.bookId },
+        { $push: { questions: question } },
+        (err) => { 
+            if (err) {
+                console.log(err);
+            }
+            console.log("push successfully") }
+    )
+
+});
+*/
+
+
+app.post('/api/book/:bookId/question/:questionId/update', (req, res) => {
+
+    const bookId = mongoose.Types.ObjectId(req.params.bookId);
+    const questionId = mongoose.Types.ObjectId(req.params.questionId);
+
+    Question.updateOne(
+        { '_id': questionId, 'bookId': bookId},
+        { $set:  req.body  },
+        (err) => { 
+            if (err) {
+                console.log(err);
+            }
+            console.log("successfully updated") }
     )
 
 });
 
-app.get('/api/questions/list/:bookId', (req, res) => {
-    console.log(req.params.bookId);
+app.get('/api/book/:bookId/question/list', (req, res) => {
+
     const id = mongoose.Types.ObjectId(req.params.bookId);
-    Book.findOne({ _id: id},{ 'questions.info.title': 1, 'questions.info.part': 1, 'questions.info.tagList': {$slice: 3} },(err, questions) => {
+
+    Question.find({ bookId: id },
+        {
+            '_id': 1,
+            'info.title': 1,
+            'info.part': 1,
+            'info.tagList': 1 //{ $slice: 3 }
+        },
+        (err, questions) => {
+            if (err) {
+                console.error(err);
+                res.json({ result: 0 })
+                return;
+            }
+            res.json(questions);
+        })
+
+})
+
+/*
+app.get('/api/book/:bookId/question/:questionId', (req, res) => {
+
+    const bookId = mongoose.Types.ObjectId(req.params.bookId);
+    const questionId = mongoose.Types.ObjectId(req.params.questionId);
+
+    Book.findOne({ "_id": bookId }, { "questions": { $elemMatch: { "_id": questionId } } }, (err, book) => {
         if (err) {
             console.error(err);
             res.json({ result: 0 })
             return;
         }
-        console.log(questions);
-        res.json(questions);
+        console.log(book.questions[0]);
+        res.json(book.questions[0]);
     })
+
+})
+*/
+
+app.get('/api/book/:bookId/question/:questionId', (req, res) => {
+
+    const bookId = mongoose.Types.ObjectId(req.params.bookId);
+    const questionId = mongoose.Types.ObjectId(req.params.questionId);
+
+    Question.findOne({ "_id": questionId, "bookId": bookId }, (err, question) => {
+        if (err) {
+            console.error(err);
+            res.json({ result: 0 })
+            return;
+        }
+        res.json(question);
+    })
+
 })
 
 app.get('/api/book', (req, res) => {

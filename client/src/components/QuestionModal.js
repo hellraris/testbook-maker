@@ -38,12 +38,15 @@ const footer = {
     left: '50%'
 }
 
-
 class QuestionModal extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = this.initialState;
+    }
+
+    get initialState() {
+        return {
             navi: 0,
             title: '',
             part: '',
@@ -59,7 +62,51 @@ class QuestionModal extends Component {
             explanation: '',
             translation: '',
             word: ''
+        };
+    }
+
+    resetBuilder () {
+        this.setState(this.initialState);
+    }
+    /*
+    componentDidMount() {
+        const questionId = this.props.questionId;
+        const bookId = this.props.bookId;
+
+        console.log(bookId);
+        console.log(questionId);
+
+        if (questionId !== null) {
+            this.getQuestionData(bookId, questionId);
+        } 
+    }*/
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.questionId !== '') {
+            this.getQuestionData(nextProps.bookId, nextProps.questionId)
         }
+    }
+
+    getQuestionData(bookId, questionId) {
+        axios({
+            method: 'get',
+            url: '/api/book/' + bookId + '/question/' + questionId
+        }).then(res => this.inputQuestionData(res.data))
+            .catch(err => console.log(err));
+    }
+
+    inputQuestionData(data) {
+        this.setState({
+            ...this.state,
+            title: data.info.title,
+            part: data.info.part,
+            tagList: data.info.tagList,
+            script: data.question.script,
+            selections: data.question.selections,
+            explanation: data.answer.explanation,
+            translation: data.answer.translation,
+            word: data.answer.word
+        })
     }
 
     handleCommonTextChange = (event) => {
@@ -90,10 +137,9 @@ class QuestionModal extends Component {
 
     addInfoTag = (tag) => {
         this.setState({
+            ...this.state,
+            tag: '',
             tagList: this.state.tagList.concat(tag)
-        })
-        this.setState({
-            tag: ''
         })
     }
 
@@ -110,36 +156,53 @@ class QuestionModal extends Component {
     }
 
     handleModalClose = () => {
-        this.props.handleModal();
+        this.resetBuilder();
+        this.props.closeModal();
+    }
+
+    createQuestionData = () => {
+        const questionData = {
+            info: {
+                title: this.state.title,
+                part: this.state.part,
+                tagList: this.state.tagList
+            },
+            question: {
+                script: this.state.script,
+                selections: this.state.selections
+            },
+            answer: {
+                explanation: this.state.explanation,
+                translation: this.state.translation,
+                word: this.state.word
+            }
+        }
+
+        return questionData;
     }
 
     addQuestion = () => {
-
+        const requestData = this.createQuestionData();
         axios({
             method: 'post',
-            url: '/api/book',
-            data: {
-                tilte: this.props.bookTilte,
-                info: {
-                    title: this.state.title,
-                    part: this.state.part,
-                    tagList: this.state.tagList
-                },
-                question: {
-                    script: this.state.script,
-                    selections: this.state.selections
-                },
-                answer: {
-                    explanation: this.state.explanation,
-                    translation: this.state.translation,
-                    word: this.state.word
-                }
-            }
+            url: '/api/book/' + this.props.bookId + '/question/add',
+            data: requestData
         });
-
         this.props.refreshQuestions();
         this.handleModalClose();
     }
+
+    editQuestion = () => {
+        const requestData = this.createQuestionData();
+        axios({
+            method: 'post',
+            url: '/api/book/' + this.props.bookId + '/question/' + this.props.questionId + '/update',
+            data: requestData
+        });
+        this.props.refreshQuestions();
+        this.handleModalClose();
+    }
+
 
     render() {
         const { classes } = this.props;
@@ -199,7 +262,11 @@ class QuestionModal extends Component {
                             {selectPage()}
                         </div>
                         <div style={footer}>
-                            <Button onClick={this.addQuestion}>add</Button>
+                           {this.props.questionId === ''?
+                           <Button onClick={this.addQuestion}>add</Button>
+                           :
+                           <Button onClick={this.editQuestion}>edit</Button>
+                        }
                             <Button onClick={this.handleModalClose}>close</Button>
                         </div>
                     </div>

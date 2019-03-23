@@ -5,7 +5,6 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const bookSchema = new Schema({
     _id: ObjectId,
-    tilte: String,
     questions: [question.schema]
 });
 

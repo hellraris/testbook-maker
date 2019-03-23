@@ -21,7 +21,8 @@ class Testbook extends Component {
         this.state = {
             openModal: false,
             questions: [],
-            bookId: '5c9529267da488423859b82d'
+            bookId: '5c95e5dad06b5943d4904dc0',
+            qusetionId: ''
         }
 
     }
@@ -33,8 +34,8 @@ class Testbook extends Component {
     getQuestisonList = async () => {
         await axios({
             method: 'get',
-            url: '/api/questions/list/' + this.state.bookId
-        }).then(res => this.setState({ questions: res.data.questions }))
+            url: '/api/book/' + this.state.bookId + '/question/list'
+        }).then(res => this.setState({ questions: res.data }))
             .catch(err => console.log(err));
     }
 
@@ -42,9 +43,27 @@ class Testbook extends Component {
         this.getQuestisonList()
     }
 
-    handleModal = () => {
+    closeModal = () => {
         this.setState({
-            openModal: !this.state.openModal
+            ...this.state,
+            openModal: false,
+            qusetionId: ''
+        })
+    }
+
+    openAddModal = () => {
+        this.setState({
+            ...this.state,
+            openModal: true,
+            qusetionId: ''
+        })
+    }
+
+    openEditModal = (id) => {
+        this.setState({
+            ...this.state,
+            openModal: true,
+            qusetionId: id
         })
     }
 
@@ -55,12 +74,13 @@ class Testbook extends Component {
             <div>
                 <QuestionModal
                     openModal={this.state.openModal}
-                    bookTilte={this.state.bookTilte}
-                    handleModal={this.handleModal}
+                    bookId={this.state.bookId}
+                    questionId={this.state.qusetionId}
+                    closeModal={this.closeModal}
                     refreshQuestions={this.refreshQuestions}>
                 </QuestionModal>
                 <div>
-                    <Button onClick={this.handleModal}>modal</Button>
+                    <Button onClick={this.openAddModal}>modal</Button>
                 </div>
                 <div>
                     <Table>
@@ -71,22 +91,22 @@ class Testbook extends Component {
                                 <TableCell>Tag</TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
-                        {this.state.questions.map((c, index) => {
-                            return <TableRow key={index}>
-                                <TableCell>{c.info.title}</TableCell>
-                                <TableCell>{c.info.part}</TableCell>
-                                <TableCell>
-                                    {c.info.tagList.map((tag, index)=>{
-                                        return  <Chip key={index} label={tag} />
-                                    })}
-                                </TableCell>
-                                <TableCell>
-                                    <Button>EDIT</Button>
-                                    <Button>DELETE</Button>
-                                </TableCell>
-                            </TableRow>
-                        })}
-                         </TableBody>
+                            {this.state.questions.map((c, index) => {
+                                return <TableRow key={index}>
+                                    <TableCell>{c.info.title}</TableCell>
+                                    <TableCell>{c.info.part}</TableCell>
+                                    <TableCell>
+                                        {c.info.tagList.map((tag, index) => {
+                                            return <Chip key={index} label={tag} />
+                                        })}
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button onClick={() => this.openEditModal(c._id)} >EDIT</Button>
+                                        <Button>DELETE</Button>
+                                    </TableCell>
+                                </TableRow>
+                            })}
+                        </TableBody>
                     </Table>
                 </div>
             </div>
