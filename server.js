@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require(`express`);
 const bodyParser = require('body-parser');
+const path = require('path');
 const mongoose = require(`mongoose`);
 mongoose.set('useFindAndModify', false);
 
@@ -12,6 +13,7 @@ const port = process.env.port || 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + '/client/build'));
 
 const db = mongoose.connection;
 db.on('error', console.error);
@@ -20,6 +22,12 @@ db.once('open', () => {
 });
 
 mongoose.connect('mongodb://localhost/testbook');
+
+app.get('/', (req, res) => {
+    console.log(__dirname);
+    res.sendFile(__dirname + '/client/build/index.html');
+});
+
 
 app.post('/api/book/:bookId/question/add', (req, res) => {
 
