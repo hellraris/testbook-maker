@@ -67,6 +67,15 @@ class Testbook extends Component {
         })
     }
 
+    deleteQuestion = (questionId) => {
+        axios({
+            method: 'delete',
+            url: '/api/book/' + this.state.bookId + '/question/' + questionId,
+        }).
+            then(this.refreshQuestions())
+            .catch(err => console.log(err));
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -80,7 +89,7 @@ class Testbook extends Component {
                     refreshQuestions={this.refreshQuestions}>
                 </QuestionModal>
                 <div>
-                    <Button onClick={this.openAddModal}>modal</Button>
+                    <Button onClick={this.openAddModal}>ADD</Button>
                 </div>
                 <div>
                     <Table>
@@ -102,7 +111,7 @@ class Testbook extends Component {
                                     </TableCell>
                                     <TableCell>
                                         <Button onClick={() => this.openEditModal(c._id)} >EDIT</Button>
-                                        <Button>DELETE</Button>
+                                        <Button onClick={() => this.deleteQuestion(c._id)} >DELETE</Button>
                                     </TableCell>
                                 </TableRow>
                             })}

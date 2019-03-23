@@ -36,8 +36,8 @@ app.post('/api/book/:bookId/question/add', (req, res) => {
             res.json({ result: 0 })
             return;
         }
-        res.json({ result: 1 });
         console.log("successfully saved")
+        res.json("successfully saved");
     })
 
 });
@@ -65,7 +65,6 @@ app.post('/api/book/:bookId/question/add', (req, res) => {
 });
 */
 
-
 app.post('/api/book/:bookId/question/:questionId/update', (req, res) => {
 
     const bookId = mongoose.Types.ObjectId(req.params.bookId);
@@ -77,8 +76,30 @@ app.post('/api/book/:bookId/question/:questionId/update', (req, res) => {
         (err) => { 
             if (err) {
                 console.log(err);
+                res.json({ result: 0 });
             }
-            console.log("successfully updated") }
+            console.log("successfully updated");
+            res.json("successfully updated"); 
+        }
+    )
+
+});
+
+app.delete('/api/book/:bookId/question/:questionId', (req, res) => {
+
+    const bookId = mongoose.Types.ObjectId(req.params.bookId);
+    const questionId = mongoose.Types.ObjectId(req.params.questionId);
+
+    Question.remove(
+        { '_id': questionId, 'bookId': bookId},
+        (err) => { 
+            if (err) {
+                console.log(err);
+                res.json({ result: 0 });
+            }
+            console.log("successfully deleted");
+            res.json("successfully deleted");
+        }
     )
 
 });
