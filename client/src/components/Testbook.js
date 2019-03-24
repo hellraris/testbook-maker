@@ -10,7 +10,11 @@ import { withStyles } from '@material-ui/core/styles';
 import QuestionModal from './QuestionModal';
 
 const styles = theme => ({
-
+    questionTable: {
+        "& td": {
+            textAlign: 'center'
+        }
+    }
 });
 
 class Testbook extends Component {
@@ -92,18 +96,20 @@ class Testbook extends Component {
                     <Button onClick={this.openAddModal}>ADD</Button>
                 </div>
                 <div>
-                    <Table>
+                    <Table className={classes.questionTable}>
                         <TableBody>
                             <TableRow>
+                                <TableCell>No</TableCell>
                                 <TableCell>Name</TableCell>
                                 <TableCell>Part</TableCell>
                                 <TableCell>Tag</TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
                             {this.state.questions.map((c, index) => {
-                                return <TableRow key={index}>
-                                    <TableCell>{c.info.title}</TableCell>
-                                    <TableCell>{c.info.part}</TableCell>
+                                return <TableRow key={index} className={classes.questionLine}>
+                                    <TableCell >{index + 1}</TableCell>
+                                    <TableCell >{c.info.title}</TableCell>
+                                    <TableCell >{c.info.part}</TableCell>
                                     <TableCell>
                                         {c.info.tagList.map((tag, index) => {
                                             return <Chip key={index} label={tag} />
