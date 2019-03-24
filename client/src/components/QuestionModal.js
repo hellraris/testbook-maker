@@ -12,7 +12,7 @@ import AnswerPage from './AnswerPage';
 
 const styles = theme => ({
     paper: {
-        position: 'absolute',
+        position: 'relative',
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 3,
@@ -24,6 +24,11 @@ const styles = theme => ({
     },
     selection: {
         width: theme.spacing.unit * 50
+    },
+    footer: {
+        position: 'absolute',
+        bottom: '10px',
+        left: '35%'
     }
 });
 
@@ -32,10 +37,6 @@ const modalStyle = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     height: '600px'
-}
-
-const footer = {
-    left: '50%'
 }
 
 class QuestionModal extends Component {
@@ -248,6 +249,7 @@ class QuestionModal extends Component {
             <div>
                 <Modal open={this.props.openModal}>
                     <div style={modalStyle} className={classes.paper}>
+                        <div>
                         <BottomNavigation
                             value={this.state.navi}
                             onChange={this.handleNaviChange}
@@ -258,10 +260,11 @@ class QuestionModal extends Component {
                             <BottomNavigationAction label="Question" />
                             <BottomNavigationAction label="Answer" />
                         </BottomNavigation>
+                        </div>
                         <div>
                             {selectPage()}
                         </div>
-                        <div style={footer}>
+                        <div className={classes.footer}>
                            {this.props.questionId === ''?
                            <Button onClick={this.addQuestion}>add</Button>
                            :

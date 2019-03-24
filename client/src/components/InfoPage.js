@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
+import Icon from '@material-ui/core/Icon';
+import AddCircle from '@material-ui/icons/AddCircle';
 import { withStyles } from '@material-ui/core/styles';
 
 
@@ -10,7 +12,16 @@ const styles = theme => ({
     },
     chip: {
         margin: theme.spacing.unit / 2,
-    }
+    },
+    icon: {
+        margin: theme.spacing.unit * 2,
+        "&:hover": {
+            cursor: 'pointer'
+        },
+        '&:active': {
+            transform: 'translateY(3px)'
+        }
+    },
 });
 
 class InfoPage extends Component {
@@ -26,45 +37,54 @@ class InfoPage extends Component {
         return (
             <div>
                 <div>
-                    <TextField
-                        name='title'
-                        label="Title"
-                        margin="normal"
-                        className={classes.selection}
-                        value={this.props.title}
-                        onChange={this.props.handleTextChange}
-                    /><br />
-                    <TextField
-                        name="part"
-                        label="Part"
-                        margin="normal"
-                        multiline
-                        className={classes.selection}
-                        value={this.props.part}
-                        onChange={this.props.handleTextChange}
-                    /><br />
-                    <TextField
-                        name="tag"
-                        label="Tag"
-                        margin="normal"
-                        multiline
-                        value={this.props.tag}
-                        onChange={this.props.handleTextChange}
-                    />
-                    <button onClick={()=>this.props.addTag(this.props.tag)}>add</button>
+                    <div>
+                        <TextField
+                            name='title'
+                            label="Title"
+                            margin="normal"
+                            className={classes.selection}
+                            value={this.props.title}
+                            onChange={this.props.handleTextChange}
+                        />
+                    </div><br />
+                    <div>
+                        <TextField
+                            name="part"
+                            label="Part"
+                            margin="normal"
+                            multiline
+                            className={classes.selection}
+                            value={this.props.part}
+                            onChange={this.props.handleTextChange}
+                        />
+                    </div><br />
+                    <div>
+                        <TextField
+                            name="tag"
+                            label="Tag"
+                            margin="normal"
+                            multiline
+                            value={this.props.tag}
+                            onChange={this.props.handleTextChange}
+                        />
+                        <Icon color="action">
+                            <AddCircle className={classes.icon} onClick={() => this.props.addTag(this.props.tag)} />
+                        </Icon>
+                    </div>
                     <br />
-                    {this.props.tagList.map((c, index) => {
-                        return (
-                            <Chip
-                                key={index}
-                                label={c}
-                                onDelete={()=> this.props.deleteTag(index)}
-                                className={classes.chip}
-                            />
-                        )
-                    })
-
-                    }
+                    <div>
+                        {this.props.tagList.map((c, index) => {
+                            return (
+                                <Chip
+                                    key={index}
+                                    label={c}
+                                    onDelete={() => this.props.deleteTag(index)}
+                                    className={classes.chip}
+                                />
+                            )
+                        })
+                        }
+                    </div>
                 </div>
             </div>
         );

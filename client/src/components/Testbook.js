@@ -6,6 +6,8 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import { withStyles } from '@material-ui/core/styles';
 import QuestionModal from './QuestionModal';
 
@@ -13,6 +15,17 @@ const styles = theme => ({
     questionTable: {
         "& td": {
             textAlign: 'center'
+        }
+    },
+    tagChip: {
+        margin: theme.spacing.unit / 2
+    },
+    icon: {
+        "&:hover": {
+            cursor: 'pointer'
+        },
+        '&:active': {
+            transform: 'translateY(3px)'
         }
     }
 });
@@ -107,17 +120,17 @@ class Testbook extends Component {
                             </TableRow>
                             {this.state.questions.map((c, index) => {
                                 return <TableRow key={index} className={classes.questionLine}>
-                                    <TableCell >{index + 1}</TableCell>
-                                    <TableCell >{c.info.title}</TableCell>
-                                    <TableCell >{c.info.part}</TableCell>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{c.info.title}</TableCell>
+                                    <TableCell>{c.info.part}</TableCell>
                                     <TableCell>
                                         {c.info.tagList.map((tag, index) => {
-                                            return <Chip key={index} label={tag} />
+                                            return <Chip key={index} label={tag} className={classes.tagChip} />
                                         })}
                                     </TableCell>
                                     <TableCell>
-                                        <Button onClick={() => this.openEditModal(c._id)} >EDIT</Button>
-                                        <Button onClick={() => this.deleteQuestion(c._id)} >DELETE</Button>
+                                        <EditIcon className={classes.icon} onClick={() => this.openEditModal(c._id)} />
+                                        <DeleteIcon className={classes.icon} onClick={() => this.deleteQuestion(c._id)} />
                                     </TableCell>
                                 </TableRow>
                             })}
