@@ -121,7 +121,8 @@ app.get('/api/book/:bookId/question/list', (req, res) => {
             '_id': 1,
             'info.title': 1,
             'info.part': 1,
-            'info.tagList': 1 //{ $slice: 3 }
+            'info.tagList': 1, //{ $slice: 3 },
+            'question': 1
         },
         (err, questions) => {
             if (err) {
