@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -11,11 +10,17 @@ import EditIcon from '@material-ui/icons/Edit';
 import { withStyles } from '@material-ui/core/styles';
 import QuestionModal from './QuestionModal';
 
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 const styles = theme => ({
     questionTable: {
         "& td": {
             textAlign: 'center'
         }
+    },
+    panelDetail: {
+        display: 'flex'
     },
     tagChip: {
         margin: theme.spacing.unit / 2
@@ -39,7 +44,8 @@ class Testbook extends Component {
             openModal: false,
             questions: [],
             bookId: '5c95e5dad06b5943d4904dc0',
-            qusetionId: ''
+            qusetionId: '',
+            expanded: null
         }
 
     }
@@ -52,7 +58,15 @@ class Testbook extends Component {
         await axios({
             method: 'get',
             url: '/api/book/' + this.state.bookId + '/question/list'
-        }).then(res => this.setState({ questions: res.data }))
+        }).then(res => {
+
+            const list = res.data.map((c) => {
+                return Object.assign(c, { expanded: true });
+            });
+
+            this.setState({ questions: list })
+        }
+        )
             .catch(err => console.log(err));
     }
 
@@ -93,6 +107,18 @@ class Testbook extends Component {
             .catch(err => console.log(err));
     }
 
+    handleExpandPanel = (i) => {
+
+        const modifiedArray = this.state.questions.map((value, index) => {
+            return index === i ? ({ ...value, expanded: !this.state.questions[i].expanded }) : value
+        });
+
+        this.setState({
+            questions: modifiedArray
+        });
+
+    };
+
     render() {
         const { classes } = this.props;
 
@@ -109,33 +135,41 @@ class Testbook extends Component {
                     <Button onClick={this.openAddModal}>ADD</Button>
                 </div>
                 <div>
-                    <Table className={classes.questionTable}>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell>No</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Part</TableCell>
-                                <TableCell>Tag</TableCell>
-                                <TableCell></TableCell>
-                            </TableRow>
-                            {this.state.questions.map((c, index) => {
-                                return <TableRow key={index} className={classes.questionLine}>
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{c.info.title}</TableCell>
-                                    <TableCell>{c.info.part}</TableCell>
-                                    <TableCell>
-                                        {c.info.tagList.map((tag, index) => {
-                                            return <Chip key={index} label={tag} className={classes.tagChip} />
-                                        })}
-                                    </TableCell>
-                                    <TableCell>
+
+                    {this.state.questions.map((c, index) => {
+                        return <ExpansionPanel expanded={c.expanded} key={index} onChange={() => this.handleExpandPanel(index)}>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                <div>
+                                    <Typography>{index + 1}</Typography>
+                                </div>
+                                <div>
+                                    <Typography>{c.info.title}</Typography>
+                                </div>
+                                <div>
+                                    <Typography>{c.info.part}</Typography>
+                                </div>
+                                <div>
+                                    {c.info.tagList.map((tag, index) => {
+                                        return <Chip key={index} label={tag} className={classes.tagChip} />
+                                    })}
+                                </div>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <div className={classes.panelDetail}>
+                                    <div>
+                                        {c.question.script}
+                                    </div>
+                                    <div>
+                                        selections
+                                    </div>
+                                    <div>
                                         <EditIcon className={classes.icon} onClick={() => this.openEditModal(c._id)} />
                                         <DeleteIcon className={classes.icon} onClick={() => this.deleteQuestion(c._id)} />
-                                    </TableCell>
-                                </TableRow>
-                            })}
-                        </TableBody>
-                    </Table>
+                                    </div>
+                                </div>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                    })}
                 </div>
             </div>
         );
