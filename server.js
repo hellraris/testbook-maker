@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/client/build/index.html');
 });
 
-
+// Question追加
 app.post('/api/book/:bookId/question/add', (req, res) => {
 
     var question = new Question({
@@ -50,29 +50,7 @@ app.post('/api/book/:bookId/question/add', (req, res) => {
 
 });
 
-/*
-app.post('/api/book/:bookId/question/add', (req, res) => {
-
-    var question = new Question({
-        _id: mongoose.Types.ObjectId(),
-        info: req.body.info,
-        question: req.body.question,
-        answer: req.body.answer
-    });
-
-    Book.updateOne(
-        { _id: req.params.bookId },
-        { $push: { questions: question } },
-        (err) => { 
-            if (err) {
-                console.log(err);
-            }
-            console.log("push successfully") }
-    )
-
-});
-*/
-
+// Question更新
 app.post('/api/book/:bookId/question/:questionId/update', (req, res) => {
 
     const bookId = mongoose.Types.ObjectId(req.params.bookId);
@@ -93,6 +71,7 @@ app.post('/api/book/:bookId/question/:questionId/update', (req, res) => {
 
 });
 
+// Question削除
 app.delete('/api/book/:bookId/question/:questionId', (req, res) => {
 
     const bookId = mongoose.Types.ObjectId(req.params.bookId);
@@ -112,6 +91,7 @@ app.delete('/api/book/:bookId/question/:questionId', (req, res) => {
 
 });
 
+// Questionリスト取得
 app.get('/api/book/:bookId/question/list', (req, res) => {
 
     const id = mongoose.Types.ObjectId(req.params.bookId);
@@ -135,6 +115,51 @@ app.get('/api/book/:bookId/question/list', (req, res) => {
 
 })
 
+// Question取得
+app.get('/api/book/:bookId/question/:questionId', (req, res) => {
+
+    const bookId = mongoose.Types.ObjectId(req.params.bookId);
+    const questionId = mongoose.Types.ObjectId(req.params.questionId);
+
+    Question.findOne({ "_id": questionId, "bookId": bookId }, (err, question) => {
+        if (err) {
+            console.error(err);
+            res.json({ result: 0 })
+            return;
+        }
+        res.json(question);
+    })
+
+})
+
+
+app.get('/api/test/list', (req, res) => {
+
+    Book.find({}, { "title": 1, "_id": 1}, (err, book) => {
+        if (err) {
+            console.error(err);
+            res.json({ result: 0 })
+            return;
+        }
+        res.json(book);
+    })
+})
+
+app.get('/api/test/:id', (req, res) => {
+
+    const testId = mongoose.Types.ObjectId(req.params.id);
+
+    Book.findOne({'_id': testId },(err, book) => {
+        if (err) {
+            console.error(err);
+            res.json({ result: 0 })
+            return;
+        }
+        res.json(book);
+    })
+})
+
+
 /*
 app.get('/api/book/:bookId/question/:questionId', (req, res) => {
 
@@ -154,32 +179,28 @@ app.get('/api/book/:bookId/question/:questionId', (req, res) => {
 })
 */
 
-app.get('/api/book/:bookId/question/:questionId', (req, res) => {
+/*
+app.post('/api/book/:bookId/question/add', (req, res) => {
 
-    const bookId = mongoose.Types.ObjectId(req.params.bookId);
-    const questionId = mongoose.Types.ObjectId(req.params.questionId);
+    var question = new Question({
+        _id: mongoose.Types.ObjectId(),
+        info: req.body.info,
+        question: req.body.question,
+        answer: req.body.answer
+    });
 
-    Question.findOne({ "_id": questionId, "bookId": bookId }, (err, question) => {
-        if (err) {
-            console.error(err);
-            res.json({ result: 0 })
-            return;
-        }
-        res.json(question);
-    })
+    Book.updateOne(
+        { _id: req.params.bookId },
+        { $push: { questions: question } },
+        (err) => { 
+            if (err) {
+                console.log(err);
+            }
+            console.log("push successfully") }
+    )
 
-})
-
-app.get('/api/book', (req, res) => {
-    Book.find((err, book) => {
-        if (err) {
-            console.error(err);
-            res.json({ result: 0 })
-            return;
-        }
-        res.json(book);
-    })
-})
+});
+*/
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
     selection: {
-        // width: theme.spacing.unit * 50,
         display: "flex"
     },
     questionText: {
