@@ -66,7 +66,6 @@ class QuestionPage extends Component {
                             )
                         })
                     }
-
                 </div>
             </div>
         );
