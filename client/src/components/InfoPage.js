@@ -3,6 +3,10 @@ import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
 import Icon from '@material-ui/core/Icon';
 import AddCircle from '@material-ui/icons/AddCircle';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import { withStyles } from '@material-ui/core/styles';
 
 
@@ -10,11 +14,17 @@ const styles = theme => ({
     selection: {
         width: theme.spacing.unit * 50
     },
+    tag: {
+        display: 'flex'
+    },
     chip: {
         margin: theme.spacing.unit / 2,
     },
-    icon: {
-        margin: theme.spacing.unit * 2,
+    tagText: {
+        margin: 'auto 0',
+    },
+    tagIcon: {
+        margin: 'auto 0',
         "&:hover": {
             cursor: 'pointer'
         },
@@ -48,18 +58,25 @@ class InfoPage extends Component {
                         />
                     </div><br />
                     <div>
-                        <TextField
-                            name="part"
-                            label="Part"
-                            margin="normal"
-                            multiline
-                            className={classes.selection}
-                            value={this.props.part}
-                            onChange={this.props.handleTextChange}
-                        />
+                        <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="part-simple">Part</InputLabel>
+                            <Select
+                                value={this.props.part}
+                                onChange={this.props.handleTextChange}
+                                inputProps={{
+                                    name: 'part',
+                                    id: 'part-simple',
+                                }}
+                            >
+                                <MenuItem value="">
+                                </MenuItem>
+                                <MenuItem value={'Part5'}>Part2</MenuItem>
+                            </Select>
+                        </FormControl>
                     </div><br />
-                    <div>
+                    <div className={classes.tag}>
                         <TextField
+                            className={classes.tagText} 
                             name="tag"
                             label="Tag"
                             margin="normal"
@@ -67,8 +84,8 @@ class InfoPage extends Component {
                             value={this.props.tag}
                             onChange={this.props.handleTextChange}
                         />
-                        <Icon color="action">
-                            <AddCircle className={classes.icon} onClick={() => this.props.addTag(this.props.tag)} />
+                        <Icon className={classes.tagIcon} color="action">
+                            <AddCircle onClick={() => this.props.addTag(this.props.tag)} />
                         </Icon>
                     </div>
                     <br />
@@ -86,7 +103,7 @@ class InfoPage extends Component {
                         }
                     </div>
                 </div>
-            </div>
+            </div >
         );
     }
 }

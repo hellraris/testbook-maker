@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import TextField from '@material-ui/core/TextField';
+import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -33,25 +34,22 @@ const styles = theme => ({
         height: theme.spacing.unit * 5
     },
     bookContent: {
-
+        display: 'flex',
+        flexDirection: 'column',
+        height: '90%',
+        border: '1px solid grey',
     },
     questionlist: {
-
-    },
-    questionBox: {
-    },
-    panel: {
-
-    },
-    panelDetail: {
-        display: 'flex',
-        width: '100%'
+        flex: '1',
+        overflowY: 'scroll',
+        overflowX: 'hidden',
+        padding: '0.5%'
     },
     panelNo: {
         flex: '0 0 50px'
     },
     panelTitle: {
-        flex: '1 1 300px'
+        flex: '1 1 300px',
     },
     panelPart: {
         flex: '1 1 100px'
@@ -71,6 +69,16 @@ const styles = theme => ({
     tagChip: {
         margin: theme.spacing.unit / 2
     },
+    selection: {
+        display: 'flex',
+        padding: '3px'
+    },
+    selectionScript: {
+        width: '90%' 
+    },
+    selectionSelection: {
+        width: '80%' 
+    },
     icon: {
         "&:hover": {
             cursor: 'pointer'
@@ -80,6 +88,51 @@ const styles = theme => ({
         }
     }
 });
+
+const ExpansionPanel = withStyles({
+    root: {
+        border: '1px solid rgba(0,0,0,.125)',
+        boxShadow: 'none',
+        '&:not(:last-child)': {
+            borderBottom: 0,
+        },
+        '&:before': {
+            display: 'none',
+        },
+    },
+    expanded: {
+        margin: 'auto',
+    },
+})(MuiExpansionPanel);
+
+const ExpansionPanelSummary = withStyles({
+    root: {
+        backgroundColor: 'rgba(0,0,0,.03)',
+        borderBottom: '1px solid rgba(0,0,0,.125)',
+        marginBottom: -1,
+        height: 52,
+        '& div': {
+            margin: 'auto 0',
+        },
+        '&$expanded': {
+            height: 52,
+            minHeight: 52
+        },
+    },
+    content: {
+        '&$expanded': {
+        },
+    },
+    expanded: {},
+})(props => <MuiExpansionPanelSummary  {...props} />);
+
+ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
+
+const ExpansionPanelDetails = withStyles(theme => ({
+    root: {
+        display: 'flex'
+    },
+}))(MuiExpansionPanelDetails);
 
 class Testbook extends Component {
 
@@ -178,40 +231,57 @@ class Testbook extends Component {
                     <div className={classes.bookContent}>
                         <div className={classes.questionlist}>
                             {this.state.questions.map((c, index) => {
-                                return <div className={classes.questionBox}>
-                                    <ExpansionPanel className={classes.panel} expanded={c.expanded} key={index} onChange={() => this.handleExpandPanel(index)}>
-                                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                            <div className={classes.panelNo}>
-                                                <Typography>{index + 1}</Typography>
-                                            </div>
-                                            <div className={classes.panelTitle}>
-                                                <Typography>{c.info.title}</Typography>
-                                            </div>
-                                            <div className={classes.panelPart}>
-                                                <Typography>{c.info.part}</Typography>
-                                            </div>
-                                            <div className={classes.panelTag}>
-                                                {c.info.tagList.map((tag, index) => {
-                                                    return <Chip key={index} label={tag} className={classes.tagChip} />
-                                                })}
-                                            </div>
-                                        </ExpansionPanelSummary>
-                                        <ExpansionPanelDetails>
-                                            <div className={classes.panelDetail}>
-                                                <div className={classes.panelDetailScript}>
-                                                    {c.question.script}
-                                                </div>
-                                                <div className={classes.panelDetailSelection}>
-                                                    selections
-                                                </div>
-                                                <div className={classes.panelDetailControl}>
-                                                    <EditIcon className={classes.icon} onClick={() => this.openEditModal(c._id)} />
-                                                    <DeleteIcon className={classes.icon} onClick={() => this.deleteQuestion(c._id)} />
-                                                </div>
-                                            </div>
-                                        </ExpansionPanelDetails>
-                                    </ExpansionPanel>
-                                </div>
+                                return <ExpansionPanel expanded={c.expanded} key={index} onChange={() => this.handleExpandPanel(index)}>
+                                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                        <div className={classes.panelNo}>
+                                            <Typography>{index + 1}</Typography>
+                                        </div>
+                                        <div className={classes.panelTitle}>
+                                            <Typography>{c.info.title}</Typography>
+                                        </div>
+                                        <div className={classes.panelPart}>
+                                            <Typography>{c.info.part}</Typography>
+                                        </div>
+                                        <div className={classes.panelTag}>
+                                            {c.info.tagList.map((tag, index) => {
+                                                return <Chip key={index} label={tag} className={classes.tagChip} />
+                                            })}
+                                        </div>
+                                    </ExpansionPanelSummary>
+                                    <ExpansionPanelDetails>
+                                        <div className={classes.panelDetailScript}>
+                                            <TextField
+                                                className={classes.selectionScript}
+                                                label="Script"
+                                                value={c.question.script}
+                                                multiline
+                                                rows="5"
+                                                InputProps={{
+                                                    readOnly: true
+                                                  }}
+                                                margin="normal"
+                                                variant="outlined"
+                                            />
+                                        </div>
+                                        <div className={classes.panelDetailSelection}>
+                                            {c.question.selections.map((s, index) => {
+                                                return <TextField
+                                                className={classes.selectionSelection}
+                                                margin="normal"
+                                                multiline
+                                                InputProps={{
+                                                    readOnly: true
+                                                  }}
+                                                value={s.selection}
+                                                />
+                                            })}
+                                        </div>
+                                        <div className={classes.panelDetailControl}>
+                                            <EditIcon className={classes.icon} onClick={() => this.openEditModal(c._id)} />
+                                            <DeleteIcon className={classes.icon} onClick={() => this.deleteQuestion(c._id)} />
+                                        </div>
+                                    </ExpansionPanelDetails>
+                                </ExpansionPanel>
                             })}
                         </div>
                     </div>
