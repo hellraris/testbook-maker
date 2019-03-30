@@ -12,6 +12,8 @@ import AnswerPage from './AnswerPage';
 
 const styles = theme => ({
     paper: {
+        display: 'flex',
+        flexDirection: 'column',
         position: 'relative',
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
@@ -26,9 +28,7 @@ const styles = theme => ({
         width: theme.spacing.unit * 50
     },
     footer: {
-        position: 'absolute',
-        bottom: '10px',
-        left: '35%'
+        margin: 'auto auto 0 auto' 
     }
 });
 

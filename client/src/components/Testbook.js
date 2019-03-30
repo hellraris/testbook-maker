@@ -14,13 +14,59 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const styles = theme => ({
-    questionTable: {
-        "& td": {
-            textAlign: 'center'
-        }
+    wrap: {
+        display: 'flex',
+        height: '100%'
+    },
+    bookBody: {
+        flex: '0 1 1280px',
+        margin: '0 auto',
+        height: '100%'
+    },
+    bookHeader: {
+        display: 'flex',
+        height: theme.spacing.unit * 7,
+        backgroundColor: 'gray'
+    },
+    addBtn: {
+        margin: 'auto 2% auto auto',
+        height: theme.spacing.unit * 5
+    },
+    bookContent: {
+
+    },
+    questionlist: {
+
+    },
+    questionBox: {
+    },
+    panel: {
+
     },
     panelDetail: {
-        display: 'flex'
+        display: 'flex',
+        width: '100%'
+    },
+    panelNo: {
+        flex: '0 0 50px'
+    },
+    panelTitle: {
+        flex: '1 1 300px'
+    },
+    panelPart: {
+        flex: '1 1 100px'
+    },
+    panelTag: {
+        flex: '1 1 200px'
+    },
+    panelDetailScript: {
+        flex: '1 1 400px'
+    },
+    panelDetailSelection: {
+        flex: '1 1 400px'
+    },
+    panelDetailControl: {
+        flex: '0 1 50px'
     },
     tagChip: {
         margin: theme.spacing.unit / 2
@@ -47,26 +93,22 @@ class Testbook extends Component {
             qusetionId: '',
             expanded: null
         }
-
     }
 
     componentDidMount() {
         this.getQuestisonList()
     }
 
-    getQuestisonList = async () => {
-        await axios({
+    getQuestisonList = () => {
+        axios({
             method: 'get',
             url: '/api/book/' + this.state.bookId + '/question/list'
         }).then(res => {
-
             const list = res.data.map((c) => {
-                return Object.assign(c, { expanded: true });
+                return Object.assign(c, { expanded: false });
             });
-
             this.setState({ questions: list })
-        }
-        )
+        })
             .catch(err => console.log(err));
     }
 
@@ -108,7 +150,6 @@ class Testbook extends Component {
     }
 
     handleExpandPanel = (i) => {
-
         const modifiedArray = this.state.questions.map((value, index) => {
             return index === i ? ({ ...value, expanded: !this.state.questions[i].expanded }) : value
         });
@@ -116,14 +157,13 @@ class Testbook extends Component {
         this.setState({
             questions: modifiedArray
         });
-
     };
 
     render() {
         const { classes } = this.props;
 
         return (
-            <div>
+            <div className={classes.wrap}>
                 <QuestionModal
                     openModal={this.state.openModal}
                     bookId={this.state.bookId}
@@ -131,45 +171,50 @@ class Testbook extends Component {
                     closeModal={this.closeModal}
                     refreshQuestions={this.refreshQuestions}>
                 </QuestionModal>
-                <div>
-                    <Button onClick={this.openAddModal}>ADD</Button>
-                </div>
-                <div>
-
-                    {this.state.questions.map((c, index) => {
-                        return <ExpansionPanel expanded={c.expanded} key={index} onChange={() => this.handleExpandPanel(index)}>
-                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                <div>
-                                    <Typography>{index + 1}</Typography>
+                <div className={classes.bookBody}>
+                    <div className={classes.bookHeader}>
+                        <Button className={classes.addBtn} onClick={this.openAddModal}>ADD</Button>
+                    </div>
+                    <div className={classes.bookContent}>
+                        <div className={classes.questionlist}>
+                            {this.state.questions.map((c, index) => {
+                                return <div className={classes.questionBox}>
+                                    <ExpansionPanel className={classes.panel} expanded={c.expanded} key={index} onChange={() => this.handleExpandPanel(index)}>
+                                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                            <div className={classes.panelNo}>
+                                                <Typography>{index + 1}</Typography>
+                                            </div>
+                                            <div className={classes.panelTitle}>
+                                                <Typography>{c.info.title}</Typography>
+                                            </div>
+                                            <div className={classes.panelPart}>
+                                                <Typography>{c.info.part}</Typography>
+                                            </div>
+                                            <div className={classes.panelTag}>
+                                                {c.info.tagList.map((tag, index) => {
+                                                    return <Chip key={index} label={tag} className={classes.tagChip} />
+                                                })}
+                                            </div>
+                                        </ExpansionPanelSummary>
+                                        <ExpansionPanelDetails>
+                                            <div className={classes.panelDetail}>
+                                                <div className={classes.panelDetailScript}>
+                                                    {c.question.script}
+                                                </div>
+                                                <div className={classes.panelDetailSelection}>
+                                                    selections
+                                                </div>
+                                                <div className={classes.panelDetailControl}>
+                                                    <EditIcon className={classes.icon} onClick={() => this.openEditModal(c._id)} />
+                                                    <DeleteIcon className={classes.icon} onClick={() => this.deleteQuestion(c._id)} />
+                                                </div>
+                                            </div>
+                                        </ExpansionPanelDetails>
+                                    </ExpansionPanel>
                                 </div>
-                                <div>
-                                    <Typography>{c.info.title}</Typography>
-                                </div>
-                                <div>
-                                    <Typography>{c.info.part}</Typography>
-                                </div>
-                                <div>
-                                    {c.info.tagList.map((tag, index) => {
-                                        return <Chip key={index} label={tag} className={classes.tagChip} />
-                                    })}
-                                </div>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <div className={classes.panelDetail}>
-                                    <div>
-                                        {c.question.script}
-                                    </div>
-                                    <div>
-                                        selections
-                                    </div>
-                                    <div>
-                                        <EditIcon className={classes.icon} onClick={() => this.openEditModal(c._id)} />
-                                        <DeleteIcon className={classes.icon} onClick={() => this.deleteQuestion(c._id)} />
-                                    </div>
-                                </div>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                    })}
+                            })}
+                        </div>
+                    </div>
                 </div>
             </div>
         );
