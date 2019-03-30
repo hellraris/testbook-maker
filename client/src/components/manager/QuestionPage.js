@@ -44,7 +44,6 @@ class QuestionPage extends Component {
                     /><br />
                 </div>
                 <div>
-
                     {
                         this.props.selections.map((c) => {
                             return (

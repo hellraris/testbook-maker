@@ -255,7 +255,7 @@ class Testbook extends Component {
                                                 label="Script"
                                                 value={c.question.script}
                                                 multiline
-                                                rows="5"
+                                                rows="9"
                                                 InputProps={{
                                                     readOnly: true
                                                   }}
