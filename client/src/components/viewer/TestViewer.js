@@ -1,11 +1,30 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
+const styles = theme => ({
+    root: {
+        width: '80%',
+        paddingTop: theme.spacing.unit * 2,
+        paddingBottom: theme.spacing.unit * 2,
+    },
+});
+
 class TestViewer extends Component {
 
-    constructor (props) {
+    constructor(props) {
         super(props);
+
+        this.state = {
+            nowQuestion: '',
+            questions: ''
+        }
     }
+
+
 
     componentDidMount() {
         this.getTestData()
@@ -16,20 +35,31 @@ class TestViewer extends Component {
 
         axios({
             method: 'get',
-            url: '/api/test/'+testId
+            url: '/api/test/' + testId
         }).then(res => {
             console.log(res.data);
+            this.setState({
+                ...this.state,
+                questions: res.data,
+                nowQuestion: res.data[0]
+            })
         })
             .catch(err => console.log(err));
     }
 
     render() {
+        const { classes } = this.props;
+
         return (
             <div>
-                test
+                <Paper className={classes.root} elevation={1}>
+                    <Typography component="p">
+                    { this.state.nowQuestion ?  this.state.nowQuestion.question.script : ""}
+                    </Typography>
+                </Paper>
             </div>
         );
     }
 }
 
-export default TestViewer;
+export default withStyles(styles)(TestViewer);

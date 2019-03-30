@@ -74,10 +74,10 @@ const styles = theme => ({
         padding: '3px'
     },
     selectionScript: {
-        width: '90%' 
+        width: '90%'
     },
     selectionSelection: {
-        width: '80%' 
+        width: '80%'
     },
     icon: {
         "&:hover": {
@@ -230,59 +230,63 @@ class Testbook extends Component {
                     </div>
                     <div className={classes.bookContent}>
                         <div className={classes.questionlist}>
-                            {this.state.questions.map((c, index) => {
-                                return <ExpansionPanel expanded={c.expanded} key={index} onChange={() => this.handleExpandPanel(index)}>
-                                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                        <div className={classes.panelNo}>
-                                            <Typography>{index + 1}</Typography>
-                                        </div>
-                                        <div className={classes.panelTitle}>
-                                            <Typography>{c.info.title}</Typography>
-                                        </div>
-                                        <div className={classes.panelPart}>
-                                            <Typography>{c.info.part}</Typography>
-                                        </div>
-                                        <div className={classes.panelTag}>
-                                            {c.info.tagList.map((tag, index) => {
-                                                return <Chip key={index} label={tag} className={classes.tagChip} />
-                                            })}
-                                        </div>
-                                    </ExpansionPanelSummary>
-                                    <ExpansionPanelDetails>
-                                        <div className={classes.panelDetailScript}>
-                                            <TextField
-                                                className={classes.selectionScript}
-                                                label="Script"
-                                                value={c.question.script}
-                                                multiline
-                                                rows="9"
-                                                InputProps={{
-                                                    readOnly: true
-                                                  }}
-                                                margin="normal"
-                                                variant="outlined"
-                                            />
-                                        </div>
-                                        <div className={classes.panelDetailSelection}>
-                                            {c.question.selections.map((s, index) => {
-                                                return <TextField
-                                                className={classes.selectionSelection}
-                                                margin="normal"
-                                                multiline
-                                                InputProps={{
-                                                    readOnly: true
-                                                  }}
-                                                value={s.selection}
+                            {this.state.questions ?
+                                this.state.questions.map((c, index) => {
+                                    return <ExpansionPanel expanded={c.expanded} key={index} onChange={() => this.handleExpandPanel(index)}>
+                                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                            <div className={classes.panelNo}>
+                                                <Typography>{index + 1}</Typography>
+                                            </div>
+                                            <div className={classes.panelTitle}>
+                                                <Typography>{c.info.title}</Typography>
+                                            </div>
+                                            <div className={classes.panelPart}>
+                                                <Typography>{c.info.part}</Typography>
+                                            </div>
+                                            <div className={classes.panelTag}>
+                                                {c.info.tagList.map((tag, index) => {
+                                                    return <Chip key={index} label={tag} className={classes.tagChip} />
+                                                })}
+                                            </div>
+                                        </ExpansionPanelSummary>
+                                        <ExpansionPanelDetails>
+                                            <div className={classes.panelDetailScript}>
+                                                <TextField
+                                                    className={classes.selectionScript}
+                                                    label="Script"
+                                                    value={c.question.script}
+                                                    multiline
+                                                    rows="9"
+                                                    InputProps={{
+                                                        readOnly: true
+                                                    }}
+                                                    margin="normal"
+                                                    variant="outlined"
                                                 />
-                                            })}
-                                        </div>
-                                        <div className={classes.panelDetailControl}>
-                                            <EditIcon className={classes.icon} onClick={() => this.openEditModal(c._id)} />
-                                            <DeleteIcon className={classes.icon} onClick={() => this.deleteQuestion(c._id)} />
-                                        </div>
-                                    </ExpansionPanelDetails>
-                                </ExpansionPanel>
-                            })}
+                                            </div>
+                                            <div className={classes.panelDetailSelection}>
+                                                {c.question.selections.map((s, index) => {
+                                                    return <TextField
+                                                        className={classes.selectionSelection}
+                                                        margin="normal"
+                                                        multiline
+                                                        InputProps={{
+                                                            readOnly: true
+                                                        }}
+                                                        value={s.selection}
+                                                    />
+                                                })}
+                                            </div>
+                                            <div className={classes.panelDetailControl}>
+                                                <EditIcon className={classes.icon} onClick={() => this.openEditModal(c._id)} />
+                                                <DeleteIcon className={classes.icon} onClick={() => this.deleteQuestion(c._id)} />
+                                            </div>
+                                        </ExpansionPanelDetails>
+                                    </ExpansionPanel>
+                                })
+                                :
+                                ''
+                            }
                         </div>
                     </div>
                 </div>

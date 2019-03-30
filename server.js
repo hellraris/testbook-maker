@@ -149,13 +149,13 @@ app.get('/api/test/:id', (req, res) => {
 
     const testId = mongoose.Types.ObjectId(req.params.id);
 
-    Book.findOne({'_id': testId },(err, book) => {
+    Question.find({'bookId': testId },(err, questions) => {
         if (err) {
             console.error(err);
             res.json({ result: 0 })
             return;
         }
-        res.json(book);
+        res.json(questions);
     })
 })
 
