@@ -26,19 +26,27 @@ class TestViewer extends Component {
             nowQuestion: '',
             questions: '',
             questionOrder: 0,
-            selected: -1,
-            markingList:[]
+            markingList: []
         }
+
     }
 
     componentDidMount() {
-        this.getTestData()
+        this.getTestData().then(() => {
+            const list = this.state.questions.map(() => {
+                return 0;
+            })
+            this.setState({
+                markingList: list
+            })
+        });
+
     }
 
-    getTestData = () => {
+    getTestData = async () => {
         const testId = this.props.match.params.id;
 
-        axios({
+        await axios({
             method: 'get',
             url: '/api/test/' + testId
         }).then(res => {
@@ -66,10 +74,18 @@ class TestViewer extends Component {
         })
     }
 
-    handleSelectionClick = (index) => {
+    handleSelectionClick = (i) => {
+        const list = this.state.markingList.map(
+            (value, index) => {
+            if (this.state.questionOrder === index) {
+                return i;
+            } else {
+                return value;
+            }
+        })
         this.setState({
             ...this.state,
-            selected: index
+            markingList: list
         })
     }
 
@@ -90,13 +106,13 @@ class TestViewer extends Component {
                                 {
                                     this.state.nowQuestion.question.selections.map((s, index) => {
                                         return (
-                                                <ListItem
-                                                    button
-                                                    selected={this.state.selected === index}
-                                                    onClick={() => this.handleSelectionClick(index)}
-                                                >
-                                                    <ListItemText>{s.selection}</ListItemText>
-                                                </ListItem>
+                                            <ListItem
+                                                button
+                                                selected={this.state.markingList[this.state.questionOrder] === index}
+                                                onClick={() => this.handleSelectionClick(index)}
+                                            >
+                                                <ListItemText>{s.selection}</ListItemText>
+                                            </ListItem>
                                         )
                                     })
                                 }
