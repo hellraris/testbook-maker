@@ -8,7 +8,7 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-      <div class="App">
+      <div className="App">
         <Route exact path='/viewer' component={viewer}/>
         <Route path='/viewer/:id' component={testViewer} />
         <Route path='/manager' component={testManager} />

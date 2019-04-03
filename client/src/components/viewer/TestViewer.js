@@ -107,6 +107,7 @@ class TestViewer extends Component {
                                     this.state.nowQuestion.question.selections.map((s, index) => {
                                         return (
                                             <ListItem
+                                                key={index}
                                                 button
                                                 selected={this.state.markingList[this.state.questionOrder] === index}
                                                 onClick={() => this.handleSelectionClick(index)}
