@@ -26,7 +26,8 @@ class TestViewer extends Component {
             nowQuestion: '',
             questions: '',
             questionOrder: 0,
-            markingList: []
+            markingList: [],
+            isAnswered: false
         }
 
     }
@@ -41,6 +42,14 @@ class TestViewer extends Component {
             })
         });
 
+    }
+
+    checkScore = () => {
+        if (this.state.nowQuestion.answer.answer === this.state.markingList[this.state.questionOrder]){
+            console.log('answer');
+        } else (
+            console.log('fail')
+        )
     }
 
     getTestData = async () => {
@@ -74,11 +83,11 @@ class TestViewer extends Component {
         })
     }
 
-    handleSelectionClick = (i) => {
+    handleSelectionClick = (id) => {
         const list = this.state.markingList.map(
             (value, index) => {
             if (this.state.questionOrder === index) {
-                return i;
+                return id;
             } else {
                 return value;
             }
@@ -104,13 +113,13 @@ class TestViewer extends Component {
                         <div>
                             <List component="nav">
                                 {
-                                    this.state.nowQuestion.question.selections.map((s, index) => {
+                                    this.state.nowQuestion.question.selections.map((s) => {
                                         return (
                                             <ListItem
-                                                key={index}
+                                                key={s.id}
                                                 button
-                                                selected={this.state.markingList[this.state.questionOrder] === index}
-                                                onClick={() => this.handleSelectionClick(index)}
+                                                selected={this.state.markingList[this.state.questionOrder] === s.id}
+                                                onClick={() => this.handleSelectionClick(s.id)}
                                             >
                                                 <ListItemText>{s.selection}</ListItemText>
                                             </ListItem>
@@ -126,6 +135,7 @@ class TestViewer extends Component {
                                 :
                                 <Button onClick={() => this.hendleQuestionOrder("next")}>NEXT</Button>
                             }
+                            <Button onClick={this.checkScore}>score</Button>
                         </div>
                     </div >
                     :
