@@ -267,6 +267,7 @@ class Testbook extends Component {
                                             <div className={classes.panelDetailSelection}>
                                                 {c.question.selections.map((s, index) => {
                                                     return <TextField
+                                                        key={index}
                                                         className={classes.selectionSelection}
                                                         margin="normal"
                                                         multiline

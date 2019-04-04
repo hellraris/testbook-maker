@@ -4,8 +4,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const SelectionSchema = new Schema({
     id: String,
-    selection: String,
-    answer: Boolean
+    selection: String
 })
 
 const questionSchema = new Schema({
@@ -20,6 +19,7 @@ const questionSchema = new Schema({
         selections: [SelectionSchema]
     },
     answer: {
+        answer: String,
         explanation: String,
         translation: String,
         word: String

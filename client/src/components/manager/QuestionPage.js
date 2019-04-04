@@ -48,7 +48,7 @@ class QuestionPage extends Component {
                             return (
                                 <div className={classes.selection} key={c.id}>
                                     <Radio style={{ marginTop: "10px" }}
-                                        checked={c.answer === true}
+                                        checked={c.id === this.props.answer}
                                         onChange={()=> this.props.handleAnswerChange(c.id)}
                                         value="b"
                                         name="radio-button-demo"

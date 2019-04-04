@@ -53,11 +53,12 @@ class QuestionModal extends Component {
             tag: '',
             tagList: [],
             script: '',
+            answer: 0,
             selections: [
-                { id: 1, selection: '', answer: false },
-                { id: 2, selection: '', answer: false },
-                { id: 3, selection: '', answer: false },
-                { id: 4, selection: '', answer: false }
+                { id: '1', selection: ''},
+                { id: '2', selection: ''},
+                { id: '3', selection: ''},
+                { id: '4', selection: ''}
             ],
             explanation: '',
             translation: '',
@@ -103,6 +104,7 @@ class QuestionModal extends Component {
             tagList: data.info.tagList,
             script: data.question.script,
             selections: data.question.selections,
+            answer: data.answer.answer,
             explanation: data.answer.explanation,
             translation: data.answer.translation,
             word: data.answer.word
@@ -118,20 +120,16 @@ class QuestionModal extends Component {
     handleSelectionChange = (value, id) => {
         this.setState({
             selections: this.state.selections.map(
-                c => id === c.id
-                    ? { ...c, selection: value }
-                    : c
+                selection => id === selection.id
+                    ? { ...selection, selection: value }
+                    : selection
             )
         })
     }
 
     handleAnswerChange = (id) => {
         this.setState({
-            selections: this.state.selections.map(
-                c => id === c.id
-                    ? { ...c, answer: true }
-                    : { ...c, answer: false }
-            )
+            answer: id
         })
     }
 
@@ -172,6 +170,7 @@ class QuestionModal extends Component {
                 selections: this.state.selections
             },
             answer: {
+                answer: this.state.answer,
                 explanation: this.state.explanation,
                 translation: this.state.translation,
                 word: this.state.word
@@ -226,6 +225,7 @@ class QuestionModal extends Component {
                     <QuestionPage
                         script={this.state.script}
                         selections={this.state.selections}
+                        answer={this.state.answer}
                         handleTextChange={this.handleCommonTextChange}
                         handleSelectionChange={this.handleSelectionChange}
                         handleAnswerChange={this.handleAnswerChange}
