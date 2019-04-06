@@ -11,10 +11,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = theme => ({
     questionViewer: {
-        width: '80%',
+        display: 'flex',
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
     },
+    questionViewerBody: {
+        flex: '0 1 480px',
+        margin: '0 auto',
+    }
 });
 
 class TestViewer extends Component {
@@ -98,13 +102,17 @@ class TestViewer extends Component {
         })
     }
 
+    submitTest = () => {
+        this.props.history.push(`/complete`);
+    }
+
     render() {
         const { classes } = this.props;
 
         return (
             <div className={classes.questionViewer}>
                 {this.state.nowQuestion ?
-                    <div>
+                    <div　className={classes.questionViewerBody}>
                         <Paper elevation={1}>
                             <Typography component="p">
                                 {this.state.nowQuestion.question.script}
@@ -131,7 +139,7 @@ class TestViewer extends Component {
                         <div>
                             {this.state.questionOrder === 0 ? '' : <Button onClick={() => this.hendleQuestionOrder("prev")}>PREV</Button>}
                             {this.state.questionOrder === this.state.questions.length - 1 ?
-                                <Button>SEND</Button>
+                                <Button onClick={() => this.submitTest()}>Submit</Button>
                                 :
                                 <Button onClick={() => this.hendleQuestionOrder("next")}>NEXT</Button>
                             }

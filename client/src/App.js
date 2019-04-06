@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom'
 import testManager from './components/manager/Testbook'
 import viewer from './components/viewer/TestSelector'
 import testViewer from './components/viewer/TestViewer'
+import testComplete from './components/viewer/TestComplete'
 import './App.css';
 
 class App extends Component {
@@ -11,6 +12,7 @@ class App extends Component {
       <div className="App">
         <Route exact path='/viewer' component={viewer}/>
         <Route path='/viewer/:id' component={testViewer} />
+        <Route exact path='/complete' component={testComplete} />
         <Route path='/manager' component={testManager} />
       </div>
     );
