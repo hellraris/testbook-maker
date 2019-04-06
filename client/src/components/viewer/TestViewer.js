@@ -45,7 +45,7 @@ class TestViewer extends Component {
     }
 
     checkScore = () => {
-        if (this.state.nowQuestion.answer.answer === this.state.markingList[this.state.questionOrder]){
+        if (this.state.nowQuestion.question.answer === this.state.markingList[this.state.questionOrder]){
             console.log('answer');
         } else (
             console.log('fail')

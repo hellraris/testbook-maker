@@ -12,7 +12,6 @@ import Chip from '@material-ui/core/Chip';
 import CreateIcon from '@material-ui/icons/Create';
 import { withStyles } from '@material-ui/core/styles';
 
-
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 

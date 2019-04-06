@@ -104,7 +104,7 @@ class QuestionModal extends Component {
             tagList: data.info.tagList,
             script: data.question.script,
             selections: data.question.selections,
-            answer: data.answer.answer,
+            answer: data.question.answer,
             explanation: data.answer.explanation,
             translation: data.answer.translation,
             word: data.answer.word
@@ -167,10 +167,10 @@ class QuestionModal extends Component {
             },
             question: {
                 script: this.state.script,
-                selections: this.state.selections
+                selections: this.state.selections,
+                answer: this.state.answer
             },
             answer: {
-                answer: this.state.answer,
                 explanation: this.state.explanation,
                 translation: this.state.translation,
                 word: this.state.word

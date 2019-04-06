@@ -16,10 +16,10 @@ const questionSchema = new Schema({
     },
     question: {
         script: String,
-        selections: [SelectionSchema]
+        selections: [SelectionSchema],
+        answer: String
     },
     answer: {
-        answer: String,
         explanation: String,
         translation: String,
         word: String
