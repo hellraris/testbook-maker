@@ -8,5 +8,4 @@ const bookSchema = new Schema({
     questions: [question.schema]
 });
 
-// export const question = mongoose.model('question', questionSchema);
 module.exports = mongoose.model('book', bookSchema);

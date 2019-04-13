@@ -165,30 +165,9 @@ class TestSelector extends Component {
     }
 
     startTest = (id) => {
-        // this.props.history.push('/viewer/aa');
-        this.props.history.push(`/viewer/${id}`);
-        // return <Link to={`/viewer/${id}`}/>
-        /*
-        axios({
-            method: 'get',
-            url: '/api/test/'+id
-        }).then(res => {
-            console.log(res.data);
-        })
-            .catch(err => console.log(err));
-*/
+        this.props.history.push(`/viewer/start`, {testId: id});
     }
-    /*
-        handleExpandPanel = (i) => {
-            const modifiedArray = this.state.questions.map((value, index) => {
-                return index === i ? ({ ...value, expanded: !this.state.questions[i].expanded }) : value
-            });
-    
-            this.setState({
-                tests: modifiedArray
-            });
-        };
-    */
+
     render() {
         const { classes } = this.props;
 

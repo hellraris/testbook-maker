@@ -13,35 +13,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = theme => ({
-    wrap: {
+    testResult: {
         display: 'flex',
-        height: '100%'
+        paddingTop: theme.spacing.unit * 2,
+        paddingBottom: theme.spacing.unit * 2,
     },
-    bookBody: {
+    testResultBody: {
         flex: '0 1 1280px',
         margin: '0 auto',
-        height: '100%'
-    },
-    bookHeader: {
-        display: 'flex',
-        height: theme.spacing.unit * 7,
-        backgroundColor: 'gray'
-    },
-    addBtn: {
-        margin: 'auto 2% auto auto',
-        height: theme.spacing.unit * 5
-    },
-    bookContent: {
-        display: 'flex',
-        flexDirection: 'column',
-        height: '90%',
-        border: '1px solid grey',
-    },
-    questionlist: {
-        flex: '1',
-        overflowY: 'scroll',
-        overflowX: 'hidden',
-        padding: '0.5%'
     },
     panelNo: {
         flex: '0 0 50px'
@@ -134,104 +113,118 @@ class TestComplete extends Component {
         super(props);
 
         const { result } = this.props.location.state;
-        console.log(result.score);
-        console.log(result.failQuestions);
 
         this.state = {
-            score: this.props.location.state.result.score,
-            failQuestions: this.props.location.state.result.failQuestions,
-            incorrectMarkingList: this.props.location.state.result.incorrectMarkingList
+            questions: this.props.location.state.questions,
+            incorrectList: this.props.location.state.incorrectList
         }
 
     }
 
+    checkTestScore = () => {
+        return 100 * ((this.state.questions.length - this.state.incorrectList.length) / this.state.questions.length);
+    }
+
     handleExpandPanel = (i) => {
-        const modifiedArray = this.state.failQuestions.map((value, index) => {
-            return index === i ? ({ ...value, expanded: !this.state.failQuestions[i].expanded }) : value
+        const modifiedArray = this.state.questions.map((value, index) => {
+            return index === i ? ({ ...value, expanded: !this.state.questions[i].expanded }) : value
         });
 
         this.setState({
-            failQuestions: modifiedArray
+            questions: modifiedArray
         });
     };
-
-    choiceSelectedColor = (id, questionIdx) => {
-        console.log("aa");
-        const { classes } = this.props;
-
-        if (this.state.incorrectMarkingList[questionIdx] === id) {
-            return classes.selectionIncorrect;
-        } else if (this.state.failQuestions[questionIdx].question.answer === id) {
-            return classes.selectionCorrect;
-        } else {
-            return '';
-        }
-
-    } 
 
     render() {
         const { classes } = this.props;
 
-        return (
-            <div>
-                <h3>TestScore: {this.state.score}</h3>
-                {this.state.failQuestions ?
-                    this.state.failQuestions.map((c, questionIdx) => {
-                        return <ExpansionPanel expanded={c.expanded} key={questionIdx} onChange={() => this.handleExpandPanel(questionIdx)}>
-                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                <div className={classes.panelNo}>
-                                    <Typography>{questionIdx + 1}</Typography>
-                                </div>
-                                <div className={classes.panelTitle}>
-                                    <Typography>{c.info.title}</Typography>
-                                </div>
-                                <div className={classes.panelPart}>
-                                    <Typography>{c.info.part}</Typography>
-                                </div>
-                                <div className={classes.panelTag}>
-                                    {c.info.tagList.map((tag, questionIdx) => {
-                                        return <Chip key={questionIdx} label={tag} className={classes.tagChip} />
-                                    })}
-                                </div>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <div className={classes.panelDetailScript}>
-                                    <TextField
-                                        className={classes.selectionScript}
-                                        label="Script"
-                                        value={c.question.script}
-                                        multiline
-                                        rows="9"
-                                        InputProps={{
-                                            readOnly: true
-                                        }}
-                                        margin="normal"
-                                        variant="outlined"
-                                    />
-                                </div>
+        const changePanelSummaryColor = (questionId) => {
+            const incorrect = this.state.incorrectList.some((value) => {
+                return value.questionId === questionId
+            });
+            if (incorrect) {
+                return { backgroundColor: 'rgba(255, 0, 0, 0.2)' }
+            }
+        }
 
-                                <div className={classes.panelDetailSelection}>
-                                    <List component="nav">
-                                        {c.question.selections.map((s) => {
+        const changeSelectionColor = (question, selectionId) => {
+            const incorrectList = this.state.incorrectList;
+
+            // 誤答した選択肢を赤色にする
+            for (let i = 0; i < incorrectList.length; i++) {
+                if (incorrectList[i].questionId === question._id) {
+                    if (incorrectList[i].marking === selectionId) {
+                        return { backgroundColor: 'rgba(255, 0, 0, 0.2)' }
+                    }
+                }
+            }
+
+            // 正答の選択肢を緑色にする
+            if (question.question.answer === selectionId) {
+                return { backgroundColor: 'rgba(60, 179, 113, 0.2)' }
+            }
+        }
+
+        return (
+            <div className={classes.testResult}>
+                <div className={classes.testResultBody}>
+                    <h3>TestScore: {this.checkTestScore()}</h3>
+                    {this.state.questions ?
+                        this.state.questions.map((c, questionIdx) => {
+                            return <ExpansionPanel expanded={c.expanded} key={questionIdx} onChange={() => this.handleExpandPanel(questionIdx)}>
+                                <ExpansionPanelSummary style={changePanelSummaryColor(c._id)} expandIcon={<ExpandMoreIcon />}>
+                                    <div className={classes.panelNo}>
+                                        <Typography>{questionIdx + 1}</Typography>
+                                    </div>
+                                    <div className={classes.panelTitle}>
+                                        <Typography>{c.info.title}</Typography>
+                                    </div>
+                                    <div className={classes.panelPart}>
+                                        <Typography>{c.info.part}</Typography>
+                                    </div>
+                                    <div className={classes.panelTag}>
+                                        {c.info.tagList.map((tag, questionIdx) => {
+                                            return <Chip key={questionIdx} label={tag} className={classes.tagChip} />
+                                        })}
+                                    </div>
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                    <div className={classes.panelDetailScript}>
+                                        <TextField
+                                            className={classes.selectionScript}
+                                            label="Script"
+                                            value={c.question.script}
+                                            multiline
+                                            rows="9"
+                                            InputProps={{
+                                                readOnly: true
+                                            }}
+                                            margin="normal"
+                                            variant="outlined"
+                                        />
+                                    </div>
+                                    <div className={classes.panelDetailSelection}>
+                                        <List component="nav">
+                                            {c.question.selections.map((s) => {
                                                 return (
                                                     <ListItem
-                                                        className={this.choiceSelectedColor(s.id, questionIdx)}
+                                                        style={changeSelectionColor(c, s.id)}
                                                         key={s.id}
-                                                        //selected={this.state.incorrectMarkingList[questionIdx] === s.id || c.question.answer === s.id}
                                                     >
                                                         <ListItemText>{s.selection}</ListItemText>
                                                     </ListItem>
                                                 )
                                             })
-                                        }
-                                    </List>
-                                </div>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                    })
-                    :
-                    ''
-                }
+                                            }
+                                        </List>
+                                    </div>
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        })
+                        :
+                        ''
+                    }
+                </div>
             </div>
         );
     }

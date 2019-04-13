@@ -11,7 +11,7 @@ class App extends Component {
     return (
       <div className="App">
         <Route exact path='/viewer' component={viewer}/>
-        <Route exact path='/viewer/:id' component={testViewer} />
+        <Route exact path='/viewer/start' component={testViewer} />
         <Route exact path='/complete' component={testComplete} />
         <Route exact path='/manager' component={testManager} />
       </div>

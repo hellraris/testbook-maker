@@ -7,6 +7,7 @@ mongoose.set('useFindAndModify', false);
 
 const Book = require('./models/book');
 const Question = require('./models/question');
+const Result = require('./models/result');
 
 const app = express();
 const port = process.env.port || 5000;
@@ -158,6 +159,27 @@ app.get('/api/test/:id', (req, res) => {
         res.json(questions);
     })
 })
+
+app.post('/api/complete', (req, res) => {
+
+    const result = new Result({
+        testId: req.body.testId,
+        userId: req.body.userId,
+        solveDate: req.body.solveDate,
+        incorrectList: req.body.incorrectList
+    });
+
+    result.save((err) => {
+        if (err) {
+            console.error(err);
+            res.json({ result: 0 })
+            return;
+        }
+        console.log("successfully saved")
+        res.json("successfully saved");
+    })
+})
+
 
 
 /*

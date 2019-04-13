@@ -57,7 +57,7 @@ class TestViewer extends Component {
     }
 
     getTestData = async () => {
-        const testId = this.props.match.params.id;
+        const testId = this.props.location.state.testId;
 
         await axios({
             method: 'get',
@@ -102,9 +102,42 @@ class TestViewer extends Component {
         })
     }
 
+    createResultData = () => {
+        return {
+            testId: this.props.location.state.testId,
+            userId: 'temp',
+            solveDate: new Date(),
+            incorrectList: this.createIncorrectList()
+        }
+    }
+
+    createIncorrectList = () => {
+        const questions = this.state.questions;
+        const markingList = this.state.markingList;
+        const incorrectList = [];
+        for (let i = 0; i < questions.length; i++) {
+            if(questions[i].question.answer !== markingList[i]){
+                incorrectList.push({
+                    questionId: questions[i]._id,
+                    marking: markingList[i]
+                })
+            }
+        }
+        
+        return incorrectList;
+    }
+
     submitTest = () => {
-        const result = this.checkingTestScore();
-        this.props.history.push(`/complete`, { result: result });
+
+        const requestData = this.createResultData();
+        axios({
+            method: 'post',
+            url: '/api/complete',
+            data: requestData
+        }).then(
+            this.props.history.push(`/complete`, { questions: this.state.questions, incorrectList: requestData.incorrectList })
+        );
+
     }
 
     checkingTestScore = () => {
@@ -124,7 +157,7 @@ class TestViewer extends Component {
         const result = {
             score: score,
             incorrectMarkingList: incorrectMarkingList,
-            failQuestions: failQuestions
+            questions: questions
         }
 
         return result;
