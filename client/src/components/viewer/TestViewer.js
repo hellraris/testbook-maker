@@ -49,7 +49,7 @@ class TestViewer extends Component {
     }
 
     checkScore = () => {
-        if (this.state.nowQuestion.question.answer === this.state.markingList[this.state.questionOrder]){
+        if (this.state.nowQuestion.question.answer === this.state.markingList[this.state.questionOrder]) {
             console.log('answer');
         } else (
             console.log('fail')
@@ -90,12 +90,12 @@ class TestViewer extends Component {
     handleSelectionClick = (id) => {
         const list = this.state.markingList.map(
             (value, index) => {
-            if (this.state.questionOrder === index) {
-                return id;
-            } else {
-                return value;
-            }
-        })
+                if (this.state.questionOrder === index) {
+                    return id;
+                } else {
+                    return value;
+                }
+            })
         this.setState({
             ...this.state,
             markingList: list
@@ -103,7 +103,25 @@ class TestViewer extends Component {
     }
 
     submitTest = () => {
-        this.props.history.push(`/complete`);
+        const result = this.checkingTestScore();
+        this.props.history.push(`/complete`, { result: result });
+    }
+
+    checkingTestScore = () => {
+
+        const failQuestions = this.state.questions.filter((q, index) => {
+            return q.question.answer !== this.state.markingList[index];
+        })
+
+        const score = 100 * (failQuestions / this.state.questions.length);
+
+        const result = {
+            score: score,
+            failQuestions: failQuestions
+        }
+
+
+        return result;
     }
 
     render() {
@@ -112,7 +130,7 @@ class TestViewer extends Component {
         return (
             <div className={classes.questionViewer}>
                 {this.state.nowQuestion ?
-                    <div　className={classes.questionViewerBody}>
+                    <div className={classes.questionViewerBody}>
                         <Paper elevation={1}>
                             <Typography component="p">
                                 {this.state.nowQuestion.question.script}
