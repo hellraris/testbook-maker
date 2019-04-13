@@ -108,18 +108,24 @@ class TestViewer extends Component {
     }
 
     checkingTestScore = () => {
+        const questions = this.state.questions;
+        const markingList = this.state.markingList;
+        const incorrectMarkingList = [];
 
-        const failQuestions = this.state.questions.filter((q, index) => {
-            return q.question.answer !== this.state.markingList[index];
+        const failQuestions = questions.filter((q, index) => {
+            if (q.question.answer !== markingList[index]) {
+                incorrectMarkingList.push(markingList[index]);
+                return true;
+            };
         })
 
-        const score = 100 * (failQuestions / this.state.questions.length);
+        const score = 100 * ((questions.length - failQuestions.length) / questions.length);
 
         const result = {
             score: score,
+            incorrectMarkingList: incorrectMarkingList,
             failQuestions: failQuestions
         }
-
 
         return result;
     }
