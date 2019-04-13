@@ -58,7 +58,7 @@ const styles = theme => ({
     }
 });
 
-class selection extends Component {
+class Question extends Component {
 
     constructor(props) {
         super(props);
@@ -70,7 +70,7 @@ class selection extends Component {
 
     addQuestion = () => {
         this.setState({
-            questions: this.state.questions.concat({ label: '', selections: [], answers: [] })
+            questions: this.state.questions.concat({ subtilte: '', selections: [], answers: [] })
         })
     }
 
@@ -89,17 +89,45 @@ class selection extends Component {
         })
     }
 
-    deleteSelections = (index) => {
+    deleteQuestion = (questionIdx) => {
         this.setState({
-            selectionsList: this.state.selectionsList.filter((_, i) => i !== index)
+            questions: this.state.questions.filter((_, index) => index !== questionIdx)
         })
     }
 
-    handleAnswerChange = (questionIdx, selectionIdx) => {
+    deleteSelection = (questionIdx, selectionIdx) => {
+        const updatedSelections = this.state.questions[questionIdx].selections.filter((_, index) => index !== selectionIdx)
+        const updatedAnswers = this.state.questions[questionIdx].answers.filter((answer) => answer !== selectionIdx)
 
+        this.setState({
+            questions: this.state.questions.map((question, index) => {
+                if (index === questionIdx) {
+                    return {
+                        ...question,
+                        answers: updatedAnswers,
+                        selections: updatedSelections
+                    }
+                } else {
+                    return question;
+                }
+            })
+        })
+    }
+
+    handleSubtilte = (event, questionIdx) => {
+        this.setState({
+            questions: this.state.questions.map((question, index)=>{   
+                return index === questionIdx ? {...question, subtilte: event.target.value} : question
+            })
+        })
+    }
+
+    handleAnswerChecked = (questionIdx, selectionIdx) => {
+
+        // チェック時にチェックした選択肢が既に正答になっている場合、正答から外れるようにする。
         if (this.confirmSelectionChecked(questionIdx, selectionIdx)) {
-            const updatedAnswers = this.state.questions[questionIdx].answers.filter((answer)=>{
-                return answer !== selectionIdx 
+            const updatedAnswers = this.state.questions[questionIdx].answers.filter((answer) => {
+                return answer !== selectionIdx
             })
 
             this.setState({
@@ -114,6 +142,7 @@ class selection extends Component {
                     }
                 })
             })
+        // チェック時にチェックした選択肢が正答になっていない場合、正答にする。
         } else {
             const updatedAnswers = this.state.questions[questionIdx].answers.concat(selectionIdx)
 
@@ -132,11 +161,32 @@ class selection extends Component {
         }
     }
 
+    // 選択肢がチェックされているか確認する。
     confirmSelectionChecked = (questionIdx, selectionIdx) => {
         return this.state.questions[questionIdx].answers.some((answer) => {
             return answer === selectionIdx
         })
-    }  
+    }
+
+    handleSelectionText = (event, questionIdx, selectionIdx) => {
+
+        const updatedSelections = this.state.questions[questionIdx].selections.map((selection, index)=> {
+            return selectionIdx === index ? event.target.value : selection
+        })
+
+        this.setState({
+            questions: this.state.questions.map((question, index) => {
+                if (index === questionIdx) {
+                    return {
+                        ...question,
+                        selections: updatedSelections
+                    }
+                } else {
+                    return question;
+                }
+            })
+        })
+    }
 
     render() {
         const { classes } = this.props;
@@ -154,11 +204,14 @@ class selection extends Component {
                         this.state.questions.map((question, questionIdx) => {
                             return <div key={questionIdx} className={classes.contentsItem}>
                                 <div>
-                                    <Clear />
+                                    <Clear onClick={()=> {this.deleteQuestion(questionIdx)}}/>
                                     <TextField
                                         label='Subtitle'
                                         fullWidth
-                                        multiline />
+                                        multiline 
+                                        value={this.state.questions[questionIdx].subtilte}
+                                        onChange={(event)=> this.handleSubtilte(event, questionIdx)}
+                                        />
                                 </div>
                                 <List component="nav">
                                     {question.selections ?
@@ -169,15 +222,17 @@ class selection extends Component {
                                                 >
                                                     <Checkbox
                                                         checked={this.confirmSelectionChecked(questionIdx, selectionIdx)}
-                                                        onChange={() => this.handleAnswerChange(questionIdx, selectionIdx)}
+                                                        onChange={() => this.handleAnswerChecked(questionIdx, selectionIdx)}
                                                     />
                                                     <TextField
                                                         label={'Selection ' + (selectionIdx + 1)}
                                                         fullWidth
                                                         multiline
+                                                        value={selection}
+                                                        onChange={(event)=>{this.handleSelectionText(event, questionIdx, selectionIdx)}}
                                                     />
-                                                    <Icon className={classes.removeBtn} color="action">
-                                                        <RemoveCircle />
+                                                    <Icon className={classes.removeBtn} color="action" >
+                                                        <RemoveCircle onClick={()=>{this.deleteSelection(questionIdx, selectionIdx)}}/>
                                                     </Icon>
                                                 </ListItem>
                                             )
@@ -203,4 +258,4 @@ class selection extends Component {
     }
 }
 
-export default withStyles(styles)(selection);
+export default withStyles(styles)(Question);

@@ -54,7 +54,7 @@ const styles = theme => ({
     }
 });
 
-class script extends Component {
+class Script extends Component {
 
     constructor(props) {
         super(props);
@@ -121,4 +121,4 @@ class script extends Component {
     }
 }
 
-export default withStyles(styles)(script);
+export default withStyles(styles)(Script);

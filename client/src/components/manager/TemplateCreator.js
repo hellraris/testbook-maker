@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Script from './parts/script'
-import Selection from './parts/selection'
+import Script from './parts/Script'
+import Question from './parts/Question'
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -13,7 +13,7 @@ class TemplateCreator extends Component {
         return (
             <div>
                 <Script></Script>
-                <Selection></Selection>
+                <Question></Question>
             </div>
         );
     }
