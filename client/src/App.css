@@ -9,3 +9,12 @@
 .btn:active {
   transform: translateY(3px);
 }
+
+.flexbox {
+  display: flex;
+}
+
+.flexbox-column {
+  display: flex;
+  flex-direction: column;
+}

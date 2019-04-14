@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Checkbox from '@material-ui/core/Checkbox';
-import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = theme => ({
     body: {
@@ -48,16 +47,17 @@ const styles = theme => ({
         }
     },
     itemSubtitle: {
+        marginTop: '12px',
         width: '97%'
     },
     itemSelections: {
         padding: '0 0 7px 0',
-        '& li':{
+        '& li': {
             padding: 0
         }
     },
     itemCheckbox: {
-        marginTop: '17px',
+        marginTop: '5px',
         padding: '10px'
     },
     itemSelection: {
@@ -74,8 +74,14 @@ const styles = theme => ({
             transform: 'translateY(3px)'
         }
     },
+    addSelectionBtn: {
+        margin: 'auto 0 auto auto'
+    },
     removeBtn: {
         fontSize: '20px'
+    },
+    removeSelectionBtn: {
+        margin: '3px 0 0 10px'
     },
     textAlignLeft: {
         textAlign: 'left'
@@ -219,8 +225,8 @@ class Question extends Component {
         return (
             <div className={classes.body}>
                 <Paper className={classes.head}>
-                    <Typography className={classes.headLabel} variant="h5" gutterBottom>Question</Typography>
-                    <Icon className={["btn",classes.addBtn].join(' ')} color="action">
+                    <Typography className={classes.headLabel} variant="title" gutterBottom>Question</Typography>
+                    <Icon className={["btn", classes.addBtn].join(' ')} color="action">
                         <AddCircle onClick={this.addQuestion} />
                     </Icon>
                 </Paper>
@@ -234,15 +240,20 @@ class Question extends Component {
                                     </Icon>
                                 </div>
                                 <div className={classes.itemBody}>
-                                    <Typography className={classes.textAlignLeft} variant="subtitle1" gutterBottom>Subtitle</Typography>
                                     <TextField
                                         className={classes.itemSubtitle}
+                                        placeholder="Subtitle"
                                         fullWidth
                                         multiline
-                                        value={this.state.questions[questionIdx].subtilte}
+                                        value={question.subtilte}
                                         onChange={(event) => this.handleSubtilte(event, questionIdx)}
                                     />
-                                    <Typography className={classes.textAlignLeft} variant="subtitle1" gutterBottom>Selection</Typography>
+                                    <div className={"flexbox"} style={{margin: '12px 0 0 7px'}}>
+                                        <Typography className={classes.textAlignLeft} variant="subheading">Selection</Typography>
+                                        <Icon className={["btn", classes.addSelectionBtn].join(' ')} color="action">
+                                            <AddCircleOutline onClick={() => this.addSelection(questionIdx)} />
+                                        </Icon>
+                                    </div>
                                     <List component="nav" className={classes.itemSelections}>
                                         {question.selections ?
                                             question.selections.map((selection, selectionIdx) => {
@@ -256,15 +267,14 @@ class Question extends Component {
                                                             onChange={() => this.handleAnswerChecked(questionIdx, selectionIdx)}
                                                         />
                                                         <TextField
-                                                            label={'Selection ' + (selectionIdx + 1)}
+                                                            placeholder={'Selection ' + (selectionIdx + 1)}
                                                             className={classes.itemSelection}
-                                                            fullWidth
                                                             multiline
                                                             value={selection}
                                                             onChange={(event) => { this.handleSelectionText(event, questionIdx, selectionIdx) }}
                                                         />
-                                                        <Icon style={{margin: '12px 0 0 5px'}} color="action" >
-                                                            <RemoveCircleOutline className={"btn"} onClick={() => { this.deleteSelection(questionIdx, selectionIdx) }} />
+                                                        <Icon className={["btn",classes.removeSelectionBtn].join(' ')} color="action" >
+                                                            <RemoveCircleOutline onClick={() => { this.deleteSelection(questionIdx, selectionIdx) }} />
                                                         </Icon>
                                                     </ListItem>
                                                 )
@@ -273,11 +283,6 @@ class Question extends Component {
                                             ''
                                         }
                                     </List>
-                                    <div>
-                                        <Icon className={["btn", classes.addBtn].join(' ')} color="action">
-                                            <AddCircleOutline onClick={() => this.addSelection(questionIdx)} />
-                                        </Icon>
-                                    </div>
                                 </div>
                             </div>
                         })

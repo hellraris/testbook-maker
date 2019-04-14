@@ -40,6 +40,10 @@ const styles = theme => ({
     },
     itemScript: {
     },
+    itemSubtitle: {
+        marginTop: '12px',
+        width: '97%'
+    },
     removeBtnConteiner: {
         margin: '14px auto auto auto'
     },
@@ -53,33 +57,38 @@ class Script extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            scriptList: []
+            scripts: []
         }
 
     }
 
     addScript = () => {
         this.setState({
-            scriptList: this.state.scriptList.concat('')
+            scripts: this.state.scripts.concat({subtilte: '', contents: ''})
         })
     }
 
     deleteScript = (scriptIdx) => {
         this.setState({
-            scriptList: this.state.scriptList.filter((_, index) => index !== scriptIdx)
+            scripts: this.state.scripts.filter((_, index) => index !== scriptIdx)
+        })
+    }
+
+    handleSubtilte = (event, scriptIdx) => {
+        this.setState({
+            scripts: this.state.scripts.map((script, index) => {
+                return index === scriptIdx ? { ...script, subtilte: event.target.value } : script
+            })
         })
     }
 
     handleScript = (event, scriptIdx) => {
-        const updatedScript = this.state.scriptList.map((script, index) => {
-            return index === scriptIdx ? event.target.value : script
-        })
-
         this.setState({
-            scriptList: updatedScript
+            scripts: this.state.scripts.map((script, index) => {
+                return index === scriptIdx ? { ...script, contents: event.target.value }  : script
+            })
         })
     }
-
 
     render() {
         const { classes } = this.props;
@@ -87,14 +96,14 @@ class Script extends Component {
         return (
             <div className={classes.body}>
                 <Paper className={classes.head}>
-                    <Typography className={classes.headLabel} variant="h5" gutterBottom>Script</Typography>
+                    <Typography className={classes.headLabel} variant="title" gutterBottom>Script</Typography>
                     <Icon className={["btn", classes.addBtn].join(' ')} color="action">
                         <AddCircle onClick={this.addScript} />
                     </Icon>
                 </Paper>
                 <div className={classes.contents}>
-                    {this.state.scriptList ?
-                        this.state.scriptList.map((script, scriptIdx) => {
+                    {this.state.scripts ?
+                        this.state.scripts.map((script, scriptIdx) => {
                             return <div key={scriptIdx} className={classes.item}>
                                 <div className={classes.itemBar}>
                                     <Icon className={classes.removeBtnConteiner} color="action">
@@ -103,10 +112,16 @@ class Script extends Component {
                                 </div>
                                 <div className={classes.itemBody}>
                                     <TextField
-                                        className={classes.itemScript}
-                                        label={"script " + (scriptIdx + 1)}
+                                        placeholder="Subtitle"
+                                        className={classes.itemSubtitle}
+                                        fullWidth
+                                        multiline
+                                        value={script.subtilte}
+                                        onChange={(event) => this.handleSubtilte(event, scriptIdx)}
+                                    />
+                                    <TextField
                                         name={"script " + (scriptIdx + 1)}
-                                        value={script}
+                                        value={script.contents}
                                         onChange={(event) => this.handleScript(event, scriptIdx)}
                                         multiline
                                         fullWidth
