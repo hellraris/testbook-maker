@@ -29,13 +29,7 @@ const styles = theme => ({
         margin: 'auto auto auto 20px',
     },
     addBtn: {
-        margin: 'auto 10px 10px auto',
-        "&:hover": {
-            cursor: 'pointer'
-        },
-        '&:active': {
-            transform: 'translateY(3px)'
-        }
+        margin: 'auto 10px 10px auto'
     },
     contents: {
 
@@ -72,14 +66,16 @@ const styles = theme => ({
     removeBtnConteiner: {
         margin: '14px auto auto auto'
     },
-    removeBtn: {
-        fontSize: '20px',
+    btn: {
         "&:hover": {
             cursor: 'pointer'
         },
         '&:active': {
             transform: 'translateY(3px)'
         }
+    },
+    removeBtn: {
+        fontSize: '20px'
     },
     textAlignLeft: {
         textAlign: 'left'
@@ -224,7 +220,7 @@ class Question extends Component {
             <div className={classes.body}>
                 <Paper className={classes.head}>
                     <Typography className={classes.headLabel} variant="h5" gutterBottom>Question</Typography>
-                    <Icon className={classes.addBtn} color="action">
+                    <Icon className={["btn",classes.addBtn].join(' ')} color="action">
                         <AddCircle onClick={this.addQuestion} />
                     </Icon>
                 </Paper>
@@ -234,7 +230,7 @@ class Question extends Component {
                             return <div key={questionIdx} className={classes.item}>
                                 <div className={classes.itemBar}>
                                     <Icon className={classes.removeBtnConteiner} color="action">
-                                        <Clear className={classes.removeBtn} onClick={() => this.deleteQuestion(questionIdx)} />
+                                        <Clear className={["btn", classes.removeBtn].join(' ')} onClick={() => this.deleteQuestion(questionIdx)} />
                                     </Icon>
                                 </div>
                                 <div className={classes.itemBody}>
@@ -268,7 +264,7 @@ class Question extends Component {
                                                             onChange={(event) => { this.handleSelectionText(event, questionIdx, selectionIdx) }}
                                                         />
                                                         <Icon style={{margin: '12px 0 0 5px'}} color="action" >
-                                                            <RemoveCircleOutline onClick={() => { this.deleteSelection(questionIdx, selectionIdx) }} />
+                                                            <RemoveCircleOutline className={"btn"} onClick={() => { this.deleteSelection(questionIdx, selectionIdx) }} />
                                                         </Icon>
                                                     </ListItem>
                                                 )
@@ -278,7 +274,7 @@ class Question extends Component {
                                         }
                                     </List>
                                     <div>
-                                        <Icon className={classes.addBtn} color="action">
+                                        <Icon className={["btn", classes.addBtn].join(' ')} color="action">
                                             <AddCircleOutline onClick={() => this.addSelection(questionIdx)} />
                                         </Icon>
                                     </div>

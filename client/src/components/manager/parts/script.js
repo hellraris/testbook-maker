@@ -23,13 +23,7 @@ const styles = theme => ({
         margin: 'auto auto auto 20px',
     },
     addBtn: {
-        margin: 'auto 10px 10px auto',
-        "&:hover": {
-            cursor: 'pointer'
-        },
-        '&:active': {
-            transform: 'translateY(3px)'
-        }
+        margin: 'auto 10px 10px auto'
     },
     contents: {
 
@@ -50,13 +44,7 @@ const styles = theme => ({
         margin: '14px auto auto auto'
     },
     removeBtn: {
-        fontSize: '20px',
-        "&:hover": {
-            cursor: 'pointer'
-        },
-        '&:active': {
-            transform: 'translateY(3px)'
-        }
+        fontSize: '20px'
     }
 });
 
@@ -100,7 +88,7 @@ class Script extends Component {
             <div className={classes.body}>
                 <Paper className={classes.head}>
                     <Typography className={classes.headLabel} variant="h5" gutterBottom>Script</Typography>
-                    <Icon className={classes.addBtn} color="action">
+                    <Icon className={["btn", classes.addBtn].join(' ')} color="action">
                         <AddCircle onClick={this.addScript} />
                     </Icon>
                 </Paper>
@@ -110,7 +98,7 @@ class Script extends Component {
                             return <div key={scriptIdx} className={classes.item}>
                                 <div className={classes.itemBar}>
                                     <Icon className={classes.removeBtnConteiner} color="action">
-                                        <Clear className={classes.removeBtn} onClick={() => this.deleteScript(scriptIdx)} />
+                                        <Clear className={["btn", classes.removeBtn].join(' ')} onClick={() => this.deleteScript(scriptIdx)} />
                                     </Icon>
                                 </div>
                                 <div className={classes.itemBody}>
