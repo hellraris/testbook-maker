@@ -4,7 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
 import AddCircle from '@material-ui/icons/AddCircle';
-import RemoveCircle from '@material-ui/icons/RemoveCircle';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
 import Clear from '@material-ui/icons/Clear';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -266,8 +267,8 @@ class Question extends Component {
                                                             value={selection}
                                                             onChange={(event) => { this.handleSelectionText(event, questionIdx, selectionIdx) }}
                                                         />
-                                                        <Icon color="action" >
-                                                            <RemoveCircle onClick={() => { this.deleteSelection(questionIdx, selectionIdx) }} />
+                                                        <Icon style={{margin: '12px 0 0 5px'}} color="action" >
+                                                            <RemoveCircleOutline onClick={() => { this.deleteSelection(questionIdx, selectionIdx) }} />
                                                         </Icon>
                                                     </ListItem>
                                                 )
@@ -278,7 +279,7 @@ class Question extends Component {
                                     </List>
                                     <div>
                                         <Icon className={classes.addBtn} color="action">
-                                            <AddCircle onClick={() => this.addSelection(questionIdx)} />
+                                            <AddCircleOutline onClick={() => this.addSelection(questionIdx)} />
                                         </Icon>
                                     </div>
                                 </div>
