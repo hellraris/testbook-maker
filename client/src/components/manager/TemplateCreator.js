@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Script from './parts/Script'
 import Question from './parts/Question'
+import Explanation from './parts/Explanation'
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -14,6 +15,7 @@ class TemplateCreator extends Component {
             <div>
                 <Script></Script>
                 <Question></Question>
+                <Explanation></Explanation>
             </div>
         );
     }
