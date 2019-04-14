@@ -34,17 +34,23 @@ const styles = theme => ({
     contents: {
 
     },
-    contentsItem: {
+    item: {
         display: 'flex',
-        flexWrap: 'wrap'
+        flexDirection: 'row-reverse'
     },
-    contentsItemText: {
-        width: '93%'
+    itemBar: {
+        display: 'flex'
+    },
+    itemBody: {
+        width: '94%'
+    },
+    itemScript: {
+    },
+    removeBtnConteiner: {
+        margin: '14px auto auto auto'
     },
     removeBtn: {
-        width: '20px',
-        height: '20px',
-        margin: '10px auto auto auto',
+        fontSize: '20px',
         "&:hover": {
             cursor: 'pointer'
         },
@@ -70,9 +76,19 @@ class Script extends Component {
         })
     }
 
-    deleteScript = (index) => {
+    deleteScript = (scriptIdx) => {
         this.setState({
-            scriptList: this.state.scriptList.filter((_, i) => i !== index)
+            scriptList: this.state.scriptList.filter((_, index) => index !== scriptIdx)
+        })
+    }
+
+    handleScript = (event, scriptIdx) => {
+        const updatedScript = this.state.scriptList.map((script, index) => {
+            return index === scriptIdx ? event.target.value : script
+        })
+
+        this.setState({
+            scriptList: updatedScript
         })
     }
 
@@ -90,26 +106,29 @@ class Script extends Component {
                 </Paper>
                 <div className={classes.contents}>
                     {this.state.scriptList ?
-                        this.state.scriptList.map((script, index) => {
-                            return <div key={index} className={classes.contentsItem}>
-
-                                <TextField
-                                    className={classes.contentsItemText}
-                                    label="Script"
-                                    name="script"
-                                    disabled={true}
-                                    multiline
-                                    fullWidth
-                                    rows="5"
-                                    margin="normal"
-                                    variant="outlined"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                />
-                                <Icon className={classes.removeBtn} color="action">
-                                    <Clear onClick={() => this.deleteScript(index)} />
-                                </Icon>
+                        this.state.scriptList.map((script, scriptIdx) => {
+                            return <div key={scriptIdx} className={classes.item}>
+                                <div className={classes.itemBar}>
+                                    <Icon className={classes.removeBtnConteiner} color="action">
+                                        <Clear className={classes.removeBtn} onClick={() => this.deleteScript(scriptIdx)} />
+                                    </Icon>
+                                </div>
+                                <div className={classes.itemBody}>
+                                    <TextField
+                                        className={classes.itemScript}
+                                        label={"script " + (scriptIdx + 1)}
+                                        name={"script " + (scriptIdx + 1)}
+                                        value={script}
+                                        onChange={(event) => this.handleScript(event, scriptIdx)}
+                                        multiline
+                                        fullWidth
+                                        margin="normal"
+                                        variant="outlined"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </div>
                             </div>
                         })
                         :

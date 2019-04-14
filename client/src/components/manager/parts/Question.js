@@ -39,22 +39,49 @@ const styles = theme => ({
     contents: {
 
     },
-    contentsItem: {
+    item: {
         display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'column'
+        flexDirection: 'row-reverse'
     },
-    contentsItemText: {
-        width: '93%'
+    itemBar: {
+        display: 'flex'
+    },
+    itemBody: {
+        width: '94%',
+        '& h6': {
+            margin: '10px 0 0 7px'
+        }
+    },
+    itemSubtitle: {
+        width: '97%'
+    },
+    itemSelections: {
+        padding: '0 0 7px 0',
+        '& li':{
+            padding: 0
+        }
+    },
+    itemCheckbox: {
+        marginTop: '17px',
+        padding: '10px'
+    },
+    itemSelection: {
+        width: '90%'
+    },
+    removeBtnConteiner: {
+        margin: '14px auto auto auto'
     },
     removeBtn: {
-        margin: '10px auto auto auto',
+        fontSize: '20px',
         "&:hover": {
             cursor: 'pointer'
         },
         '&:active': {
             transform: 'translateY(3px)'
         }
+    },
+    textAlignLeft: {
+        textAlign: 'left'
     }
 });
 
@@ -116,8 +143,8 @@ class Question extends Component {
 
     handleSubtilte = (event, questionIdx) => {
         this.setState({
-            questions: this.state.questions.map((question, index)=>{   
-                return index === questionIdx ? {...question, subtilte: event.target.value} : question
+            questions: this.state.questions.map((question, index) => {
+                return index === questionIdx ? { ...question, subtilte: event.target.value } : question
             })
         })
     }
@@ -131,6 +158,7 @@ class Question extends Component {
             })
 
             this.setState({
+
                 questions: this.state.questions.map((question, index) => {
                     if (index === questionIdx) {
                         return {
@@ -142,7 +170,7 @@ class Question extends Component {
                     }
                 })
             })
-        // チェック時にチェックした選択肢が正答になっていない場合、正答にする。
+            // チェック時にチェックした選択肢が正答になっていない場合、正答にする。
         } else {
             const updatedAnswers = this.state.questions[questionIdx].answers.concat(selectionIdx)
 
@@ -170,7 +198,7 @@ class Question extends Component {
 
     handleSelectionText = (event, questionIdx, selectionIdx) => {
 
-        const updatedSelections = this.state.questions[questionIdx].selections.map((selection, index)=> {
+        const updatedSelections = this.state.questions[questionIdx].selections.map((selection, index) => {
             return selectionIdx === index ? event.target.value : selection
         })
 
@@ -202,50 +230,57 @@ class Question extends Component {
                 <div className={classes.contents}>
                     {this.state.questions ?
                         this.state.questions.map((question, questionIdx) => {
-                            return <div key={questionIdx} className={classes.contentsItem}>
-                                <div>
-                                    <Clear onClick={()=> {this.deleteQuestion(questionIdx)}}/>
-                                    <TextField
-                                        label='Subtitle'
-                                        fullWidth
-                                        multiline 
-                                        value={this.state.questions[questionIdx].subtilte}
-                                        onChange={(event)=> this.handleSubtilte(event, questionIdx)}
-                                        />
-                                </div>
-                                <List component="nav">
-                                    {question.selections ?
-                                        question.selections.map((selection, selectionIdx) => {
-                                            return (
-                                                <ListItem
-                                                    key={selectionIdx}
-                                                >
-                                                    <Checkbox
-                                                        checked={this.confirmSelectionChecked(questionIdx, selectionIdx)}
-                                                        onChange={() => this.handleAnswerChecked(questionIdx, selectionIdx)}
-                                                    />
-                                                    <TextField
-                                                        label={'Selection ' + (selectionIdx + 1)}
-                                                        fullWidth
-                                                        multiline
-                                                        value={selection}
-                                                        onChange={(event)=>{this.handleSelectionText(event, questionIdx, selectionIdx)}}
-                                                    />
-                                                    <Icon className={classes.removeBtn} color="action" >
-                                                        <RemoveCircle onClick={()=>{this.deleteSelection(questionIdx, selectionIdx)}}/>
-                                                    </Icon>
-                                                </ListItem>
-                                            )
-                                        })
-                                        :
-                                        ''
-                                    }
-                                </List>
-                                <div>
-
-                                    <Icon className={classes.addBtn} color="action">
-                                        <AddCircle onClick={() => this.addSelection(questionIdx)} />
+                            return <div key={questionIdx} className={classes.item}>
+                                <div className={classes.itemBar}>
+                                    <Icon className={classes.removeBtnConteiner} color="action">
+                                        <Clear className={classes.removeBtn} onClick={() => this.deleteQuestion(questionIdx)} />
                                     </Icon>
+                                </div>
+                                <div className={classes.itemBody}>
+                                    <Typography className={classes.textAlignLeft} variant="subtitle1" gutterBottom>Subtitle</Typography>
+                                    <TextField
+                                        className={classes.itemSubtitle}
+                                        fullWidth
+                                        multiline
+                                        value={this.state.questions[questionIdx].subtilte}
+                                        onChange={(event) => this.handleSubtilte(event, questionIdx)}
+                                    />
+                                    <Typography className={classes.textAlignLeft} variant="subtitle1" gutterBottom>Selection</Typography>
+                                    <List component="nav" className={classes.itemSelections}>
+                                        {question.selections ?
+                                            question.selections.map((selection, selectionIdx) => {
+                                                return (
+                                                    <ListItem
+                                                        key={selectionIdx}
+                                                    >
+                                                        <Checkbox
+                                                            className={classes.itemCheckbox}
+                                                            checked={this.confirmSelectionChecked(questionIdx, selectionIdx)}
+                                                            onChange={() => this.handleAnswerChecked(questionIdx, selectionIdx)}
+                                                        />
+                                                        <TextField
+                                                            label={'Selection ' + (selectionIdx + 1)}
+                                                            className={classes.itemSelection}
+                                                            fullWidth
+                                                            multiline
+                                                            value={selection}
+                                                            onChange={(event) => { this.handleSelectionText(event, questionIdx, selectionIdx) }}
+                                                        />
+                                                        <Icon color="action" >
+                                                            <RemoveCircle onClick={() => { this.deleteSelection(questionIdx, selectionIdx) }} />
+                                                        </Icon>
+                                                    </ListItem>
+                                                )
+                                            })
+                                            :
+                                            ''
+                                        }
+                                    </List>
+                                    <div>
+                                        <Icon className={classes.addBtn} color="action">
+                                            <AddCircle onClick={() => this.addSelection(questionIdx)} />
+                                        </Icon>
+                                    </div>
                                 </div>
                             </div>
                         })
