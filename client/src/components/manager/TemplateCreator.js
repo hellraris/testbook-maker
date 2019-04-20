@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Script from './parts/Script'
+import Audio from './parts/Audio'
 import Question from './parts/Question'
 import Explanation from './parts/Explanation'
 
@@ -14,6 +15,7 @@ class TemplateCreator extends Component {
         return (
             <div>
                 <Script></Script>
+                <Audio></Audio>
                 <Question></Question>
                 <Explanation></Explanation>
             </div>
