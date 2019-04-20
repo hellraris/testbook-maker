@@ -8,20 +8,22 @@ import Clear from '@material-ui/icons/Clear';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const styles = theme => ({
     hidden: {
         display: 'none'
     },
     body: {
-        display: 'flex',
         flexDirection: 'column',
         maxWidth: '480px',
         margin: '5px'
     },
     head: {
-        display: 'flex',
-        height: '40px'
+
     },
     headLabel: {
         margin: 'auto auto auto 20px',
@@ -56,13 +58,57 @@ const styles = theme => ({
     }
 });
 
+const ExpansionPanel = withStyles({
+    root: {
+        border: '1px solid rgba(0,0,0,.125)',
+        boxShadow: 'none',
+        '&:not(:last-child)': {
+            borderBottom: 0,
+        },
+        '&:before': {
+            display: 'none',
+        },
+    },
+    expanded: {
+        margin: 'auto',
+    },
+})(MuiExpansionPanel);
+
+const ExpansionPanelSummary = withStyles({
+    root: {
+        backgroundColor: 'rgba(0,0,0,.03)',
+        borderBottom: '1px solid rgba(0,0,0,.125)',
+        marginBottom: -1,
+        height: 52,
+        '& div': {
+            margin: 'auto 0',
+        },
+        '&$expanded': {
+            height: 52,
+            minHeight: 52
+        },
+    },
+    content: {
+        '&$expanded': {
+        },
+    },
+    expanded: {},
+})(props => <MuiExpansionPanelSummary  {...props} />);
+
+ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
+
+const ExpansionPanelDetails = withStyles(theme => ({
+    root: {
+        display: 'flex'
+    },
+}))(MuiExpansionPanelDetails);
+
 class Audio extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            scripts: [],
-            fileName: '',
-            file:''
+            audioList: [],
+            expanded: false
         }
 
     }
@@ -96,10 +142,18 @@ class Audio extends Component {
     }
 
     handleFileChange = (e) => {
+        const fileName = e.target.value.slice(e.target.value.lastIndexOf('\\') + 1);
+
         this.setState({
             ...this,
-            file: e.target.files[0],
-            fileName: e.target.value
+            audioList: this.state.audioList.concat({ fileName: fileName, file: e.target.files[0] })
+        })
+    }
+
+    handleExpanded = () => {
+        this.setState({
+            ...this,
+            expanded: !this.state.expanded
         })
     }
 
@@ -108,31 +162,24 @@ class Audio extends Component {
 
         return (
             <div className={classes.body}>
-                <Paper className={classes.head}>
-                    <Typography className={classes.headLabel} variant="title" gutterBottom>Audio</Typography>
-                    <Icon className={["btn", classes.addBtn].join(' ')} color="action">
-                        <AddCircle onClick={this.addScript} />
-                    </Icon>
-                </Paper>
+                <ExpansionPanel expanded={this.state.expanded} >
+                    <ExpansionPanelSummary className={classes.head} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
+                        <Typography className={classes.headLabel} variant="title" gutterBottom>Audio</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <input className={classes.hidden} accept="audio/*" id="raised-button-file" type="file" file={this.state.file} value={this.state.fileName} onChange={this.handleFileChange} /><br />
+                        <label htmlFor="raised-button-file">
+                            <Button variant="contained" component="span" name="file">
+                                select
+                            </Button>
+                        </label>
+                        <div>
+                            {this.state.audioList.length > 0 ? this.state.audioList[0].fileName : ''}
+                        </div>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
                 <div className={classes.contents}>
-                    {this.state.scripts ?
-                        this.state.scripts.map((script, scriptIdx) => {
-                            return <div key={scriptIdx} className={classes.item}>
-                                <div>
-                                    {this.state.fileName}
-                                </div>
-                                <div>
-                                <input className={classes.hidden} accept="audio/mp3" id="raised-button-file" type="file" file={this.state.file} value={this.state.fileName} onChange={this.handleFileChange}/><br />
-                                <label htmlFor="raised-button-file">
-                                    <Button variant="contained" color="primary" component="span" name="file">
-                                        select
-                                    </Button>
-                                </label>
-                                </div>
-                            </div>
-                        })
-                        :
-                        ''
+                    {
                     }
                 </div>
             </div>
