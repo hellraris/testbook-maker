@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
-import AddCircle from '@material-ui/icons/AddCircle';
 import Clear from '@material-ui/icons/Clear';
 import Typography from '@material-ui/core/Typography';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 
 const styles = theme => ({
     body: {
-        display: 'flex',
-        flexDirection: 'column',
         maxWidth: '480px',
         margin: '5px'
     },
@@ -25,9 +26,6 @@ const styles = theme => ({
     },
     addBtn: {
         margin: 'auto 10px 10px auto'
-    },
-    contents: {
-
     },
     item: {
         display: 'flex',
@@ -53,15 +51,69 @@ const styles = theme => ({
     }
 });
 
+const ExpansionPanel = withStyles({
+    root: {
+        border: '1px solid rgba(0,0,0,.125)',
+        boxShadow: 'none',
+        '&:not(:last-child)': {
+            borderBottom: 0,
+        },
+        '&:before': {
+            display: 'none',
+        },
+    },
+    expanded: {
+        margin: 'auto',
+    },
+})(MuiExpansionPanel);
+
+const ExpansionPanelSummary = withStyles({
+    root: {
+        backgroundColor: 'rgba(0,0,0,.03)',
+        borderBottom: '1px solid rgba(0,0,0,.125)',
+        marginBottom: -1,
+        height: 52,
+        '& div': {
+            margin: 'auto 0',
+        },
+        '&$expanded': {
+            height: 52,
+            minHeight: 52
+        },
+    },
+    content: {
+        '&$expanded': {
+        },
+    },
+    expanded: {},
+})(props => <MuiExpansionPanelSummary  {...props} />);
+
+ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
+
+const ExpansionPanelDetails = withStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+}))(MuiExpansionPanelDetails);
+
 class Explanation extends Component {
 
     constructor(props) {
         super(props)
 
         this.state = {
-            explanations: []
+            explanations: [],
+            expanded: false
         }
 
+    }
+
+    handleExpanded = () => {
+        this.setState({
+            ...this,
+            expanded: !this.state.expanded
+        })
     }
 
     addExplanation = () => {
@@ -87,7 +139,7 @@ class Explanation extends Component {
     handleExplanation = (event, explanationIdx) => {
         this.setState({
             explanations: this.state.explanations.map((explanation, index) => {
-                return index === explanationIdx ? {...explanation, contents: event.target.value } : explanation
+                return index === explanationIdx ? { ...explanation, contents: event.target.value } : explanation
             })
         })
     }
@@ -97,48 +149,54 @@ class Explanation extends Component {
 
         return (
             <div className={classes.body}>
-                <Paper className={classes.head}>
-                    <Typography className={classes.headLabel} variant="title" gutterBottom>Explanation</Typography>
-                    <Icon className={["btn", classes.addBtn].join(' ')} color="action">
-                        <AddCircle onClick={this.addExplanation} />
-                    </Icon>
-                </Paper>
-                <div className={classes.contents}>
-                    {this.state.explanations ?
-                        this.state.explanations.map((explanation, explanationIdx) => {
-                            return <div key={explanationIdx} className={classes.item}>
-                                <div className={classes.itemBar}>
-                                    <Icon className={classes.removeBtnConteiner} color="action">
-                                        <Clear className={["btn", classes.removeBtn].join(' ')} onClick={() => this.deleteExplanation(explanationIdx)}/>
-                                    </Icon>
-                                </div>
-                                <div className={classes.itemBody}>
-                                    <TextField
-                                        placeholder="Subtitle"
-                                        className={classes.itemSubtitle}
-                                        fullWidth
-                                        multiline
-                                        value={explanation.subtilte}
-                                        onChange={(event) => this.handleSubtilte(event, explanationIdx)}
-                                    />
-                                    <TextField
-                                        value={explanation.contents}
-                                        onChange={(event) => this.handleExplanation(event, explanationIdx)}
-                                        multiline
-                                        fullWidth
-                                        margin="normal"
-                                        variant="outlined"
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        })
-                        :
-                        ''
-                    }
-                </div>
+                <ExpansionPanel expanded={this.state.expanded} >
+                    <ExpansionPanelSummary className={classes.head} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
+                        <Typography className={classes.headLabel} variant="title" gutterBottom>Explanation</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <div className="flexbox">
+                            <Icon className={"btn-left"} color="action">
+                                <AddCircleOutline className={["btn", classes.addBtn].join(' ')} onClick={this.addExplanation} />
+                            </Icon>
+                        </div>
+                        <div>
+                            {this.state.explanations ?
+                                this.state.explanations.map((explanation, explanationIdx) => {
+                                    return <div key={explanationIdx} className={classes.item}>
+                                        <div className={classes.itemBar}>
+                                            <Icon className={classes.removeBtnConteiner} color="action">
+                                                <Clear className={["btn", classes.removeBtn].join(' ')} onClick={() => this.deleteExplanation(explanationIdx)} />
+                                            </Icon>
+                                        </div>
+                                        <div className={classes.itemBody}>
+                                            <TextField
+                                                placeholder="Subtitle"
+                                                className={classes.itemSubtitle}
+                                                fullWidth
+                                                multiline
+                                                value={explanation.subtilte}
+                                                onChange={(event) => this.handleSubtilte(event, explanationIdx)}
+                                            />
+                                            <TextField
+                                                value={explanation.contents}
+                                                onChange={(event) => this.handleExplanation(event, explanationIdx)}
+                                                multiline
+                                                fullWidth
+                                                margin="normal"
+                                                variant="outlined"
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                })
+                                :
+                                ''
+                            }
+                        </div>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
             </div>
         );
     }

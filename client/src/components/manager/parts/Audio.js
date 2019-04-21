@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
-import AddCircle from '@material-ui/icons/AddCircle';
-import Clear from '@material-ui/icons/Clear';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
+import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -20,7 +15,6 @@ const styles = theme => ({
         display: 'none'
     },
     body: {
-        flexDirection: 'column',
         maxWidth: '480px',
         margin: '5px'
     },
@@ -32,9 +26,6 @@ const styles = theme => ({
     },
     addBtn: {
         margin: 'auto 10px 10px auto'
-    },
-    contents: {
-
     },
     item: {
         display: 'flex',
@@ -54,9 +45,6 @@ const styles = theme => ({
     },
     removeBtnConteiner: {
         margin: '14px auto auto auto'
-    },
-    leftBtn: {
-        margin: 'auto 0 auto auto'
     }
 });
 
@@ -184,33 +172,30 @@ class Audio extends Component {
                         <Typography className={classes.headLabel} variant="title" gutterBottom>Audio</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                        <div div className="flexbox">
-                            <input className={classes.hidden} accept="audio/*" ref="file" type="file" 
-                                file={this.state.audioList.length > 0 ? this.state.audioList[0].file : ''} 
-                                value={this.state.audioList.length > 0 ? '' : ''} 
+                        <div className="flexbox">
+                            <input className={classes.hidden} accept="audio/*" ref="file" type="file"
+                                file={this.state.audioList.length > 0 ? this.state.audioList[0].file : ''}
+                                value={this.state.audioList.length > 0 ? '' : ''}
                                 onChange={this.handleFileChange} />
-                            <Icon color="action" className={classes.leftBtn} >
+                            <Icon className={"btn-left"} color="action">
                                 <AddCircleOutline className={"btn"} onClick={() => this.refs.file.click()} />
                             </Icon>
                         </div>
-
-                        {this.state.audioList.length > 0 ?
-                            <div className={classes.item}>
-                                <div> {this.state.audioList[0].fileName} </div>
-                                <div className={classes.leftBtn}>
-                                    <Icon color="action" >
-                                        <RemoveCircleOutline className={"btn"} onClick={() => this.deleteFile()} />
-                                    </Icon>
+                        <div>
+                            {this.state.audioList.length > 0 ?
+                                <div className={classes.item}>
+                                    <div> {this.state.audioList[0].fileName} </div>
+                                    <div className={classes.leftBtn}>
+                                        <Icon color="action" >
+                                            <RemoveCircleOutline className={"btn"} onClick={() => this.deleteFile()} />
+                                        </Icon>
+                                    </div>
                                 </div>
-                            </div>
-                            : 
-                            ''}
+                                :
+                                ''}
+                        </div>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
-                <div className={classes.contents}>
-                    {
-                    }
-                </div>
             </div>
         );
     }

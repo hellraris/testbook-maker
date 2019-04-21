@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
-import AddCircle from '@material-ui/icons/AddCircle';
-import Clear from '@material-ui/icons/Clear';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import Clear from '@material-ui/icons/Clear';
+import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const styles = theme => ({
     body: {
-        display: 'flex',
-        flexDirection: 'column',
         maxWidth: '480px',
         margin: '5px'
     },
@@ -24,9 +25,6 @@ const styles = theme => ({
     },
     addBtn: {
         margin: 'auto 10px 10px auto'
-    },
-    contents: {
-
     },
     item: {
         display: 'flex',
@@ -52,19 +50,73 @@ const styles = theme => ({
     }
 });
 
+const ExpansionPanel = withStyles({
+    root: {
+        border: '1px solid rgba(0,0,0,.125)',
+        boxShadow: 'none',
+        '&:not(:last-child)': {
+            borderBottom: 0,
+        },
+        '&:before': {
+            display: 'none',
+        },
+    },
+    expanded: {
+        margin: 'auto',
+    },
+})(MuiExpansionPanel);
+
+const ExpansionPanelSummary = withStyles({
+    root: {
+        backgroundColor: 'rgba(0,0,0,.03)',
+        borderBottom: '1px solid rgba(0,0,0,.125)',
+        marginBottom: -1,
+        height: 52,
+        '& div': {
+            margin: 'auto 0',
+        },
+        '&$expanded': {
+            height: 52,
+            minHeight: 52
+        },
+    },
+    content: {
+        '&$expanded': {
+        },
+    },
+    expanded: {},
+})(props => <MuiExpansionPanelSummary  {...props} />);
+
+ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
+
+const ExpansionPanelDetails = withStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+}))(MuiExpansionPanelDetails);
+
 class Script extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            scripts: []
+            scripts: [],
+            expanded: false
         }
 
     }
 
+    handleExpanded = () => {
+        this.setState({
+            ...this,
+            expanded: !this.state.expanded
+        })
+    }
+
     addScript = () => {
         this.setState({
-            scripts: this.state.scripts.concat({subtilte: '', contents: ''})
+            scripts: this.state.scripts.concat({ subtilte: '', contents: '' })
         })
     }
 
@@ -85,7 +137,7 @@ class Script extends Component {
     handleScript = (event, scriptIdx) => {
         this.setState({
             scripts: this.state.scripts.map((script, index) => {
-                return index === scriptIdx ? { ...script, contents: event.target.value }  : script
+                return index === scriptIdx ? { ...script, contents: event.target.value } : script
             })
         })
     }
@@ -95,49 +147,55 @@ class Script extends Component {
 
         return (
             <div className={classes.body}>
-                <Paper className={classes.head}>
-                    <Typography className={classes.headLabel} variant="title" gutterBottom>Script</Typography>
-                    <Icon className={["btn", classes.addBtn].join(' ')} color="action">
-                        <AddCircle onClick={this.addScript} />
-                    </Icon>
-                </Paper>
-                <div className={classes.contents}>
-                    {this.state.scripts ?
-                        this.state.scripts.map((script, scriptIdx) => {
-                            return <div key={scriptIdx} className={classes.item}>
-                                <div className={classes.itemBar}>
-                                    <Icon className={classes.removeBtnConteiner} color="action">
-                                        <Clear className={["btn", classes.removeBtn].join(' ')} onClick={() => this.deleteScript(scriptIdx)} />
-                                    </Icon>
-                                </div>
-                                <div className={classes.itemBody}>
-                                    <TextField
-                                        placeholder="Subtitle"
-                                        className={classes.itemSubtitle}
-                                        fullWidth
-                                        multiline
-                                        value={script.subtilte}
-                                        onChange={(event) => this.handleSubtilte(event, scriptIdx)}
-                                    />
-                                    <TextField
-                                        name={"script " + (scriptIdx + 1)}
-                                        value={script.contents}
-                                        onChange={(event) => this.handleScript(event, scriptIdx)}
-                                        multiline
-                                        fullWidth
-                                        margin="normal"
-                                        variant="outlined"
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        })
-                        :
-                        ''
-                    }
-                </div>
+                <ExpansionPanel expanded={this.state.expanded} >
+                    <ExpansionPanelSummary className={classes.head} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
+                        <Typography className={classes.headLabel} variant="title" gutterBottom>Script</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <div className="flexbox">
+                            <Icon className={"btn-left"} color="action">
+                                <AddCircleOutline className={["btn", classes.addBtn].join(' ')} onClick={this.addScript} />
+                            </Icon>
+                        </div>
+                        <div>
+                            {this.state.scripts ?
+                                this.state.scripts.map((script, scriptIdx) => {
+                                    return <div key={scriptIdx} className={classes.item}>
+                                        <div className={classes.itemBar}>
+                                            <Icon className={classes.removeBtnConteiner} color="action">
+                                                <Clear className={["btn", classes.removeBtn].join(' ')} onClick={() => this.deleteScript(scriptIdx)} />
+                                            </Icon>
+                                        </div>
+                                        <div className={classes.itemBody}>
+                                            <TextField
+                                                placeholder="Subtitle"
+                                                className={classes.itemSubtitle}
+                                                fullWidth
+                                                multiline
+                                                value={script.subtilte}
+                                                onChange={(event) => this.handleSubtilte(event, scriptIdx)}
+                                            />
+                                            <TextField
+                                                name={"script " + (scriptIdx + 1)}
+                                                value={script.contents}
+                                                onChange={(event) => this.handleScript(event, scriptIdx)}
+                                                multiline
+                                                fullWidth
+                                                margin="normal"
+                                                variant="outlined"
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                })
+                                :
+                                ''
+                            }
+                        </div>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
             </div>
         );
     }
