@@ -37,8 +37,6 @@ const styles = theme => ({
     itemBody: {
         width: '94%'
     },
-    itemScript: {
-    },
     removeBtnConteiner: {
         margin: '14px auto auto auto'
     },
@@ -155,7 +153,7 @@ class Explanation extends Component {
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <div className="flexbox">
-                            <Icon className={"btn-left"} color="action">
+                            <Icon className={"btn-right"} color="action">
                                 <AddCircleOutline className={["btn", classes.addBtn].join(' ')} onClick={this.addExplanation} />
                             </Icon>
                         </div>

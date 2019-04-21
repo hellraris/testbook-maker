@@ -36,8 +36,6 @@ const styles = theme => ({
     itemBody: {
         width: '94%'
     },
-    itemScript: {
-    },
     itemSubtitle: {
         marginTop: '12px',
         width: '97%'
@@ -153,7 +151,7 @@ class Script extends Component {
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <div className="flexbox">
-                            <Icon className={"btn-left"} color="action">
+                            <Icon className={"btn-right"} color="action">
                                 <AddCircleOutline className={["btn", classes.addBtn].join(' ')} onClick={this.addScript} />
                             </Icon>
                         </div>

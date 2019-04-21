@@ -19,7 +19,8 @@ const styles = theme => ({
         margin: '5px'
     },
     head: {
-
+        display: 'flex',
+        height: '40px'
     },
     headLabel: {
         margin: 'auto auto auto 20px',
@@ -36,8 +37,6 @@ const styles = theme => ({
     },
     itemBody: {
         width: '94%'
-    },
-    itemScript: {
     },
     itemSubtitle: {
         marginTop: '12px',
@@ -177,7 +176,7 @@ class Audio extends Component {
                                 file={this.state.audioList.length > 0 ? this.state.audioList[0].file : ''}
                                 value={this.state.audioList.length > 0 ? '' : ''}
                                 onChange={this.handleFileChange} />
-                            <Icon className={"btn-left"} color="action">
+                            <Icon className={"btn-right"} color="action">
                                 <AddCircleOutline className={"btn"} onClick={() => this.refs.file.click()} />
                             </Icon>
                         </div>
@@ -185,7 +184,7 @@ class Audio extends Component {
                             {this.state.audioList.length > 0 ?
                                 <div className={classes.item}>
                                     <div> {this.state.audioList[0].fileName} </div>
-                                    <div className={classes.leftBtn}>
+                                    <div style={{marginLeft: '3%'}}>
                                         <Icon color="action" >
                                             <RemoveCircleOutline className={"btn"} onClick={() => this.deleteFile()} />
                                         </Icon>
