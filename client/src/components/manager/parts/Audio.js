@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -36,7 +38,7 @@ const styles = theme => ({
     },
     item: {
         display: 'flex',
-        flexDirection: 'row-reverse'
+        margin: '5px 0'
     },
     itemBar: {
         display: 'flex'
@@ -53,8 +55,8 @@ const styles = theme => ({
     removeBtnConteiner: {
         margin: '14px auto auto auto'
     },
-    removeBtn: {
-        fontSize: '20px'
+    leftBtn: {
+        margin: 'auto 0 auto auto'
     }
 });
 
@@ -99,7 +101,8 @@ ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
 
 const ExpansionPanelDetails = withStyles(theme => ({
     root: {
-        display: 'flex'
+        display: 'flex',
+        flexDirection: 'column'
     },
 }))(MuiExpansionPanelDetails);
 
@@ -142,12 +145,26 @@ class Audio extends Component {
     }
 
     handleFileChange = (e) => {
-        const fileName = e.target.value.slice(e.target.value.lastIndexOf('\\') + 1);
+        console.log(this.refs.file);
+        const file = e.target.files[0]
+        console.log(file)
+        const tempAudioList = [{ fileName: file.name, file: file }]
+        console.log(tempAudioList);
 
         this.setState({
             ...this,
-            audioList: this.state.audioList.concat({ fileName: fileName, file: e.target.files[0] })
+            audioList: tempAudioList
         })
+    }
+
+    deleteFile = () => {
+        const tempAudioList = []
+
+        this.setState({
+            ...this,
+            audioList: tempAudioList
+        })
+        console.log(this.refs.file);
     }
 
     handleExpanded = () => {
@@ -167,15 +184,27 @@ class Audio extends Component {
                         <Typography className={classes.headLabel} variant="title" gutterBottom>Audio</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                        <input className={classes.hidden} accept="audio/*" id="raised-button-file" type="file" file={this.state.file} value={this.state.fileName} onChange={this.handleFileChange} /><br />
-                        <label htmlFor="raised-button-file">
-                            <Button variant="contained" component="span" name="file">
-                                select
-                            </Button>
-                        </label>
-                        <div>
-                            {this.state.audioList.length > 0 ? this.state.audioList[0].fileName : ''}
+                        <div div className="flexbox">
+                            <input className={classes.hidden} accept="audio/*" ref="file" type="file" 
+                                file={this.state.audioList.length > 0 ? this.state.audioList[0].file : ''} 
+                                value={this.state.audioList.length > 0 ? '' : ''} 
+                                onChange={this.handleFileChange} />
+                            <Icon color="action" className={classes.leftBtn} >
+                                <AddCircleOutline className={"btn"} onClick={() => this.refs.file.click()} />
+                            </Icon>
                         </div>
+
+                        {this.state.audioList.length > 0 ?
+                            <div className={classes.item}>
+                                <div> {this.state.audioList[0].fileName} </div>
+                                <div className={classes.leftBtn}>
+                                    <Icon color="action" >
+                                        <RemoveCircleOutline className={"btn"} onClick={() => this.deleteFile()} />
+                                    </Icon>
+                                </div>
+                            </div>
+                            : 
+                            ''}
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
                 <div className={classes.contents}>
