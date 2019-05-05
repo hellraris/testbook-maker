@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
+import { connect } from 'react-redux';
+import { addQuestion, deleteQuestion, addSelection, deleteSelection, checkSelection, uncheckSelection, updateSubtitle } from '../store/parts/question';
+
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
-import AddCircle from '@material-ui/icons/AddCircle';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
 import Clear from '@material-ui/icons/Clear';
@@ -133,6 +134,19 @@ const ExpansionPanelDetails = withStyles(theme => ({
     },
 }))(MuiExpansionPanelDetails);
 
+const mapStateToProps = state => ({
+    questions: state.question.questions
+});
+
+const mapDispatchToProps = dispatch => ({
+    addQuestion: () => dispatch(addQuestion()),
+    deleteQuestion: (questionIdx) => dispatch(deleteQuestion(questionIdx)),
+    addSelection: (questionIdx) => dispatch(addSelection(questionIdx)),
+    deleteSelection: (questionIdx, selectionIdx) => dispatch(deleteSelection(questionIdx, selectionIdx)),
+    checkSelection: (questionIdx, selectionIdx) => dispatch(checkSelection(questionIdx, selectionIdx)),
+    uncheckSelection: (questionIdx, selectionIdx) => dispatch(uncheckSelection(questionIdx, selectionIdx))
+});
+
 class Question extends Component {
 
     constructor(props) {
@@ -145,49 +159,23 @@ class Question extends Component {
     }
 
     addQuestion = () => {
-        this.setState({
-            questions: this.state.questions.concat({ subtilte: '', selections: [], answers: [] })
-        })
+        const { addQuestion } = this.props;
+        addQuestion();
     }
 
     addSelection = (questionIdx) => {
-        this.setState({
-            questions: this.state.questions.map((question, index) => {
-                if (index === questionIdx) {
-                    return {
-                        ...question,
-                        selections: question.selections.concat('')
-                    }
-                } else {
-                    return question;
-                }
-            })
-        })
+        const { addSelection } = this.props;
+        addSelection(questionIdx);
     }
 
     deleteQuestion = (questionIdx) => {
-        this.setState({
-            questions: this.state.questions.filter((_, index) => index !== questionIdx)
-        })
+        const { deleteQuestion } = this.props;
+        deleteQuestion(questionIdx);
     }
 
     deleteSelection = (questionIdx, selectionIdx) => {
-        const updatedSelections = this.state.questions[questionIdx].selections.filter((_, index) => index !== selectionIdx)
-        const updatedAnswers = this.state.questions[questionIdx].answers.filter((answer) => answer !== selectionIdx)
-
-        this.setState({
-            questions: this.state.questions.map((question, index) => {
-                if (index === questionIdx) {
-                    return {
-                        ...question,
-                        answers: updatedAnswers,
-                        selections: updatedSelections
-                    }
-                } else {
-                    return question;
-                }
-            })
-        })
+        const { deleteSelection } = this.props;
+        deleteSelection(questionIdx, selectionIdx);
     }
 
     handleSubtilte = (event, questionIdx) => {
@@ -199,50 +187,14 @@ class Question extends Component {
     }
 
     handleAnswerChecked = (questionIdx, selectionIdx) => {
-
+        const { checkSelection, uncheckSelection } = this.props;
         // チェック時にチェックした選択肢が既に正答になっている場合、正答から外れるようにする。
         if (this.confirmSelectionChecked(questionIdx, selectionIdx)) {
-            const updatedAnswers = this.state.questions[questionIdx].answers.filter((answer) => {
-                return answer !== selectionIdx
-            })
-
-            this.setState({
-
-                questions: this.state.questions.map((question, index) => {
-                    if (index === questionIdx) {
-                        return {
-                            ...question,
-                            answers: updatedAnswers
-                        }
-                    } else {
-                        return question;
-                    }
-                })
-            })
+            checkSelection(questionIdx, selectionIdx);
             // チェック時にチェックした選択肢が正答になっていない場合、正答にする。
         } else {
-            const updatedAnswers = this.state.questions[questionIdx].answers.concat(selectionIdx)
-
-            this.setState({
-                questions: this.state.questions.map((question, index) => {
-                    if (index === questionIdx) {
-                        return {
-                            ...question,
-                            answers: updatedAnswers
-                        }
-                    } else {
-                        return question;
-                    }
-                })
-            })
+            uncheckSelection(questionIdx, selectionIdx);
         }
-    }
-
-    // 選択肢がチェックされているか確認する。
-    confirmSelectionChecked = (questionIdx, selectionIdx) => {
-        return this.state.questions[questionIdx].answers.some((answer) => {
-            return answer === selectionIdx
-        })
     }
 
     handleSelectionText = (event, questionIdx, selectionIdx) => {
@@ -272,8 +224,17 @@ class Question extends Component {
         })
     }
 
+    // 選択肢がチェックされているか確認する。
+    confirmSelectionChecked = (questionIdx, selectionIdx) => {
+        return this.props.questions[questionIdx].answers.some((answer) => {
+            return answer === selectionIdx
+        })
+    }
+
     render() {
-        const { classes } = this.props;
+        const { classes, questions } = this.props;
+
+        console.log('questions', questions);
 
         return (
             <div className={classes.body}>
@@ -288,8 +249,8 @@ class Question extends Component {
                             </Icon>
                         </div>
                         <div>
-                            {this.state.questions ?
-                                this.state.questions.map((question, questionIdx) => {
+                            {questions ?
+                                questions.map((question, questionIdx) => {
                                     return <div key={questionIdx} className={classes.item}>
                                         <div className={classes.itemBar}>
                                             <Icon className={classes.removeBtnConteiner} color="action">
@@ -356,4 +317,9 @@ class Question extends Component {
     }
 }
 
-export default withStyles(styles)(Question);
+export default withStyles(styles)(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(Question)
+);

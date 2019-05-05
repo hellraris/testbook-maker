@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { addScript, deleteScript, updateScript, updateSubtitle } from '../store/manager';
+import { addScript, deleteScript, updateScript, updateSubtitle } from '../store/parts/script';
 
 import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
@@ -98,7 +98,7 @@ const ExpansionPanelDetails = withStyles(theme => ({
 }))(MuiExpansionPanelDetails);
 
 const mapStateToProps = state => ({
-    scripts: state.manager.scripts
+    scripts: state.script.scripts
   });
   
 const mapDispatchToProps = dispatch => ({
@@ -113,7 +113,6 @@ class Script extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            scripts: [],
             expanded: false
         }
 
@@ -147,7 +146,9 @@ class Script extends Component {
     }
 
     render() {
-        const { classes,  scripts} = this.props;
+        const { classes,  scripts } = this.props;
+
+        console.log('scripts', scripts);
 
         return (
             <div className={classes.body}>

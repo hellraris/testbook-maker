@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
-import manager from './manager';
+import script from './parts/script';
+import question from './parts/question';
 
 export default combineReducers({
-    manager
+    script, question
 });

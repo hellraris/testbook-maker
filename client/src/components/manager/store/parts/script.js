@@ -1,7 +1,7 @@
-const ADD_SCRIPT = 'manager/ADD_SCRIPT';
-const DELETE_SCRIPT = 'manager/DELETE_SCRIPT';
-const UPDATE_SCRIPT = 'manager/UPDATE_SCRIPT';
-const UPDATE_SUBTITLE = 'manager/UPDATE_SUBTITLE';
+const ADD_SCRIPT = 'script/ADD_SCRIPT';
+const DELETE_SCRIPT = 'script/DELETE_SCRIPT';
+const UPDATE_SCRIPT = 'script/UPDATE_SCRIPT';
+const UPDATE_SUBTITLE = 'script/UPDATE_SUBTITLE';
 
 export const addScript = () => ({ type: ADD_SCRIPT });
 export const deleteScript = (scriptIdx) => ({ type: DELETE_SCRIPT, scriptIdx });
@@ -12,7 +12,7 @@ const initialState = {
     scripts: []
 };
 
-export default function manager(state = initialState, action) {
+export default function script (state = initialState, action) {
     switch (action.type) {
         case ADD_SCRIPT:
             return {
