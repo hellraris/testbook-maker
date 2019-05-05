@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import { connect } from 'react-redux';
+import { addScript, deleteScript, updateScript, updateSubtitle } from '../store/manager';
+
 import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
@@ -94,6 +97,17 @@ const ExpansionPanelDetails = withStyles(theme => ({
     },
 }))(MuiExpansionPanelDetails);
 
+const mapStateToProps = state => ({
+    scripts: state.manager.scripts
+  });
+  
+const mapDispatchToProps = dispatch => ({
+    addScript: () => dispatch(addScript()),
+    deleteScript: (scriptIdx) => dispatch(deleteScript(scriptIdx)),
+    updateScript: (scriptIdx, text) => dispatch(updateScript(scriptIdx, text)),
+    updateSubtitle: (scriptIdx, text) => dispatch(updateSubtitle(scriptIdx, text))
+  });
+
 class Script extends Component {
 
     constructor(props) {
@@ -113,35 +127,27 @@ class Script extends Component {
     }
 
     addScript = () => {
-        this.setState({
-            scripts: this.state.scripts.concat({ subtilte: '', contents: '' })
-        })
+        const { addScript } = this.props;
+        addScript(); 
     }
 
     deleteScript = (scriptIdx) => {
-        this.setState({
-            scripts: this.state.scripts.filter((_, index) => index !== scriptIdx)
-        })
+        const { deleteScript } = this.props;
+        deleteScript(scriptIdx); 
     }
 
     handleSubtilte = (event, scriptIdx) => {
-        this.setState({
-            scripts: this.state.scripts.map((script, index) => {
-                return index === scriptIdx ? { ...script, subtilte: event.target.value } : script
-            })
-        })
+        const { updateSubtitle } = this.props;
+        updateSubtitle(scriptIdx, event.target.value);
     }
 
     handleScript = (event, scriptIdx) => {
-        this.setState({
-            scripts: this.state.scripts.map((script, index) => {
-                return index === scriptIdx ? { ...script, contents: event.target.value } : script
-            })
-        })
+        const { updateScript } = this.props;
+        updateScript(scriptIdx, event.target.value);
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes,  scripts} = this.props;
 
         return (
             <div className={classes.body}>
@@ -156,8 +162,8 @@ class Script extends Component {
                             </Icon>
                         </div>
                         <div>
-                            {this.state.scripts ?
-                                this.state.scripts.map((script, scriptIdx) => {
+                            {scripts ?
+                                scripts.map((script, scriptIdx) => {
                                     return <div key={scriptIdx} className={classes.item}>
                                         <div className={classes.itemBar}>
                                             <Icon className={classes.removeBtnConteiner} color="action">
@@ -199,4 +205,9 @@ class Script extends Component {
     }
 }
 
-export default withStyles(styles)(Script);
+export default withStyles(styles)(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(Script)
+  );

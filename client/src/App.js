@@ -4,7 +4,7 @@ import testManager from './components/manager/Testbook'
 import viewer from './components/viewer/TestSelector'
 import testViewer from './components/viewer/TestViewer'
 import testComplete from './components/viewer/TestComplete'
-import TemplateCreator from './components/manager/TemplateCreator'
+import QuestionCreator from './components/manager/QuestionCreator'
 import './App.css';
 
 class App extends Component {
@@ -15,7 +15,7 @@ class App extends Component {
         <Route exact path='/viewer/start' component={testViewer} />
         <Route exact path='/complete' component={testComplete} />
         <Route exact path='/manager' component={testManager} />
-        <Route exact path='/template' component={TemplateCreator} />
+        <Route exact path='/template' component={QuestionCreator} />
       </div>
     );
   }
