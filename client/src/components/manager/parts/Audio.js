@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import { connect } from 'react-redux';
+import { updateFile, deleteFile } from '../store/parts/audio';
+
 import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
@@ -93,65 +96,34 @@ const ExpansionPanelDetails = withStyles(theme => ({
     },
 }))(MuiExpansionPanelDetails);
 
+const mapStateToProps = state => ({
+    audioList: state.audio.audioList
+});
+
+const mapDispatchToProps = dispatch => ({
+    updateFile: (file) => dispatch(updateFile(file)),
+    deleteFile: () => dispatch(deleteFile())
+});
+
 class Audio extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            audioList: [],
             expanded: false
         }
 
     }
 
-    addScript = () => {
-        this.setState({
-            scripts: this.state.scripts.concat({ subtilte: '', contents: '' })
-        })
-    }
-
-    deleteScript = (scriptIdx) => {
-        this.setState({
-            scripts: this.state.scripts.filter((_, index) => index !== scriptIdx)
-        })
-    }
-
-    handleSubtilte = (event, scriptIdx) => {
-        this.setState({
-            scripts: this.state.scripts.map((script, index) => {
-                return index === scriptIdx ? { ...script, subtilte: event.target.value } : script
-            })
-        })
-    }
-
-    handleScript = (event, scriptIdx) => {
-        this.setState({
-            scripts: this.state.scripts.map((script, index) => {
-                return index === scriptIdx ? { ...script, contents: event.target.value } : script
-            })
-        })
-    }
-
-    handleFileChange = (e) => {
-        console.log(this.refs.file);
+    updateFile = (e) => {
+        const { updateFile } = this.props;
         const file = e.target.files[0]
-        console.log(file)
-        const tempAudioList = [{ fileName: file.name, file: file }]
-        console.log(tempAudioList);
 
-        this.setState({
-            ...this,
-            audioList: tempAudioList
-        })
+        updateFile(file);
     }
 
     deleteFile = () => {
-        const tempAudioList = []
-
-        this.setState({
-            ...this,
-            audioList: tempAudioList
-        })
-        console.log(this.refs.file);
+        const { deleteFile } = this.props;
+        deleteFile();
     }
 
     handleExpanded = () => {
@@ -162,7 +134,7 @@ class Audio extends Component {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, audioList } = this.props;
 
         return (
             <div className={classes.body}>
@@ -173,17 +145,17 @@ class Audio extends Component {
                     <ExpansionPanelDetails>
                         <div className="flexbox">
                             <input className={classes.hidden} accept="audio/*" ref="file" type="file"
-                                file={this.state.audioList.length > 0 ? this.state.audioList[0].file : ''}
-                                value={this.state.audioList.length > 0 ? '' : ''}
-                                onChange={this.handleFileChange} />
+                                file={audioList.length > 0 ? audioList[0].file : ''}
+                                value={audioList.length > 0 ? '' : ''}
+                                onChange={this.updateFile} />
                             <Icon className={"btn-right"} color="action">
                                 <AddCircleOutline className={"btn"} onClick={() => this.refs.file.click()} />
                             </Icon>
                         </div>
                         <div>
-                            {this.state.audioList.length > 0 ?
+                            {audioList.length > 0 ?
                                 <div className={classes.item}>
-                                    <div> {this.state.audioList[0].fileName} </div>
+                                    <div> {audioList[0].fileName} </div>
                                     <div style={{marginLeft: '3%'}}>
                                         <Icon color="action" >
                                             <RemoveCircleOutline className={"btn"} onClick={() => this.deleteFile()} />
@@ -200,4 +172,9 @@ class Audio extends Component {
     }
 }
 
-export default withStyles(styles)(Audio);
+export default withStyles(styles)(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(Audio)
+);

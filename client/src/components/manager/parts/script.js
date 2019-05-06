@@ -148,8 +148,6 @@ class Script extends Component {
     render() {
         const { classes,  scripts } = this.props;
 
-        console.log('scripts', scripts);
-
         return (
             <div className={classes.body}>
                 <ExpansionPanel expanded={this.state.expanded} >

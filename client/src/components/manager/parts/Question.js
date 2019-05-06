@@ -218,8 +218,6 @@ class Question extends Component {
     render() {
         const { classes, questions } = this.props;
 
-        console.log('questions', questions);
-
         return (
             <div className={classes.body}>
                 <ExpansionPanel expanded={this.state.expanded} >
