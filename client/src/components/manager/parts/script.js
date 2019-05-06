@@ -135,12 +135,12 @@ class Script extends Component {
         deleteScript(scriptIdx); 
     }
 
-    handleSubtilte = (event, scriptIdx) => {
+    updateSubtilte = (scriptIdx, event) => {
         const { updateSubtitle } = this.props;
         updateSubtitle(scriptIdx, event.target.value);
     }
 
-    handleScript = (event, scriptIdx) => {
+    updateScript = (scriptIdx, event) => {
         const { updateScript } = this.props;
         updateScript(scriptIdx, event.target.value);
     }
@@ -178,12 +178,12 @@ class Script extends Component {
                                                 fullWidth
                                                 multiline
                                                 value={script.subtilte}
-                                                onChange={(event) => this.handleSubtilte(event, scriptIdx)}
+                                                onChange={(event) => this.updateSubtilte(scriptIdx, event)}
                                             />
                                             <TextField
                                                 name={"script " + (scriptIdx + 1)}
                                                 value={script.contents}
-                                                onChange={(event) => this.handleScript(event, scriptIdx)}
+                                                onChange={(event) => this.updateScript(scriptIdx, event)}
                                                 multiline
                                                 fullWidth
                                                 margin="normal"
