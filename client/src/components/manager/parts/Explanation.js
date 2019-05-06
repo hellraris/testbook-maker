@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import { connect } from 'react-redux';
+import { addExplanation, deleteExplanation, updateSubtitle, updateExplanation } from '../store/parts/explanation';
+
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
@@ -95,13 +98,23 @@ const ExpansionPanelDetails = withStyles(theme => ({
     },
 }))(MuiExpansionPanelDetails);
 
+const mapStateToProps = state => ({
+    explanations: state.explanation.explanations
+});
+
+const mapDispatchToProps = dispatch => ({
+    addExplanation: () => dispatch(addExplanation()),
+    deleteExplanation: (explanationIdx) => dispatch(deleteExplanation(explanationIdx)),
+    updateSubtitle: (explanationIdx, text) => dispatch(updateSubtitle(explanationIdx, text)),
+    updateExplanation: (explanationIdx, text) => dispatch(updateExplanation(explanationIdx, text))
+})
+
 class Explanation extends Component {
 
     constructor(props) {
         super(props)
 
         this.state = {
-            explanations: [],
             expanded: false
         }
 
@@ -115,35 +128,27 @@ class Explanation extends Component {
     }
 
     addExplanation = () => {
-        this.setState({
-            explanations: this.state.explanations.concat({ subtilte: '', contents: '' })
-        })
+       const { addExplanation } = this.props;
+       addExplanation();
     }
 
     deleteExplanation = (explanationIdx) => {
-        this.setState({
-            explanations: this.state.explanations.filter((_, index) => index !== explanationIdx)
-        })
+        const { deleteExplanation } = this.props;
+        deleteExplanation(explanationIdx);
     }
 
-    handleSubtilte = (event, explanationIdx) => {
-        this.setState({
-            explanations: this.state.explanations.map((explanation, index) => {
-                return index === explanationIdx ? { ...explanation, subtilte: event.target.value } : explanation
-            })
-        })
+    updateSubtitle = (explanationIdx, event) => {
+        const { updateSubtitle } = this.props;
+        updateSubtitle(explanationIdx, event.target.value);
     }
 
-    handleExplanation = (event, explanationIdx) => {
-        this.setState({
-            explanations: this.state.explanations.map((explanation, index) => {
-                return index === explanationIdx ? { ...explanation, contents: event.target.value } : explanation
-            })
-        })
+    updateExplanation = (explanationIdx, event) => {
+        const { updateExplanation } = this.props;
+        updateExplanation(explanationIdx, event.target.value);
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, explanations } = this.props;
 
         return (
             <div className={classes.body}>
@@ -158,8 +163,8 @@ class Explanation extends Component {
                             </Icon>
                         </div>
                         <div>
-                            {this.state.explanations ?
-                                this.state.explanations.map((explanation, explanationIdx) => {
+                            {explanations ?
+                                explanations.map((explanation, explanationIdx) => {
                                     return <div key={explanationIdx} className={classes.item}>
                                         <div className={classes.itemBar}>
                                             <Icon className={classes.removeBtnConteiner} color="action">
@@ -173,11 +178,11 @@ class Explanation extends Component {
                                                 fullWidth
                                                 multiline
                                                 value={explanation.subtilte}
-                                                onChange={(event) => this.handleSubtilte(event, explanationIdx)}
+                                                onChange={(event) => this.updateSubtitle(explanationIdx, event)}
                                             />
                                             <TextField
                                                 value={explanation.contents}
-                                                onChange={(event) => this.handleExplanation(event, explanationIdx)}
+                                                onChange={(event) => this.updateExplanation(explanationIdx, event)}
                                                 multiline
                                                 fullWidth
                                                 margin="normal"
@@ -200,4 +205,9 @@ class Explanation extends Component {
     }
 }
 
-export default withStyles(styles)(Explanation);
+export default withStyles(styles)(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(Explanation)
+);

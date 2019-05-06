@@ -71,6 +71,7 @@ export default function qusetion(state = initialState, action) {
             });
 
             return {
+                ...state,
                 questions: state.questions.map((question, index) => {
                     if (index === action.questionIdx) {
                         return {
@@ -87,6 +88,7 @@ export default function qusetion(state = initialState, action) {
             const updatedAnswers = state.questions[action.questionIdx].answers.concat(action.selectionIdx);
 
             return {
+                ...state,
                 questions: state.questions.map((question, index) => {
                     if (index === action.questionIdx) {
                         return {
@@ -101,6 +103,7 @@ export default function qusetion(state = initialState, action) {
         }
         case UPDATE_SUBTITLE: {
             return {
+                ...state,
                 questions: state.questions.map((question, index) => {
                     return index === action.questionIdx ? { ...question, subtilte: action.text } : question
                 })
@@ -111,6 +114,7 @@ export default function qusetion(state = initialState, action) {
                 return action.selectionIdx === index ? action.text : selection
             })
             return {
+                ...state,
                 questions: state.questions.map((question, index) => {
                     if (index === action.questionIdx) {
                         return {
