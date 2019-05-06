@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { addQuestion, deleteQuestion, addSelection, deleteSelection, checkSelection, uncheckSelection, updateSubtitle } from '../store/parts/question';
+import { addQuestion, deleteQuestion, addSelection, deleteSelection, checkSelection, 
+    uncheckSelection, updateSubtitle, updateSelection } from '../store/parts/question';
 
 import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
@@ -144,7 +145,9 @@ const mapDispatchToProps = dispatch => ({
     addSelection: (questionIdx) => dispatch(addSelection(questionIdx)),
     deleteSelection: (questionIdx, selectionIdx) => dispatch(deleteSelection(questionIdx, selectionIdx)),
     checkSelection: (questionIdx, selectionIdx) => dispatch(checkSelection(questionIdx, selectionIdx)),
-    uncheckSelection: (questionIdx, selectionIdx) => dispatch(uncheckSelection(questionIdx, selectionIdx))
+    uncheckSelection: (questionIdx, selectionIdx) => dispatch(uncheckSelection(questionIdx, selectionIdx)),
+    updateSubtitle: (questionIdx, text) => dispatch(updateSubtitle(questionIdx, text)),
+    updateSelection: (questionIdx, selectionIdx, text) => dispatch(updateSelection(questionIdx, selectionIdx, text))
 });
 
 class Question extends Component {
@@ -178,12 +181,14 @@ class Question extends Component {
         deleteSelection(questionIdx, selectionIdx);
     }
 
-    handleSubtilte = (event, questionIdx) => {
-        this.setState({
-            questions: this.state.questions.map((question, index) => {
-                return index === questionIdx ? { ...question, subtilte: event.target.value } : question
-            })
-        })
+    updateSubtilte = (questionIdx, event) => {
+        const { updateSubtitle } = this.props;
+        updateSubtitle(questionIdx, event.target.value);
+    }
+
+    updateSelection = (questionIdx, selectionIdx, event) => {
+        const { updateSelection } = this.props;
+        updateSelection(questionIdx, selectionIdx, event.target.value);
     }
 
     handleAnswerChecked = (questionIdx, selectionIdx) => {
@@ -195,26 +200,6 @@ class Question extends Component {
         } else {
             uncheckSelection(questionIdx, selectionIdx);
         }
-    }
-
-    handleSelectionText = (event, questionIdx, selectionIdx) => {
-
-        const updatedSelections = this.state.questions[questionIdx].selections.map((selection, index) => {
-            return selectionIdx === index ? event.target.value : selection
-        })
-
-        this.setState({
-            questions: this.state.questions.map((question, index) => {
-                if (index === questionIdx) {
-                    return {
-                        ...question,
-                        selections: updatedSelections
-                    }
-                } else {
-                    return question;
-                }
-            })
-        })
     }
 
     handleExpanded = () => {
@@ -264,7 +249,7 @@ class Question extends Component {
                                                 fullWidth
                                                 multiline
                                                 value={question.subtilte}
-                                                onChange={(event) => this.handleSubtilte(event, questionIdx)}
+                                                onChange={(event) => this.updateSubtilte(questionIdx, event)}
                                             />
                                             <div className={"flexbox"} style={{ margin: '12px 0 0 7px' }}>
                                                 <Typography className={classes.textAlignLeft} variant="subheading">Selection</Typography>
@@ -289,7 +274,7 @@ class Question extends Component {
                                                                     className={classes.itemSelection}
                                                                     multiline
                                                                     value={selection}
-                                                                    onChange={(event) => { this.handleSelectionText(event, questionIdx, selectionIdx) }}
+                                                                    onChange={(event) => { this.updateSelection(questionIdx, selectionIdx, event) }}
                                                                 />
                                                                 <Icon className={["btn", classes.removeSelectionBtn].join(' ')} color="action" >
                                                                     <RemoveCircleOutline onClick={() => { this.deleteSelection(questionIdx, selectionIdx) }} />

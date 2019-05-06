@@ -5,6 +5,7 @@ const DELETE_SELECTION = 'question/DELETE_SELECTION';
 const CHECK_SELECTION = 'qusetion/CHECK_SELECTION';
 const UNCHECK_SELECTION = 'question/UNCHECK_SELECTION';
 const UPDATE_SUBTITLE = 'question/UPDATE_SUBTILTE';
+const UPDATE_SELECTION = 'question/UPDATE_SELECTION';
 
 export const addQuestion = () => ({ type: ADD_QUESTION });
 export const deleteQuestion = (questionIdx) => ({ type: DELETE_QUESITON, questionIdx });
@@ -12,7 +13,8 @@ export const addSelection = (questionIdx, selectionIdx) => ({ type: ADD_SELECTIO
 export const deleteSelection = (questionIdx, selectionIdx) => ({ type: DELETE_SELECTION, questionIdx, selectionIdx });
 export const checkSelection = (questionIdx, selectionIdx) => ({ type: CHECK_SELECTION, questionIdx, selectionIdx });
 export const uncheckSelection = (questionIdx, selectionIdx) => ({ type: UNCHECK_SELECTION, questionIdx, selectionIdx });
-export const updateSubtitle = () => ({ type: UPDATE_SUBTITLE });
+export const updateSubtitle = (questionIdx, text) => ({ type: UPDATE_SUBTITLE, questionIdx, text });
+export const updateSelection = (questionIdx, selectionIdx, text) => ({ type: UPDATE_SELECTION, questionIdx, selectionIdx, text });
 
 const initialState = {
     questions: []
@@ -90,6 +92,30 @@ export default function qusetion(state = initialState, action) {
                         return {
                             ...question,
                             answers: updatedAnswers
+                        }
+                    } else {
+                        return question;
+                    }
+                })
+            };
+        }
+        case UPDATE_SUBTITLE: {
+            return {
+                questions: state.questions.map((question, index) => {
+                    return index === action.questionIdx ? { ...question, subtilte: action.text } : question
+                })
+            };
+        }
+        case UPDATE_SELECTION: {
+            const updatedSelections = state.questions[action.questionIdx].selections.map((selection, index) => {
+                return action.selectionIdx === index ? action.text : selection
+            })
+            return {
+                questions: state.questions.map((question, index) => {
+                    if (index === action.questionIdx) {
+                        return {
+                            ...question,
+                            selections: updatedSelections
                         }
                     } else {
                         return question;
