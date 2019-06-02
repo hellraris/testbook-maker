@@ -5,11 +5,15 @@ import Script from './parts/Script'
 import Audio from './parts/Audio'
 import Question from './parts/Question'
 import Explanation from './parts/Explanation'
+import Button from '@material-ui/core/Button'
 
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
-
+    body: {
+        maxWidth: '480px',
+        margin: '5px'
+    }
 })
 
 const mapStateToProps = state => ({
@@ -28,16 +32,19 @@ class QuestionCreator extends Component {
     }
 
     render() {
+        const { classes } = this.props;
+
         return (
-            <div>
+            <div className={classes.body}>
                 <div>
-                <Script />
-                <Audio />
-                <Question />
-                <Explanation />
+                    <Script />
+                    <Audio />
+                    <Question />
+                    <Explanation />
                 </div>
                 <div>
-                    
+                    <Button onClick={() => this.props.history.push("/test")}>CANCEL</Button>
+                    <Button onClick={() => this.props.history.push("/test")}>Add</Button>
                 </div>
             </div>
         );

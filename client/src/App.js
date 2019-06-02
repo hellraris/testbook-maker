@@ -5,6 +5,7 @@ import viewer from './components/viewer/TestSelector'
 import testViewer from './components/viewer/TestViewer'
 import testComplete from './components/viewer/TestComplete'
 import QuestionCreator from './components/manager/QuestionCreator'
+import Test from './components/manager/Test'
 import './App.css';
 
 class App extends Component {
@@ -16,6 +17,7 @@ class App extends Component {
         <Route exact path='/complete' component={testComplete} />
         <Route exact path='/manager' component={testManager} />
         <Route exact path='/template' component={QuestionCreator} />
+        <Route exact path='/test' component={Test} />
       </div>
     );
   }

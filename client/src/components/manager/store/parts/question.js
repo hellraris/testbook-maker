@@ -20,7 +20,7 @@ const initialState = {
     questions: []
 };
 
-export default function qusetion(state = initialState, action) {
+export default function question(state = initialState, action) {
     switch (action.type) {
         case ADD_QUESTION:
             return {
