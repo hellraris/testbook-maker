@@ -1,29 +1,36 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const ObjectId = mongoose.Schema.Types.ObjectId;
+'use strict';
 
-const SelectionSchema = new Schema({
-    id: String,
-    selection: String
-})
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var ObjectId = mongoose.Schema.Types.ObjectId;
 
-const questionSchema = new Schema({
+var InfoSchema = new Schema({
     bookId: ObjectId,
-    info: {
-        title: String,
-        part: String,
-        tagList: [String]
-    },
-    question: {
-        script: String,
-        selections: [SelectionSchema],
-        answer: String
-    },
-    answer: {
-        explanation: String,
-        translation: String,
-        word: String
-    }
+    title: String
 });
 
-module.exports = mongoose.model('question', questionSchema);
+var ScriptSchema = new Schema({
+    subtitle: String,
+    contents: String
+});
+
+var ExplanationSchema = new Schema({
+    subtitle: String,
+    contents: String
+});
+
+var QuestionSchema = new Schema({
+    subtitle: String,
+    selections: [String],
+    answers: [Number]
+});
+
+var QuestionSetSchema = new Schema({
+    info: InfoSchema,
+    scripts: [ScriptSchema],
+    questions: [QuestionSchema],
+    explanations: [ExplanationSchema]
+});
+
+// export const question = mongoose.model('question', questionSchema);
+module.exports = mongoose.model('question', QuestionSetSchema);

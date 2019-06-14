@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 
+import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -139,12 +140,21 @@ class Test extends Component {
         super(props)
 
         this.state = {
-            questions: [],
-            bookId: '5c95e5dad06b5943d4904dc0',
-            qusetionId: '',
-            expanded: null
+            questionSetList: [],
+            testbookId: 99999999
         }
     }
+
+    componentDidMount() {
+        this.getQuestisonSetList()
+    }
+
+    addQuestion = (question) => {
+        this.setState({
+            ...this.state,
+            questionList: this.state.questionList.concat(question)
+        })
+    };
 
 
     handleExpandPanel = (i) => {
@@ -157,26 +167,63 @@ class Test extends Component {
         });
     };
 
-    render() {
-        const { classes } = this.props;
+    getQuestisonSetList = () => {
+        axios({
+            method: 'get',
+            url: '/api/book/' + this.state.testbookId + '/question/list'
+        }).then(res => {
+            const list = res.data;
+            this.setState({ questionSetList: list })
+        })
+            .catch(err => console.log(err));
+    }
 
-        return (
-            <div className={classes.wrap}>
-                <div className={classes.bookBody}>
-                    <div className={classes.bookHeader}>
-                        <BrowserRouter>
-                            <Button className={classes.addBtn}>Import</Button>
-                            <Button className={classes.addBtn}>Clear</Button>
-                            <Button className={classes.addBtn} onClick={()=> this.props.history.push("/template")} >Add</Button>
-                        </BrowserRouter>
-                    </div>
-                    <div className={classes.bookContent}>
+    getTestbookForDownload = () => {
+        axios({
+            method: 'get',
+            url: '/api/book/' + this.state.bookId + '/download'
+        }).then(res => {
+            const list = res.data;
+            console.log(list);
+            this.exportBookJson(list);
+        })
+            .catch(err => console.log(err));
+    }
 
-                    </div>
+    exportBookJson = (testbook) => {
+        console.log(testbook);
+        const link = document.createElement('a');
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(testbook));
+        link.href = dataStr;
+        link.download = "testbook.json";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    }
+
+render() {
+    const { classes } = this.props;
+
+    return (
+        <div className={classes.wrap}>
+            <div className={classes.bookBody}>
+                <div className={classes.bookHeader}>
+                    <BrowserRouter>
+                        <Button className={classes.addBtn} onClick={() => this.getTestbookForDownload()}>Export</Button>
+                        <Button className={classes.addBtn}>Clear</Button>
+                        <Button className={classes.addBtn} onClick={() => this.props.history.push("/template", { addQuestion: "a" })} >Add</Button>
+                    </BrowserRouter>
+                </div>
+                <div className={classes.bookContent}>
+                    {this.state.questionSetList ? this.state.questionSetList.map((questionSet, index) => {
+                        return <div key={index} >{questionSet.contents.info.title}</div>
+                    }) : ''}
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
+}
 }
 
 export default withStyles(styles)(Test);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import axios from 'axios';
 import Script from './parts/Script'
 import Audio from './parts/Audio'
 import Question from './parts/Question'
@@ -31,6 +32,29 @@ class QuestionCreator extends Component {
         super(props);
     }
 
+    addQuestion = () => {
+        let requestData = {}
+        let questionData = this.props.questionData;
+        questionData.info = {};
+        questionData.info.title = "test";
+        requestData.version = "1";
+        requestData.contents = JSON.stringify(questionData);
+        const testbookId = 99999999;
+
+        axios({
+            method: 'post',
+            url: '/api/book/' + testbookId + '/question/add',
+            data: requestData
+        }).then(res => {
+            console.log(res);
+            /*
+            if (res.data == "100" && res.status === 200) {
+                this.props.history.push("/test");
+            }
+            */
+        }).catch(err => console.log(err));
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -44,7 +68,7 @@ class QuestionCreator extends Component {
                 </div>
                 <div>
                     <Button onClick={() => this.props.history.push("/test")}>CANCEL</Button>
-                    <Button onClick={() => this.props.history.push("/test")}>Add</Button>
+                    <Button onClick={() => this.addQuestion()}>Add</Button>
                 </div>
             </div>
         );
