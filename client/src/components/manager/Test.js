@@ -140,23 +140,22 @@ class Test extends Component {
         super(props)
 
         this.state = {
-            questionSetList: [],
+            questions: [],
             testbookId: 99999999
         }
     }
 
     componentDidMount() {
-        this.getQuestisonSetList()
+        this.getQuestisons()
     }
 
+    /*
     addQuestion = (question) => {
         this.setState({
             ...this.state,
-            questionList: this.state.questionList.concat(question)
+            questions: this.state.questionList.concat(question)
         })
     };
-
-
     handleExpandPanel = (i) => {
         const modifiedArray = this.state.questions.map((value, index) => {
             return index === i ? ({ ...value, expanded: !this.state.questions[i].expanded }) : value
@@ -166,26 +165,15 @@ class Test extends Component {
             questions: modifiedArray
         });
     };
-
-    getQuestisonSetList = () => {
+*/
+    getQuestisons = () => {
         axios({
             method: 'get',
-            url: '/api/book/' + this.state.testbookId + '/question/list'
-        }).then(res => {
-            const list = res.data;
-            this.setState({ questionSetList: list })
-        })
-            .catch(err => console.log(err));
-    }
-
-    getTestbookForDownload = () => {
-        axios({
-            method: 'get',
-            url: '/api/book/' + this.state.bookId + '/download'
+            url: '/api/book/' + this.state.testbookId + '/questions'
         }).then(res => {
             const list = res.data;
             console.log(list);
-            this.exportBookJson(list);
+            this.setState({ questions: list })
         })
             .catch(err => console.log(err));
     }
@@ -202,28 +190,65 @@ class Test extends Component {
 
     }
 
-render() {
-    const { classes } = this.props;
+    render() {
+        const { classes } = this.props;
 
-    return (
-        <div className={classes.wrap}>
-            <div className={classes.bookBody}>
-                <div className={classes.bookHeader}>
-                    <BrowserRouter>
-                        <Button className={classes.addBtn} onClick={() => this.getTestbookForDownload()}>Export</Button>
-                        <Button className={classes.addBtn}>Clear</Button>
-                        <Button className={classes.addBtn} onClick={() => this.props.history.push("/template", { addQuestion: "a" })} >Add</Button>
-                    </BrowserRouter>
-                </div>
-                <div className={classes.bookContent}>
-                    {this.state.questionSetList ? this.state.questionSetList.map((questionSet, index) => {
-                        return <div key={index} >{questionSet.contents.info.title}</div>
-                    }) : ''}
+        return (
+            <div className={classes.wrap}>
+                <div className={classes.bookBody}>
+                    <div className={classes.bookHeader}>
+                        <BrowserRouter>
+                            <Button className={classes.addBtn} onClick={() => this.exportBookJson(this.state.questions)}>Export</Button>
+                            <Button className={classes.addBtn}>Clear</Button>
+                            <Button className={classes.addBtn} onClick={() => this.props.history.push("/template", { addQuestion: "a" })} >Add</Button>
+                        </BrowserRouter>
+                    </div>
+                    <div className={classes.bookContent}>
+                        {this.state.questions ? this.state.questions.map((question, index) => {
+                            return <div key={index} >{question.title}</div>
+                        }) : ''}
+                    </div>
                 </div>
             </div>
-        </div>
-    );
-}
+        );
+    }
+    // order機能(保留)
+    /*
+      getQuestionOrder = () => {
+          axios({
+              method: 'get',
+              url: '/api/book/' + this.state.testbookId + '/questionOrder'
+          }).then(res => {
+              this.setState({
+                  ...this.state,
+                  questionOrder: JSON.parse(res.data.question_order)
+              
+              })
+          })
+              .catch(err => console.log(err));
+      }
+  
+      saveQuestionOrder = () => {
+          const newQuestionOrder = [];
+  
+          this.state.questionSetList.forEach((question, index)=>{
+              newQuestionOrder.push({order: index, questionId: question.question_id});
+          });
+  
+          axios({
+              method: 'post',
+              url: '/api/book/' + this.state.testbookId + '/questionOrder',
+              data: newQuestionOrder
+          }).then(res => {
+              console.log(res);
+              if (res.data == "100" && res.status === 200) {
+                  this.props.history.push("/test");
+              }
+          }).catch(err => console.log(err));
+  
+      }
+      */
+
 }
 
 export default withStyles(styles)(Test);

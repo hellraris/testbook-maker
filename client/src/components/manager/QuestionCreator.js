@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import Script from './parts/Script'
 import Audio from './parts/Audio'
-import Question from './parts/Question'
+import SubQuestion from './parts/SubQuestion'
 import Explanation from './parts/Explanation'
 import Button from '@material-ui/core/Button'
 
@@ -18,12 +18,11 @@ const styles = theme => ({
 })
 
 const mapStateToProps = state => ({
-    questionData: {
-        scripts: state.script.scripts,
-        audioList: state.audio.audioList,
-        questions: state.question.questions,
-        explanations: state.explanation.explanations
-    }
+    scripts: state.script.scripts,
+    files: state.audio.audioList,
+    subQuestions: state.subQuestion.subQuestions,
+    explanations: state.explanation.explanations
+
 });
 
 class QuestionCreator extends Component {
@@ -33,12 +32,15 @@ class QuestionCreator extends Component {
     }
 
     addQuestion = () => {
-        let requestData = {}
-        let questionData = this.props.questionData;
-        questionData.info = {};
-        questionData.info.title = "test";
+        let requestData = {
+            scripts: JSON.stringify(this.props.scripts),
+            files: JSON.stringify(this.props.files),
+            subQuestions: JSON.stringify(this.props.subQuestions),
+            explanations: JSON.stringify(this.props.explanations),
+        }
+        requestData.info = {};
+        requestData.info.title = "test";
         requestData.version = "1";
-        requestData.contents = JSON.stringify(questionData);
         const testbookId = 99999999;
 
         axios({
@@ -63,7 +65,7 @@ class QuestionCreator extends Component {
                 <div>
                     <Script />
                     <Audio />
-                    <Question />
+                    <SubQuestion />
                     <Explanation />
                 </div>
                 <div>
