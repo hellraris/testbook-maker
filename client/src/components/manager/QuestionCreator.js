@@ -48,12 +48,10 @@ class QuestionCreator extends Component {
             url: '/api/book/' + testbookId + '/question/add',
             data: requestData
         }).then(res => {
-            console.log(res);
-            /*
             if (res.data == "100" && res.status === 200) {
                 this.props.history.push("/test");
             }
-            */
+
         }).catch(err => console.log(err));
     }
 
