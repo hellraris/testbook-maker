@@ -270,8 +270,6 @@ class Question extends Component {
                                                                     <RemoveCircleOutline onClick={() => { this.deleteSelection(subQuestionIdx, selectionIdx) }} />
                                                                 </Icon>
                                                             </ListItem>
-
-
                                                         )
                                                     })
                                                     :

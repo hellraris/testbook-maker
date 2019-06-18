@@ -23,9 +23,14 @@ const initialState = {
 export default function question(state = initialState, action) {
     switch (action.type) {
         case ADD_SUBQUESTION:
+            const subQuestions = state.subQuestions;
             return {
                 ...state,
-                subQuestions: state.subQuestions.concat({ subtilte: '', selections: []})
+                subQuestions: subQuestions.concat({ 
+                    id: subQuestions.length > 0 ?  
+                                    ((subQuestions[subQuestions.length - 1].subQuestionId) + 1) : 0,
+                    subtilte: '',
+                    selections: []})
             };
         case DELETE_SUBQUESITON:
             return {
@@ -39,7 +44,13 @@ export default function question(state = initialState, action) {
                     if (index === action.subQuestionIdx) {
                         return {
                             ...subQuestion,
-                            selections: subQuestion.selections.concat({text: '', answer: false})
+                            selections: subQuestion.selections.concat(
+                                {
+                                    id: subQuestion.selections.length > 0 ?  
+                                        ((subQuestion.selections[subQuestion.selections.length - 1].selectionId) + 1) : 0 ,
+                                    text: '',
+                                    answer: false
+                                })
                         }
                     } else {
                         return subQuestion;
