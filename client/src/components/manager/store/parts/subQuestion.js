@@ -10,8 +10,8 @@ const UPDATE_SELECTION = 'question/UPDATE_SELECTION';
 export const addSubQuestion = () => ({ type: ADD_SUBQUESTION });
 export const deleteSubQuestion = (subQuestionIdx) => ({ type: DELETE_SUBQUESITON, subQuestionIdx });
 export const addSelection = (subQuestionIdx, selectionIdx) => ({ type: ADD_SELECTION, subQuestionIdx, selectionIdx });
-export const deleteSelection = (subQuestionIdx, selectionIdx) => ({ type: DELETE_SELECTION, subQuestionIdx, selectionIdx });
-export const checkSelection = (subQuestionIdx, selectionIdx) => ({ type: CHECK_SELECTION, subQuestionIdx, selectionIdx });
+export const deleteSelection = (subQuestionIdx, selectionId) => ({ type: DELETE_SELECTION, subQuestionIdx, selectionId });
+export const checkSelection = (subQuestionIdx, selectionId) => ({ type: CHECK_SELECTION, subQuestionIdx, selectionId });
 export const uncheckSelection = (subQuestionIdx, selectionIdx) => ({ type: UNCHECK_SELECTION, subQuestionIdx, selectionIdx });
 export const updateSubtitle = (subQuestionIdx, text) => ({ type: UPDATE_SUBTITLE, subQuestionIdx, text });
 export const updateSelection = (subQuestionIdx, selectionIdx, text) => ({ type: UPDATE_SELECTION, subQuestionIdx, selectionIdx, text });
@@ -23,14 +23,15 @@ const initialState = {
 export default function question(state = initialState, action) {
     switch (action.type) {
         case ADD_SUBQUESTION:
-            const subQuestions = state.subQuestions;
             return {
                 ...state,
-                subQuestions: subQuestions.concat({ 
-                    id: subQuestions.length > 0 ?  
-                                    ((subQuestions[subQuestions.length - 1].subQuestionId) + 1) : 0,
+                subQuestions: state.subQuestions.concat({ 
+                    id: state.subQuestions.length > 0 ?  
+                                    ((state.subQuestions[state.subQuestions.length - 1].id) + 1) : 0,
                     subtilte: '',
-                    selections: []})
+                    selections: [],
+                    answer: []
+                })
             };
         case DELETE_SUBQUESITON:
             return {
@@ -45,12 +46,9 @@ export default function question(state = initialState, action) {
                         return {
                             ...subQuestion,
                             selections: subQuestion.selections.concat(
-                                {
-                                    id: subQuestion.selections.length > 0 ?  
-                                        ((subQuestion.selections[subQuestion.selections.length - 1].selectionId) + 1) : 0 ,
-                                    text: '',
-                                    answer: false
-                                })
+                                {id: subQuestion.selections.length > 0 ?  
+                                    ((subQuestion.selections[subQuestion.selections.length - 1].id) + 1) : 0 ,
+                                    text: ''})
                         }
                     } else {
                         return subQuestion;
@@ -58,7 +56,13 @@ export default function question(state = initialState, action) {
                 })
             };
         case DELETE_SELECTION: {
-            const updatedSelections = state.subQuestions[action.subQuestionIdx].selections.filter((_, index) => index !== action.selectionIdx);
+            const updatedSelections = state.subQuestions[action.subQuestionIdx].selections.filter((selection, index) => selection.id !== action.selectionId);
+            const updatedAnswer = state.subQuestions[action.subQuestionIdx].answer;
+
+            const answerIdx = updatedAnswer.indexOf(action.selectionId)
+            if (answerIdx !== -1) {
+                updatedAnswer.splice(answerIdx, 1)
+            };
     
             return {
                 ...state,
@@ -66,6 +70,7 @@ export default function question(state = initialState, action) {
                     if (index === action.subQuestionIdx) {
                         return {
                             ...subQuestion,
+                            answer: updatedAnswer,
                             selections: updatedSelections
                         }
                     } else {
@@ -76,16 +81,14 @@ export default function question(state = initialState, action) {
         }
         case CHECK_SELECTION: {
 
-            const newSelections = state.subQuestions[action.subQuestionIdx].selections.map((selection, index)=> {
-                if (index === action.selectionIdx) {
-                    return {
-                        ...selection,
-                        answer: !selection.answer
-                    }
-                } else {
-                    return selection;
-                }
-            });
+            const newAnswer = state.subQuestions[action.subQuestionIdx].answer
+            const index = newAnswer.indexOf(action.selectionId);
+            console.log("index:", index);
+            if (index === -1) {
+                newAnswer.push(action.selectionId)
+            } else {
+                newAnswer.splice(index, 1);
+            }
             
             return {
                 ...state,
@@ -93,11 +96,11 @@ export default function question(state = initialState, action) {
                     if (index === action.subQuestionIdx) {
                         return {
                             ...subQuestion,
-                            selections: newSelections
+                            answer: newAnswer
                         }
-
+                    } else {
+                        return subQuestion;
                     }
-                    return subQuestion;
                 })
             };
         }

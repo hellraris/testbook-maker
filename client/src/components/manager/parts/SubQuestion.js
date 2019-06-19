@@ -143,8 +143,8 @@ const mapDispatchToProps = dispatch => ({
     addSubQuestion: () => dispatch(addSubQuestion()),
     deleteSubQuestion: (subQuestionIdx) => dispatch(deleteSubQuestion(subQuestionIdx)),
     addSelection: (subQuestionIdx) => dispatch(addSelection(subQuestionIdx)),
-    deleteSelection: (subQuestionIdx, selectionIdx) => dispatch(deleteSelection(subQuestionIdx, selectionIdx)),
-    checkSelection: (subQuestionIdx, selectionIdx) => dispatch(checkSelection(subQuestionIdx, selectionIdx)),
+    deleteSelection: (subQuestionIdx, selectionId) => dispatch(deleteSelection(subQuestionIdx, selectionId)),
+    checkSelection: (subQuestionIdx, selectionId) => dispatch(checkSelection(subQuestionIdx, selectionId)),
     uncheckSelection: (subQuestionIdx, selectionIdx) => dispatch(uncheckSelection(subQuestionIdx, selectionIdx)),
     updateSubtitle: (subQuestionIdx, text) => dispatch(updateSubtitle(subQuestionIdx, text)),
     updateSelection: (subQuestionIdx, selectionIdx, text) => dispatch(updateSelection(subQuestionIdx, selectionIdx, text))
@@ -175,9 +175,9 @@ class Question extends Component {
         deleteSubQuestion(subQuestionIdx);
     }
 
-    deleteSelection = (subQuestionIdx, selectionIdx) => {
+    deleteSelection = (subQuestionIdx, selectionId) => {
         const { deleteSelection } = this.props;
-        deleteSelection(subQuestionIdx, selectionIdx);
+        deleteSelection(subQuestionIdx, selectionId);
     }
 
     updateSubtilte = (subQuestionIdx, event) => {
@@ -190,9 +190,9 @@ class Question extends Component {
         updateSelection(subQuestionIdx, selectionIdx, event.target.value);
     }
 
-    handleAnswerChecked = (subQuestionIdx, selectionIdx) => {
-        const { checkSelection, uncheckSelection } = this.props;
-            checkSelection(subQuestionIdx, selectionIdx);
+    handleAnswerChecked = (subQuestionIdx, selectionId) => {
+        const { checkSelection } = this.props;
+            checkSelection(subQuestionIdx, selectionId);
 
     }
 
@@ -204,8 +204,8 @@ class Question extends Component {
     }
 
     // 選択肢がチェックされているか確認する。
-    confirmSelectionChecked = (subQuestionIdx, selectionIdx) => {
-        return this.props.subQuestions[subQuestionIdx].selections[selectionIdx].answer;
+    confirmSelectionChecked = (subQuestionIdx, selectionId) => {
+        return this.props.subQuestions[subQuestionIdx].answer.includes(selectionId);
     }
 
     render() {
@@ -256,8 +256,8 @@ class Question extends Component {
                                                             >
                                                                 <Checkbox
                                                                     className={classes.itemCheckbox}
-                                                                    checked={this.confirmSelectionChecked(subQuestionIdx, selectionIdx)}
-                                                                    onChange={() => this.handleAnswerChecked(subQuestionIdx, selectionIdx)}
+                                                                    checked={this.confirmSelectionChecked(subQuestionIdx, selection.id)}
+                                                                    onChange={() => this.handleAnswerChecked(subQuestionIdx, selection.id)}
                                                                 />
                                                                 <TextField
                                                                     placeholder={'Selection ' + (selectionIdx + 1)}
@@ -267,7 +267,7 @@ class Question extends Component {
                                                                     onChange={(event) => { this.updateSelection(subQuestionIdx, selectionIdx, event) }}
                                                                 />
                                                                 <Icon className={["btn", classes.removeSelectionBtn].join(' ')} color="action" >
-                                                                    <RemoveCircleOutline onClick={() => { this.deleteSelection(subQuestionIdx, selectionIdx) }} />
+                                                                    <RemoveCircleOutline onClick={() => { this.deleteSelection(subQuestionIdx, selection.id) }} />
                                                                 </Icon>
                                                             </ListItem>
                                                         )
