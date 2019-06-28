@@ -30,7 +30,7 @@ export default function question(state = initialState, action) {
                                     ((state.subQuestions[state.subQuestions.length - 1].id) + 1) : 0,
                     subtilte: '',
                     selections: [],
-                    answer: []
+                    answer: new Set()
                 })
             };
         case DELETE_SUBQUESITON:
@@ -59,10 +59,7 @@ export default function question(state = initialState, action) {
             const updatedSelections = state.subQuestions[action.subQuestionIdx].selections.filter((selection, index) => selection.id !== action.selectionId);
             const updatedAnswer = state.subQuestions[action.subQuestionIdx].answer;
 
-            const answerIdx = updatedAnswer.indexOf(action.selectionId)
-            if (answerIdx !== -1) {
-                updatedAnswer.splice(answerIdx, 1)
-            };
+            if(updatedAnswer.has(action.selectionId)) updatedAnswer.delete(action.selectionId)
     
             return {
                 ...state,
@@ -81,22 +78,16 @@ export default function question(state = initialState, action) {
         }
         case CHECK_SELECTION: {
 
-            const newAnswer = state.subQuestions[action.subQuestionIdx].answer
-            const index = newAnswer.indexOf(action.selectionId);
-            console.log("index:", index);
-            if (index === -1) {
-                newAnswer.push(action.selectionId)
-            } else {
-                newAnswer.splice(index, 1);
-            }
-            
+            const updatedAnswer = state.subQuestions[action.subQuestionIdx].answer
+            updatedAnswer.has(action.selectionId) ? updatedAnswer.delete(action.selectionId) : updatedAnswer.add(action.selectionId);
+               
             return {
                 ...state,
                 subQuestions: state.subQuestions.map((subQuestion, index) => {
                     if (index === action.subQuestionIdx) {
                         return {
                             ...subQuestion,
-                            answer: newAnswer
+                            answer: updatedAnswer
                         }
                     } else {
                         return subQuestion;

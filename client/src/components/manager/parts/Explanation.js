@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 
-import { connect } from 'react-redux';
-import { addExplanation, deleteExplanation, updateSubtitle, updateExplanation } from '../store/parts/explanation';
-
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
@@ -98,26 +95,20 @@ const ExpansionPanelDetails = withStyles(theme => ({
     },
 }))(MuiExpansionPanelDetails);
 
-const mapStateToProps = state => ({
-    explanations: state.explanation.explanations
-});
-
-const mapDispatchToProps = dispatch => ({
-    addExplanation: () => dispatch(addExplanation()),
-    deleteExplanation: (explanationIdx) => dispatch(deleteExplanation(explanationIdx)),
-    updateSubtitle: (explanationIdx, text) => dispatch(updateSubtitle(explanationIdx, text)),
-    updateExplanation: (explanationIdx, text) => dispatch(updateExplanation(explanationIdx, text))
-})
-
 class Explanation extends Component {
 
     constructor(props) {
         super(props)
 
         this.state = {
+            explanations: [],
             expanded: false
         }
 
+    }
+
+    componentDidUpdate () {
+        this.props.updateExplanationData(this.state.explanations);
     }
 
     handleExpanded = () => {
@@ -128,30 +119,43 @@ class Explanation extends Component {
     }
 
     addExplanation = () => {
-       const { addExplanation } = this.props;
-       addExplanation();
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.concat({ subtilte: '', contents: '' })
+        })
     }
 
     deleteExplanation = (explanationIdx) => {
-        const { deleteExplanation } = this.props;
-        deleteExplanation(explanationIdx);
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.filter((_, index) => index !== explanationIdx)
+        })
     }
 
     updateSubtitle = (explanationIdx, event) => {
-        const { updateSubtitle } = this.props;
-        updateSubtitle(explanationIdx, event.target.value);
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.map((explanation, index) => {
+                return index === explanationIdx ? { ...explanation, subtilte: event.target.value } : explanation
+            })
+        })
     }
 
     updateExplanation = (explanationIdx, event) => {
-        const { updateExplanation } = this.props;
-        updateExplanation(explanationIdx, event.target.value);
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.map((explanation, index) => {
+                return index === explanationIdx ? { ...explanation, contents: event.target.value } : explanation
+            })
+        })
     }
 
     render() {
-        const { classes, explanations } = this.props;
+        const { classes } = this.props;
+        const { explanations } = this.state;
 
         return (
-            <div className={classes.body}>
+            <div className={classes.body} >
                 <ExpansionPanel expanded={this.state.expanded} >
                     <ExpansionPanelSummary className={classes.head} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
                         <Typography className={classes.headLabel} variant="title" gutterBottom>Explanation</Typography>
@@ -205,9 +209,4 @@ class Explanation extends Component {
     }
 }
 
-export default withStyles(styles)(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(Explanation)
-);
+export default withStyles(styles)(Explanation);

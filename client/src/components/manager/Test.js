@@ -200,7 +200,7 @@ class Test extends Component {
                         <BrowserRouter>
                             <Button className={classes.addBtn} onClick={() => this.exportBookJson(this.state.questions)}>Export</Button>
                             <Button className={classes.addBtn}>Clear</Button>
-                            <Button className={classes.addBtn} onClick={() => this.props.history.push("/template", { addQuestion: "a" })} >Add</Button>
+                            <Button className={classes.addBtn} onClick={() => this.props.history.push("/template")} >Add</Button>
                         </BrowserRouter>
                     </div>
                     <div className={classes.bookContent}>

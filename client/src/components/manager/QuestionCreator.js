@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import axios from 'axios';
 import Script from './parts/Script'
@@ -17,13 +16,12 @@ const styles = theme => ({
     }
 })
 
-const mapStateToProps = state => ({
-    scripts: state.script.scripts,
-    files: state.audio.audioList,
-    subQuestions: state.subQuestion.subQuestions,
-    explanations: state.explanation.explanations
+const questionData = {
+    scripts: null,
+    subQuestions: null,
+    explanations: null
+}
 
-});
 
 class QuestionCreator extends Component {
 
@@ -31,17 +29,32 @@ class QuestionCreator extends Component {
         super(props);
     }
 
+    updateScriptData= (data) => {
+        questionData.scripts = data;
+    }
+
+    updateSubQuestionData= (data) => {
+        questionData.subQuestions = data;
+    }
+
+    updateExplanationData= (data) => {
+        questionData.explanations = data;
+    }
+
+
     addQuestion = () => {
+        console.log("requestData", questionData);
         let requestData = {
-            scripts: JSON.stringify(this.props.scripts),
-            files: JSON.stringify(this.props.files),
-            subQuestions: JSON.stringify(this.props.subQuestions),
-            explanations: JSON.stringify(this.props.explanations),
+            scripts: JSON.stringify(questionData.scripts),
+            files: JSON.stringify(questionData.files),
+            subQuestions: JSON.stringify(questionData.subQuestions),
+            explanations: JSON.stringify(questionData.explanations),
         }
         requestData.info = {};
         requestData.info.title = "test";
         requestData.version = "1";
         const testbookId = 99999999;
+        console.log("requestDataJson", requestData);
 
         axios({
             method: 'post',
@@ -62,10 +75,10 @@ class QuestionCreator extends Component {
         return (
             <div className={classes.body}>
                 <div>
-                    <Script />
+                    <Script updateScriptData={this.updateScriptData}/>
                     <Audio />
-                    <SubQuestion />
-                    <Explanation />
+                    <SubQuestion updateSubQuestionData={this.updateSubQuestionData} />
+                    <Explanation updateExplanationData={this.updateExplanationData} />
                 </div>
                 <div>
                     <Button onClick={() => this.props.history.push("/test")}>CANCEL</Button>
@@ -76,8 +89,4 @@ class QuestionCreator extends Component {
     }
 }
 
-export default withStyles(styles)(
-    connect(
-        mapStateToProps
-    )(QuestionCreator)
-);
+export default withStyles(styles)(QuestionCreator);

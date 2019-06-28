@@ -51,6 +51,26 @@ app.get('/api/book/:testbookId/questions', (req, res) => {
     );
 });
 
+
+// appからQuestionリスト取得
+app.get('/api/app/testbook/list', (req, res) => {
+
+    console.log("hairu?")
+
+    let sql = "SELECT * FROM TESTBOOK WHERE DEL_FLG = 0";
+    connection.query(
+        sql,
+        (err, results, fields) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log(results);
+            res.send(results);
+        }
+    );
+});
+
+
 // appからQuestionリスト取得
 app.get('/api/app/testbook/:testbookId/', (req, res) => {
     let sql = "SELECT question_id AS questionId, title, tag, favorite, scripts, subquestions as subQuestions, explanations, files FROM QUESTION WHERE TESTBOOK_ID = ? AND DEL_FLG = 0";

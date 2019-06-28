@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 
-import { connect } from 'react-redux';
-import { addSubQuestion, deleteSubQuestion, addSelection, deleteSelection, checkSelection, 
-    uncheckSelection, updateSubtitle, updateSelection } from '../store/parts/subQuestion';
-
 import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
@@ -135,21 +131,6 @@ const ExpansionPanelDetails = withStyles(theme => ({
     },
 }))(MuiExpansionPanelDetails);
 
-const mapStateToProps = state => ({
-    subQuestions: state.subQuestion.subQuestions
-});
-
-const mapDispatchToProps = dispatch => ({
-    addSubQuestion: () => dispatch(addSubQuestion()),
-    deleteSubQuestion: (subQuestionIdx) => dispatch(deleteSubQuestion(subQuestionIdx)),
-    addSelection: (subQuestionIdx) => dispatch(addSelection(subQuestionIdx)),
-    deleteSelection: (subQuestionIdx, selectionId) => dispatch(deleteSelection(subQuestionIdx, selectionId)),
-    checkSelection: (subQuestionIdx, selectionId) => dispatch(checkSelection(subQuestionIdx, selectionId)),
-    uncheckSelection: (subQuestionIdx, selectionIdx) => dispatch(uncheckSelection(subQuestionIdx, selectionIdx)),
-    updateSubtitle: (subQuestionIdx, text) => dispatch(updateSubtitle(subQuestionIdx, text)),
-    updateSelection: (subQuestionIdx, selectionIdx, text) => dispatch(updateSelection(subQuestionIdx, selectionIdx, text))
-});
-
 class Question extends Component {
 
     constructor(props) {
@@ -158,41 +139,134 @@ class Question extends Component {
             expanded: false
         }
 
+        this.state = {
+            subQuestions: []
+        }
+
+    }
+
+    componentDidUpdate () {
+        this.props.updateSubQuestionData(this.state.subQuestions);
     }
 
     addSubQuestion = () => {
-        const { addSubQuestion } = this.props;
-        addSubQuestion();
+        this.setState({
+            ...this.state,
+            subQuestions: this.state.subQuestions.concat({ 
+                id: this.state.subQuestions.length > 0 ?  
+                                ((this.state.subQuestions[this.state.subQuestions.length - 1].id) + 1) : 0,
+                subtilte: '',
+                selectionType: 1,
+                selections: [],
+                answer: []
+            })
+        })
     }
 
     addSelection = (subQuestionIdx) => {
-        const { addSelection } = this.props;
-        addSelection(subQuestionIdx);
+        this.setState({
+            ...this.state,
+            subQuestions: this.state.subQuestions.map((subQuestion, index) => {
+                if (index === subQuestionIdx) {
+                    return {
+                        ...subQuestion,
+                        selections: subQuestion.selections.concat(
+                            {id: subQuestion.selections.length > 0 ?  
+                                ((subQuestion.selections[subQuestion.selections.length - 1].id) + 1) : 0 ,
+                                text: ''})
+                    }
+                } else {
+                    return subQuestion;
+                }
+            })
+
+        })
     }
 
     deleteSubQuestion = (subQuestionIdx) => {
-        const { deleteSubQuestion } = this.props;
-        deleteSubQuestion(subQuestionIdx);
+        this.setState({
+            ...this.state,
+            subQuestions: this.state.subQuestions.filter((_, index) => index !== subQuestionIdx)
+        });
     }
 
     deleteSelection = (subQuestionIdx, selectionId) => {
-        const { deleteSelection } = this.props;
-        deleteSelection(subQuestionIdx, selectionId);
+        const updatedSelections = this.state.subQuestions[subQuestionIdx].selections.filter((selection) => selection.id !== selectionId);
+        const updatedAnswer = this.state.subQuestions[subQuestionIdx].answer;
+
+        const answerIdx = updatedAnswer.indexOf(selectionId);
+        if (answerIdx !== -1) {
+            updatedAnswer.splice(answerIdx, 1)
+        };
+
+        this.setState({
+            ...this.state,
+            subQuestions: this.state.subQuestions.map((subQuestion, index) => {
+                if (index === subQuestionIdx) {
+                    return {
+                        ...subQuestion,
+                        answer: updatedAnswer,
+                        selections: updatedSelections
+                    }
+                } else {
+                    return subQuestion;
+                }
+            })
+        });
     }
 
     updateSubtilte = (subQuestionIdx, event) => {
-        const { updateSubtitle } = this.props;
-        updateSubtitle(subQuestionIdx, event.target.value);
+        this.setState({
+            ...this.state,
+            subQuestions: this.state.subQuestions.map((subQuestion, index) => {
+                return index === subQuestionIdx ? { ...subQuestion, subtilte: event.target.value } : subQuestion
+            })
+        })
     }
 
     updateSelection = (subQuestionIdx, selectionIdx, event) => {
-        const { updateSelection } = this.props;
-        updateSelection(subQuestionIdx, selectionIdx, event.target.value);
+        const updatedSelections = this.state.subQuestions[subQuestionIdx].selections.map((selection, index) => {
+            return selectionIdx === index ? {...selection, text: event.target.value} : selection
+        });
+
+        this.setState({
+            ...this.state,
+            subQuestions: this.state.subQuestions.map((subQuestion, index) => {
+                if (index === subQuestionIdx) {
+                    return {
+                        ...subQuestion,
+                        selections: updatedSelections
+                    }
+                } else {
+                    return subQuestion;
+                }
+            })
+        })
     }
 
     handleAnswerChecked = (subQuestionIdx, selectionId) => {
-        const { checkSelection } = this.props;
-            checkSelection(subQuestionIdx, selectionId);
+
+        const updatedAnswer = this.state.subQuestions[subQuestionIdx].answer
+        const index = updatedAnswer.indexOf(selectionId);
+        if (index === -1) {
+            updatedAnswer.push(selectionId)
+        } else {
+            updatedAnswer.splice(index, 1);
+        }
+        
+        this.setState({
+            ...this.state,
+            subQuestions: this.state.subQuestions.map((subQuestion, index) => {
+                if (index === subQuestionIdx) {
+                    return {
+                        ...subQuestion,
+                        answer: updatedAnswer
+                    }
+                } else {
+                    return subQuestion;
+                }
+            })
+        })
 
     }
 
@@ -205,11 +279,12 @@ class Question extends Component {
 
     // 選択肢がチェックされているか確認する。
     confirmSelectionChecked = (subQuestionIdx, selectionId) => {
-        return this.props.subQuestions[subQuestionIdx].answer.includes(selectionId);
+        return this.state.subQuestions[subQuestionIdx].answer.includes(selectionId);
     }
 
     render() {
-        const { classes, subQuestions } = this.props;
+        const { classes } = this.props;
+        const { subQuestions } = this.state;
 
         return (
             <div className={classes.body}>
@@ -290,9 +365,4 @@ class Question extends Component {
     }
 }
 
-export default withStyles(styles)(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(Question)
-);
+export default withStyles(styles)(Question);
