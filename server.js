@@ -52,10 +52,57 @@ app.get('/api/book/:testbookId/questions', (req, res) => {
 });
 
 
+// webからbookリスト取得
+app.get('/api/:userId/testbook', (req, res) => {
+
+    let sql = "SELECT * FROM TESTBOOK WHERE user_id = ?";
+    let userId = req.params.userId;
+    let params = [userId];
+
+    connection.query(
+        sql,params,
+        (err, results, fields) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log(results);
+            res.send(results);
+        }
+    );
+});
+
+
+// webからQuestionリスト取得
+app.get('/api/testbook/:bookId', (req, res) => {
+
+    console.log("hiru?", req.params.bookId);
+
+    let sql = "SELECT * FROM question WHERE testbook_id = ?";
+    let bookId = req.params.bookId;
+    let params = [bookId];
+
+    connection.query(
+        sql,params,
+        (err, results, fields) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log(results);
+            let resData = results.map((question) => {
+                return {
+                    ...question,
+                    scripts: JSON.parse(question.scripts),
+                    subQuestions: JSON.parse(question.subquestions),
+                    explanations: JSON.parse(question.explanations)
+                }
+            })
+            res.send(resData);
+        }
+    );
+});
+
 // appからQuestionリスト取得
 app.get('/api/app/testbook/list', (req, res) => {
-
-    console.log("hairu?")
 
     let sql = "SELECT * FROM TESTBOOK WHERE DEL_FLG = 0";
     connection.query(
@@ -114,10 +161,9 @@ const getQuestionCount = (testbookId) => {
 // Question追加
 app.post('/api/book/:testbookId/question/add', (req, res) => {
 
-    const sql = "INSERT INTO QUESTION VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, null)";
+    const sql = "INSERT INTO QUESTION VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, null)";
     const testbookId = req.params.testbookId;
     const title = 'test';
-    const description = 'test';
     const tag = null;
     const favorite = 0;
     const version = 0;
@@ -131,7 +177,6 @@ app.post('/api/book/:testbookId/question/add', (req, res) => {
     const params = [
         testbookId,
         title,
-        description,
         tag,
         favorite,
         version,

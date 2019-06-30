@@ -22,13 +22,32 @@ const questionData = {
     explanations: null
 }
 
-
 class QuestionCreator extends Component {
 
     constructor(props) {
         super(props);
     }
 
+    render() {
+        const { classes } = this.props;
+
+        return (
+            <div className={classes.body}>
+                <div>
+                    <Script updateScriptData={this.updateScriptData}/>
+                    <Audio />
+                    <SubQuestion updateSubQuestionData={this.updateSubQuestionData} />
+                    <Explanation updateExplanationData={this.updateExplanationData} />
+                </div>
+                <div>
+                    <Button onClick={() => this.props.history.push("/test")}>CANCEL</Button>
+                    <Button onClick={() => this.addQuestion()}>Add</Button>
+                </div>
+            </div>
+        );
+    }
+
+    // functions
     updateScriptData= (data) => {
         questionData.scripts = data;
     }
@@ -67,25 +86,6 @@ class QuestionCreator extends Component {
             this.props.history.push("/test");
 
         }).catch(err => console.log(err));
-    }
-
-    render() {
-        const { classes } = this.props;
-
-        return (
-            <div className={classes.body}>
-                <div>
-                    <Script updateScriptData={this.updateScriptData}/>
-                    <Audio />
-                    <SubQuestion updateSubQuestionData={this.updateSubQuestionData} />
-                    <Explanation updateExplanationData={this.updateExplanationData} />
-                </div>
-                <div>
-                    <Button onClick={() => this.props.history.push("/test")}>CANCEL</Button>
-                    <Button onClick={() => this.addQuestion()}>Add</Button>
-                </div>
-            </div>
-        );
     }
 }
 

@@ -1,46 +1,42 @@
 drop table question;
 drop table script;
-drop table info;
 drop table analytics;
+
+
+CREATE TABLE testbook ( 
+  testbook_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  user_id varchar(30) NOT NULL,
+  title varchar(100) NOT NULL,
+  description varchar(200),
+  tag JSON,
+  favorite char(1),
+  version int(4),
+  del_flg char(1),
+  reg_date date NOT NULL,
+  upd_date date,
+  PRIMARY KEY (testbook_id)
+);
 
 CREATE TABLE question ( 
   question_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  book_id bigint(20) NOT NULL,
-  info_id  bigint(20) NOT NULL,
-  order_no int(1) not null,
-  question JSON,
-  explanation JSON,
-  type char(1),
+  testbook_id bigint(20) NOT NULL,
+  title varchar(100),
   tag JSON,
   favorite char(1),
+  version int(4),
+  question_order int(4),
+  scripts JSON,
+  subquestions JSON,
+  explanations JSON,
+  files JSON,
+  del_flg char(1),
+  reg_date date NOT NULL,
+  upd_date date,
   PRIMARY KEY (question_id)
 );
 
-CREATE TABLE script ( 
-  script_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  book_id bigint(20) NOT NULL,
-  info_id  bigint(20) NOT NULL,
-  script JSON,
-  explanation JSON,
-  type char(1) NOT NULL,
-  tag JSON,
-  PRIMARY KEY (script_id)
-);
-
-CREATE TABLE info ( 
-  info_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  version char(3) NOT NULL,
-  order_no int(3) not null,
-  status char(1) NOT NULL,
-  tag JSON,
-  reg_date date NOT NULL,
-  upd_date date,
-  PRIMARY KEY (info_id)
-);
-
-
 CREATE TABLE analytics ( 
-  analytics_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  user_id varchar(20) NOT NULL,
   target_id bigint(20) NOT NULL,
   target_type char(1) NOT NULL,
   version char(3) NOT NULL,
