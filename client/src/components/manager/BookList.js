@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import QuestionCreator from './QuestionCreator';
+import QuestionModal from './QuestionModal';
 
 class BookList extends Component {
 
@@ -19,7 +20,8 @@ class BookList extends Component {
 
         this.state = {
             books: [],
-            userId: 'test'
+            userId: 'test',
+            openModal: true
         }
     }
 
@@ -32,6 +34,9 @@ class BookList extends Component {
 
         return (
             <div className={classes.wrap}>
+                <QuestionModal
+                    openModal={this.state.openModal}>
+                </QuestionModal>
                 <div className={classes.bookBody}>
                     <div className={classes.bookHeader}>
                         <Button className={classes.addBtn} onClick={() => this.exportBookJson(this.state.questions)}>Export</Button>
@@ -39,6 +44,7 @@ class BookList extends Component {
                         <Button className={classes.addBtn} to="/template" >ADD</Button>
                     </div>
                     <Route exact path='/template' component={QuestionCreator} />
+
                     <div className={classes.bookContent}>
                         {this.state.books ? this.state.books.map((book, index) => {
                             return (
@@ -54,7 +60,7 @@ class BookList extends Component {
                                     <CardActions>
                                         <Button size="small">Learn More</Button>
                                         <Button size="small" onClick={() => this.props.history.push({
-                                            pathname : '/test',
+                                            pathname: '/testbook/start',
                                             state: {
                                                 bookId: book.testbook_id
                                             }

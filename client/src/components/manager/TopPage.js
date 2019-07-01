@@ -25,8 +25,8 @@ class TopPage extends Component {
 
         return (
             <BrowserRouter>
-                <Route  path='/booklist' component={BookList} />
-                <Route  path='/test' component={TestViewer} />
+                <Route exact path='/testbook' component={BookList} />
+                <Route path='/testbook/start' component={TestViewer} />
             </BrowserRouter>
         );
     }

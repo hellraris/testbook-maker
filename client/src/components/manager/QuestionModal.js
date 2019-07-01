@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Modal from '@material-ui/core/Modal';
-import Button from '@material-ui/core/Button';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+
 import { withStyles } from '@material-ui/core/styles';
-import InfoPage from './InfoPage';
-import QuestionPage from './QuestionPage';
-import AnswerPage from './AnswerPage';
+import Modal from '@material-ui/core/Modal';
+import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
+import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
+
 
 const styles = theme => ({
     paper: {
@@ -16,18 +16,32 @@ const styles = theme => ({
         position: 'relative',
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 3,
         outline: 'none',
-        width: theme.spacing.unit * 50
+        height: '85%',
+        width: '40%',
+        minWidth: '480px'
     },
-    questionText: {
-        width: theme.spacing.unit * 50
+    scrollPage:{
+        overflowY: 'scroll',
+        overflowX: 'hidden',
+        padding: theme.spacing.unit * 3,
+    },
+    contents: {
+
+    },
+    questionPart: {
+        padding: 10
+    },
+    scriptPart: {
+        marginBottom: 10
     },
     selection: {
-        width: theme.spacing.unit * 50
+        display: 'flex'
     },
     footer: {
-        margin: 'auto auto 0 auto' 
+        padding: theme.spacing.unit * 2,
+        display: 'flex',
+        margin: 'auto auto 0 auto'
     }
 });
 
@@ -35,247 +49,284 @@ const modalStyle = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    height: '600px'
 }
 
 class QuestionModal extends Component {
 
     constructor(props) {
         super(props);
-        this.state = this.initialState;
-    }
-
-    get initialState() {
-        return {
-            navi: 0,
-            title: '',
-            part: '',
-            tag: '',
-            tagList: [],
-            script: '',
-            answer: 0,
-            selections: [
-                { id: '1', selection: ''},
-                { id: '2', selection: ''},
-                { id: '3', selection: ''},
-                { id: '4', selection: ''}
-            ],
-            explanation: '',
-            translation: '',
-            word: ''
-        };
-    }
-
-    resetBuilder () {
-        this.setState(this.initialState);
-    }
-    /*
-    componentDidMount() {
-        const questionId = this.props.questionId;
-        const bookId = this.props.bookId;
-
-        console.log(bookId);
-        console.log(questionId);
-
-        if (questionId !== null) {
-            this.getQuestionData(bookId, questionId);
-        } 
-    }*/
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.questionId !== '') {
-            this.getQuestionData(nextProps.bookId, nextProps.questionId)
+        this.state = {
+            questions: null,
+            markingSheet: null,
+            nowQuestionIdx: 0,
         }
     }
 
-    getQuestionData(bookId, questionId) {
-        axios({
-            method: 'get',
-            url: '/api/book/' + bookId + '/question/' + questionId
-        }).then(res => this.inputQuestionData(res.data))
-            .catch(err => console.log(err));
+    componentDidMount() {
+        this.getQuestions();
     }
 
-    inputQuestionData(data) {
-        this.setState({
-            ...this.state,
-            title: data.info.title,
-            part: data.info.part,
-            tagList: data.info.tagList,
-            script: data.question.script,
-            selections: data.question.selections,
-            answer: data.question.answer,
-            explanation: data.answer.explanation,
-            translation: data.answer.translation,
-            word: data.answer.word
-        })
-    }
-
-    handleCommonTextChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-        })
-    }
-
-    handleSelectionChange = (value, id) => {
-        this.setState({
-            selections: this.state.selections.map(
-                selection => id === selection.id
-                    ? { ...selection, selection: value }
-                    : selection
-            )
-        })
-    }
-
-    handleAnswerChange = (id) => {
-        this.setState({
-            answer: id
-        })
-    }
-
-    addInfoTag = (tag) => {
-        this.setState({
-            ...this.state,
-            tag: '',
-            tagList: this.state.tagList.concat(tag)
-        })
-    }
-
-    deleteInfoTag = (index) => {
-        this.setState({
-            tagList: this.state.tagList.filter((_, i) => i !== index)
-        })
-    }
-
-    handleNaviChange = (event, value) => {
-        this.setState({
-            navi: value
-        })
-    }
 
     handleModalClose = () => {
         this.resetBuilder();
         this.props.closeModal();
     }
 
-    createQuestionData = () => {
-        const questionData = {
-            info: {
-                title: this.state.title,
-                part: this.state.part,
-                tagList: this.state.tagList
-            },
-            question: {
-                script: this.state.script,
-                selections: this.state.selections,
-                answer: this.state.answer
-            },
-            answer: {
-                explanation: this.state.explanation,
-                translation: this.state.translation,
-                word: this.state.word
-            }
-        }
-
-        return questionData;
-    }
-
-    addQuestion = () => {
-        const requestData = this.createQuestionData();
-        axios({
-            method: 'post',
-            url: '/api/book/' + this.props.bookId + '/question/add',
-            data: requestData
-        });
-        this.props.refreshQuestions();
-        this.handleModalClose();
-    }
-
-    editQuestion = () => {
-        const requestData = this.createQuestionData();
-        axios({
-            method: 'post',
-            url: '/api/book/' + this.props.bookId + '/question/' + this.props.questionId + '/update',
-            data: requestData
-        });
-        this.props.refreshQuestions();
-        this.handleModalClose();
-    }
-
 
     render() {
         const { classes } = this.props;
 
-        const selectPage = () => {
-            if (this.state.navi === 0) {
-                return (
-                    <InfoPage
-                        title={this.state.title}
-                        part={this.state.part}
-                        tag={this.state.tag}
-                        tagList={this.state.tagList}
-                        handleTextChange={this.handleCommonTextChange}
-                        addTag={this.addInfoTag}
-                        deleteTag={this.deleteInfoTag}
-                    />
-                )
-            }
-            if (this.state.navi === 1) {
-                return (
-                    <QuestionPage
-                        script={this.state.script}
-                        selections={this.state.selections}
-                        answer={this.state.answer}
-                        handleTextChange={this.handleCommonTextChange}
-                        handleSelectionChange={this.handleSelectionChange}
-                        handleAnswerChange={this.handleAnswerChange}
-                    />
-                );
-            }
-            if (this.state.navi === 2) {
-                return (
-                    <AnswerPage
-                        explanation={this.state.explanation}
-                        translation={this.state.translation}
-                        word={this.state.word}
-                        handleTextChange={this.handleCommonTextChange}
-                    />
-                )
-            }
+        if (this.state.questions === null) {
+            return <Typography>please wait</Typography>
         }
 
+        const { scripts, subQuestions } = this.state.questions[this.state.nowQuestionIdx];
         return (
-            <div>
-                <Modal open={this.props.openModal}>
-                    <div style={modalStyle} className={classes.paper}>
-                        <div>
-                        <BottomNavigation
-                            value={this.state.navi}
-                            onChange={this.handleNaviChange}
-                            showLabels
-                            className={classes.root}
-                        >
-                            <BottomNavigationAction label="Info" />
-                            <BottomNavigationAction label="Question" />
-                            <BottomNavigationAction label="Answer" />
-                        </BottomNavigation>
-                        </div>
-                        <div>
-                            {selectPage()}
-                        </div>
-                        <div className={classes.footer}>
-                           {this.props.questionId === ''?
-                           <Button onClick={this.addQuestion}>add</Button>
-                           :
-                           <Button onClick={this.editQuestion}>edit</Button>
-                        }
-                            <Button onClick={this.handleModalClose}>close</Button>
+            <Modal open={this.props.openModal}>
+                <div style={modalStyle} className={classes.paper}>
+                    <div style={{backgroundColor: '#fbbb4b', height: 13}}></div>
+                    <div className={classes.scrollPage}>
+                        <div className={classes.contents}>
+                            <div>
+                                {scripts ? scripts.map((script, index) => {
+                                    return (
+                                        <div className={classes.scriptPart} key={index}>
+                                            <div style={{ marginLeft: 15 }}>
+                                                <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
+                                            </div>
+                                            <Divider variant="middle" />
+                                            <div style={{ marginLeft: 10, padding: 10 }}>
+                                                <Typography>{script.contents}</Typography>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                                    : {}}
+                            </div>
+                            <div>
+                                {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
+                                    return (
+                                        <div className={classes.questionPart} key={subQuestionIdx}>
+                                            <div style={{ marginLeft: 15 }}>
+                                                <Typography variant="subtitle1">{subQuestion.subtilte}</Typography>
+                                            </div>
+                                            <Divider variant="middle" />
+                                            <div style={{ marginLeft: 15 }} >
+                                                {subQuestion.selections.map((selection, selectionIdx) => {
+                                                    return (
+                                                        <div className={classes.selection}
+                                                            key={selectionIdx}
+                                                        >
+                                                            <Checkbox
+                                                                checked={this.state.markingSheet[subQuestion.subQuestionNo].has(selection.id)}
+                                                                onChange={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
+                                                            />
+                                                            <div onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}>
+                                                                <Typography style={{ marginTop: 14 }}>
+                                                                    {selection.text}
+                                                                </Typography>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                                    : {}}
+                            </div>
                         </div>
                     </div>
-                </Modal>
-            </div >
+                    <div className={classes.footer}>
+                        <div onClick={this.prevQuestion}>
+                            <Button>prev</Button>
+                        </div>
+                        {
+                            this.state.nowQuestionIdx === this.state.questions.length - 1 ?
+                                <div onClick={() => this.checkComplteTest()}>
+                                    <Button>submit</Button>
+                                </div> :
+                                <div onClick={this.nextQuestion}>
+                                    <Button>next</Button>
+                                </div>
+                        }
+                    </div>
+                </div>
+            </Modal>
         );
     }
+
+    // functions
+
+    getQuestions = () => {
+
+        const bookId = '99999999';
+
+        axios({
+            method: 'get',
+            url: '/api/testbook/' + bookId
+        }).then(res => {
+            console.log(res.data);
+            this.setTestingState(res.data);
+        })
+            .catch(err => console.log(err));
+    }
+
+    goToQuestion = (index) => {
+
+        let targetQuestionIdx = -1;
+
+        this.state.questions.forEach((question, questionIdx) => {
+            question.subQuestions.forEach((subQuestion) => {
+                if (subQuestion.subQuestionNo === index) {
+                    targetQuestionIdx = questionIdx;
+                }
+            })
+        })
+
+        this.setState({
+            ...this.state,
+            modalVisible: !this.state.modalVisible,
+            nowQuestionIdx: targetQuestionIdx
+        })
+    }
+
+    checkComplteTest = () => {
+        let result = true
+        this.state.markingSheet.forEach((data) => {
+            if (data.size === 0) {
+                result = false;
+                return;
+            }
+        })
+    }
+
+    prevQuestion = (event) => {
+        event.stopPropagation();
+        if (this.state.nowQuestionIdx > 0) {
+            let newQuestionIdx = this.state.nowQuestionIdx - 1;
+            this.setState({
+                ...this.state,
+                nowQuestionIdx: newQuestionIdx
+            })
+        }
+    }
+
+    nextQuestion = (event) => {
+        event.stopPropagation();
+        if (this.state.nowQuestionIdx < this.state.questions.length - 1) {
+            let newQuestionIdx = this.state.nowQuestionIdx + 1;
+            this.setState({
+                ...this.state,
+                nowQuestionIdx: newQuestionIdx
+            })
+        }
+    }
+
+    // 테스트 준비 상태 세팅
+    setTestingState = async (questions) => {
+
+        if (questions.length === 0) return;
+
+        let subQuestionNo = 0;
+        // 서브퀘스트에 questionNo부여
+        const newQuestions = questions.map((question) => {
+            const newSubQuestion = question.subQuestions.map((subQuestion) => {
+                const newSubQuestion = {
+                    ...subQuestion,
+                    subQuestionNo: subQuestionNo
+                }
+                subQuestionNo = subQuestionNo + 1;
+                return newSubQuestion;
+            });
+            const newQuestion = {
+                ...question,
+                subQuestions: newSubQuestion
+            }
+
+            return newQuestion;
+        });
+
+        // 서브퀘스트 수만큼 답안시트 작성
+        const newMarkingSheet = []
+        for (let index = 0; index < subQuestionNo; index++) {
+            newMarkingSheet.push(new Set());
+        }
+
+        await this.setState({
+            ...this.state,
+            questions: newQuestions,
+            markingSheet: newMarkingSheet,
+            updated: true
+        });
+    }
+
+    handleMarking = (selectionType, subQuestionNo, selectionId, answerCnt) => {
+
+        let newMarkingSheet = this.state.markingSheet;
+
+        switch (selectionType) {
+            // 답선택수 제한 없음
+            case 0: {
+
+                newMarkingSheet[subQuestionNo].has(selectionId) ? newMarkingSheet[subQuestionNo].delete(selectionId) : newMarkingSheet[subQuestionNo].add(selectionId);
+
+                this.setState({
+                    ...this.state,
+                    markingSheet: newMarkingSheet
+                })
+                return
+            }
+            // 1개의 답선택가능
+            case 1: {
+                if (newMarkingSheet[subQuestionNo].has(selectionId)) {
+                    newMarkingSheet[subQuestionNo].clear();
+                } else {
+                    newMarkingSheet[subQuestionNo].clear();
+                    newMarkingSheet[subQuestionNo].add(selectionId);
+                }
+
+                this.setState({
+                    ...this.state,
+                    markingSheet: newMarkingSheet
+                })
+                return
+            }
+            // 정답수만큼 답선택가능
+            case 2: {
+                if (newMarkingSheet[subQuestionNo].has(selectionId)) {
+                    newMarkingSheet[subQuestionNo].delete(selectionId)
+                } else {
+                    if (newMarkingSheet[subQuestionNo].size >= answerCnt) {
+                        return
+                    }
+                    newMarkingSheet[subQuestionNo].add(selectionId);
+                }
+
+                this.setState({
+                    ...this.state,
+                    markingSheet: newMarkingSheet
+                })
+                return
+            }
+            default:
+                return
+        }
+    }
+
+
+    confirmMarking = (subQuestionNo, selectionId) => {
+        return this.state.markingSheet[subQuestionNo].has(selectionId);
+    }
+
+    submitTest = () => {
+
+        this.setState({
+            ...this.state,
+            complete: true
+        })
+    }
+
 }
 
 export default withStyles(styles)(QuestionModal);

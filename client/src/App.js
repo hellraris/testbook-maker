@@ -11,7 +11,7 @@ class App extends Component {
   render() {
     return (
         <div className="App">
-          <Route exact path='/booklist' component={TopPage} />
+          <Route exact path='/testbook' component={TopPage} />
         </div>
     );
   }

@@ -281,7 +281,7 @@ class TestViewer extends Component {
 const styles = theme => ({
     wrap: {
         display: 'flex',
-        height: '100%'
+        height: '97%'
     },
     body: {
         display: 'flex',
@@ -290,10 +290,12 @@ const styles = theme => ({
         height: '100%',
         padding: 10,
         backgroundColor: 'steelblue',
+        borderRadius: 5
     },
     viewer: {
         flex: '1 1 1000px',
         backgroundColor: 'white',
+        padding: 10,
         overflowY: 'scroll',
         overflowX: 'hidden',
         
