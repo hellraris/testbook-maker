@@ -21,7 +21,7 @@ const styles = theme => ({
         width: '40%',
         minWidth: '480px'
     },
-    scrollPage:{
+    scrollPage: {
         overflowY: 'scroll',
         overflowX: 'hidden',
         padding: theme.spacing.unit * 3,
@@ -49,6 +49,7 @@ const modalStyle = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
+    borderRadius: 5
 }
 
 class QuestionModal extends Component {
@@ -59,6 +60,7 @@ class QuestionModal extends Component {
             questions: null,
             markingSheet: null,
             nowQuestionIdx: 0,
+            complete: false
         }
     }
 
@@ -72,88 +74,111 @@ class QuestionModal extends Component {
         this.props.closeModal();
     }
 
-
     render() {
-        const { classes } = this.props;
 
         if (this.state.questions === null) {
             return <Typography>please wait</Typography>
         }
 
-        const { scripts, subQuestions } = this.state.questions[this.state.nowQuestionIdx];
         return (
             <Modal open={this.props.openModal}>
-                <div style={modalStyle} className={classes.paper}>
-                    <div style={{backgroundColor: '#fbbb4b', height: 13}}></div>
-                    <div className={classes.scrollPage}>
-                        <div className={classes.contents}>
-                            <div>
-                                {scripts ? scripts.map((script, index) => {
-                                    return (
-                                        <div className={classes.scriptPart} key={index}>
-                                            <div style={{ marginLeft: 15 }}>
-                                                <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
-                                            </div>
-                                            <Divider variant="middle" />
-                                            <div style={{ marginLeft: 10, padding: 10 }}>
-                                                <Typography>{script.contents}</Typography>
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                                    : {}}
-                            </div>
-                            <div>
-                                {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
-                                    return (
-                                        <div className={classes.questionPart} key={subQuestionIdx}>
-                                            <div style={{ marginLeft: 15 }}>
-                                                <Typography variant="subtitle1">{subQuestion.subtilte}</Typography>
-                                            </div>
-                                            <Divider variant="middle" />
-                                            <div style={{ marginLeft: 15 }} >
-                                                {subQuestion.selections.map((selection, selectionIdx) => {
-                                                    return (
-                                                        <div className={classes.selection}
-                                                            key={selectionIdx}
-                                                        >
-                                                            <Checkbox
-                                                                checked={this.state.markingSheet[subQuestion.subQuestionNo].has(selection.id)}
-                                                                onChange={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
-                                                            />
-                                                            <div onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}>
-                                                                <Typography style={{ marginTop: 14 }}>
-                                                                    {selection.text}
-                                                                </Typography>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
-                                        </div>
-                                    )
-                                })
-                                    : {}}
-                            </div>
-                        </div>
-                    </div>
-                    <div className={classes.footer}>
-                        <div onClick={this.prevQuestion}>
-                            <Button>prev</Button>
-                        </div>
-                        {
-                            this.state.nowQuestionIdx === this.state.questions.length - 1 ?
-                                <div onClick={() => this.checkComplteTest()}>
-                                    <Button>submit</Button>
-                                </div> :
-                                <div onClick={this.nextQuestion}>
-                                    <Button>next</Button>
-                                </div>
-                        }
-                    </div>
-                </div>
+                {this.state.complete ? this.resultViewer() : this.questionViewer()}
             </Modal>
         );
+    }
+
+    questionViewer = () => {
+        const { classes } = this.props;
+        const { scripts, subQuestions } = this.state.questions[this.state.nowQuestionIdx];
+
+        return (
+            <div style={modalStyle} className={classes.paper}>
+                <div style={{ backgroundColor: '#fbbb4b', height: 13 }}></div>
+                <div className={classes.scrollPage}>
+                    <div className={classes.contents}>
+                        <div>
+                            {scripts ? scripts.map((script, index) => {
+                                return (
+                                    <div className={classes.scriptPart} key={index}>
+                                        <div style={{ marginLeft: 15 }}>
+                                            <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
+                                        </div>
+                                        <div style={{ marginLeft: 10, padding: 10, border: '1px dashed grey', borderRadius: 5 }}>
+                                            <Typography>{script.contents}</Typography>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                                : {}}
+                        </div>
+                        <div>
+                            {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
+                                return (
+                                    <div className={classes.questionPart} key={subQuestionIdx}>
+                                        <div style={{ marginLeft: 15 }}>
+                                            <Typography variant="subtitle1">Q{subQuestionIdx + 1}.{subQuestion.subtilte}</Typography>
+                                        </div>
+                                        <Divider variant="middle" />
+                                        <div style={{ marginLeft: 15 }} >
+                                            {subQuestion.selections.map((selection, selectionIdx) => {
+                                                return (
+                                                    <div className={classes.selection}
+                                                        key={selectionIdx}
+                                                    >
+                                                        <Checkbox
+                                                            checked={this.state.markingSheet[subQuestion.subQuestionNo].has(selection.id)}
+                                                            onChange={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
+                                                        />
+                                                        <div onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}>
+                                                            <Typography style={{ marginTop: 14 }}>
+                                                                {selection.text}
+                                                            </Typography>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                )
+                            })
+                                : {}}
+                        </div>
+                    </div>
+                </div>
+                <div className={classes.footer}>
+                    <div onClick={this.prevQuestion}>
+                        <Button>prev</Button>
+                    </div>
+                    {
+                        this.state.nowQuestionIdx === this.state.questions.length - 1 ?
+                            <div onClick={() => this.checkComplteTest()}>
+                                <Button>submit</Button>
+                            </div> :
+                            <div onClick={this.nextQuestion}>
+                                <Button>next</Button>
+                            </div>
+                    }
+                </div>
+            </div>
+        );
+    }
+
+    resultViewer = () => {
+        const { classes } = this.props;
+        return (
+            <div style={modalStyle} className={classes.paper}>
+                <div style={{ backgroundColor: '#00b07b', height: 13 }}></div>
+                <div className={classes.scrollPage}>
+                    <div className={classes.contents}>
+
+
+                    </div>
+                </div>
+                <div className={classes.footer}>
+                    <Button>close</Button>
+                </div>
+            </div>
+        )
     }
 
     // functions
@@ -199,6 +224,9 @@ class QuestionModal extends Component {
                 return;
             }
         })
+        if (result) {
+            this.submitTest();
+        }
     }
 
     prevQuestion = (event) => {
