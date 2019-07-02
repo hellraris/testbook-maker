@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 
 const styles = theme => ({
@@ -25,6 +27,7 @@ const styles = theme => ({
         overflowY: 'scroll',
         overflowX: 'hidden',
         padding: theme.spacing.unit * 3,
+        height: '100%'
     },
     contents: {
 
@@ -60,7 +63,10 @@ class QuestionModal extends Component {
             questions: null,
             markingSheet: null,
             nowQuestionIdx: 0,
-            complete: false
+            complete: false,
+            results: null,
+            correctCnt: 0,
+            incorrectCnt: 0
         }
     }
 
@@ -165,13 +171,32 @@ class QuestionModal extends Component {
 
     resultViewer = () => {
         const { classes } = this.props;
+
         return (
             <div style={modalStyle} className={classes.paper}>
                 <div style={{ backgroundColor: '#00b07b', height: 13 }}></div>
                 <div className={classes.scrollPage}>
                     <div className={classes.contents}>
-
-
+                        <div>
+                            {this.state.results ?
+                                <div>
+                                    <div>
+                                        correct: {this.state.correctCnt} Incorrect: {this.state.incorrectCnt}
+                                    </div>
+                                    {this.state.results.map((result, index) => {
+                                        return (
+                                            <ListItem key={index}>
+                                                <ListItemText
+                                                    primary={"Q." + (result.subQuestionNo + 1)}
+                                                    secondary={"Answer: " + (Number(result.answer) + 1) + "  YourMarking: " + (Number(result.marking) + 1)}
+                                                />
+                                            </ListItem>
+                                        )
+                                    })}
+                                </div>
+                                : <Typography>please wait</Typography>
+                            }
+                        </div>
                     </div>
                 </div>
                 <div className={classes.footer}>
@@ -249,6 +274,35 @@ class QuestionModal extends Component {
                 nowQuestionIdx: newQuestionIdx
             })
         }
+    }
+
+    setResult = () => {
+
+        const results = [];
+        let correctCnt = 0;
+        let incorrectCnt = 0;
+
+        this.state.questions.forEach((question, questionIdx) => {
+            question.subQuestions.forEach((subQuestion) => {
+                let isAnswer = true;
+                if (this.state.markingSheet[subQuestion.subQuestionNo].size === subQuestion.answer.length) {
+                    this.state.markingSheet[subQuestion.subQuestionNo].forEach((value) => {
+                        if (!subQuestion.answer.includes(value)) {
+                            isAnswer = false;
+                        }
+                    })
+                } else {
+                    isAnswer = false;
+                }
+
+                const answerIdx = subQuestion.answer;
+                const markingIdx = [...this.state.markingSheet[subQuestion.subQuestionNo]];
+
+                results.push({ questionIdx: questionIdx, subQuestionNo: subQuestion.subQuestionNo, answer: answerIdx.sort(), marking: markingIdx.sort(), isAnswer: isAnswer })
+            })
+        })
+
+        return results;
     }
 
     // 테스트 준비 상태 세팅
@@ -348,9 +402,20 @@ class QuestionModal extends Component {
     }
 
     submitTest = () => {
+        const results = this.setResult();
+        let correctCnt = 0;
+        let incorrectCnt = 0;
+
+        results.forEach((data) => {
+            data.isAnswer ? correctCnt = correctCnt + 1 : incorrectCnt = incorrectCnt + 1
+        })
+
 
         this.setState({
             ...this.state,
+            results: results,
+            correctCnt: correctCnt,
+            incorrectCnt: incorrectCnt,
             complete: true
         })
     }
