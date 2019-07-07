@@ -23,35 +23,6 @@ connection.connect();
 const multer = require('multer');
 const upload = multer({ dest: './upload' })
 
-// Questionリスト取得
-app.get('/api/book/:testbookId/questions', (req, res) => {
-
-    let sql = "SELECT question_id AS questionId, title, tag, favorite, scripts, subquestions AS subQuestions, explanations, files FROM QUESTION WHERE TESTBOOK_ID = ? AND DEL_FLG = 0";
-    let testbookId = req.params.testbookId;
-    let params = [testbookId];
-    connection.query(
-        sql, params,
-        (err, results, fields) => {
-            if (err) {
-                console.log(err);
-            }
-
-            let resData = results.map((question) => {
-                return {
-                    ...question,
-                    scripts: JSON.parse(question.scripts),
-                    subQuestions: JSON.parse(question.subQuestions),
-                    explanations: JSON.parse(question.explanations),
-                    files: JSON.parse(question.files)
-                }
-            })
-
-            res.send(resData);
-        }
-    );
-});
-
-
 // webからbookリスト取得
 app.get('/api/:userId/testbook', (req, res) => {
 
@@ -216,42 +187,5 @@ app.post('/api/book/question/add', (req, res) => {
     );
 
 });
-
-// order機能(保留)
-/*
-app.get('/api/book/:testbookId/questionOrder', (req, res) => {
-    let sql = "SELECT question_order from testbook where testbook_id = ? AND DEL_FLG = 0";
-    let testbookId = req.params.testbookId;
-    let params = [testbookId];
-    connection.query(
-        sql,params,
-        (err, results, fields) => {
-            if (err) {
-                console.log(err);
-            }
-            res.send(results[0]);
-        }
-    );
-});
-
-
-// QuestionOrder更新
-app.post('/api/book/:testbookId/questionOrder', (req, res) => {
-
-    let sql = 'UPDATE TESTBOOK set question_order = ? where testbook_id =?';
-    let testbookId = req.params.testbookId;
-    let newQuestionOrlder = JSON.stringify(req.body);
-    let params = [newQuestionOrlder, testbookId];
-    connection.query(sql, params,
-        (err, results, fields) => {
-            if (err) {
-                console.log(err);
-            }
-            res.send(results);
-        }
-    );
-
-});
-*/
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

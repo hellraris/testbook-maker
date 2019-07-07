@@ -83,11 +83,7 @@ class QuestionCreator extends Component {
             url: '/api/book/question/add',
             data: requestData
         }).then(res => {
-            if (res.status === 200) {
                this.goToQuestionList();
-            }
-            this.props.history.push("/error");
-
         }).catch(err => console.log(err));
     }
 
