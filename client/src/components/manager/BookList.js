@@ -34,9 +34,6 @@ class BookList extends Component {
 
         return (
             <div className={classes.wrap}>
-                <QuestionModal
-                    openModal={this.state.openModal}>
-                </QuestionModal>
                 <div className={classes.bookBody}>
                     <div className={classes.bookHeader}>
                         <Button className={classes.addBtn} onClick={() => this.exportBookJson(this.state.questions)}>Export</Button>

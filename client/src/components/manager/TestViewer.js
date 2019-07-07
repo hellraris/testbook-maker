@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-
 import axios from 'axios';
 
 import { withStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
+import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
 
 class TestViewer extends Component {
 
@@ -33,71 +37,71 @@ class TestViewer extends Component {
 
         return (
             <div className={classes.wrap}>
-                <div className={classes.body}>
-                    <div className={classes.side}>
-                        test
-                    </div>
-                    <div className={classes.viewer}>
-                        <div>
-                            <div>
-                                {scripts ? scripts.map((script, index) => {
-                                    return (
-                                        <Paper key={index}>
-                                            <div>
-                                                <Typography>{script.subtilte}</Typography>
-                                            </div>
-                                            <div>
-                                                <Typography>{script.contents}</Typography>
-                                            </div>
-                                        </Paper>
-                                    )
-                                })
-                                    : {}}
-                            </div>
-                            <div>
-                                {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
-                                    return (
-                                        <Paper key={subQuestionIdx}>
-                                            <div>
-                                                <Typography>{subQuestion.subtilte}</Typography>
-                                            </div>
-                                            <div>
-                                                {subQuestion.selections.map((selection, selectionIdx) => {
-                                                    return (
-                                                        <div
-                                                            key={selectionIdx}
-                                                            onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
-                                                        >
-                                                            <Checkbox
-                                                                style={{ marginBottom: 10 }}
-                                                                checked={this.state.markingSheet[subQuestion.subQuestionNo].has(selection.id)}
-                                                                onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
-                                                            />
-                                                            <Typography style={{ marginTop: 5 }}>{selection.text}</Typography>
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
-                                        </Paper>
-                                    )
-                                })
-                                    : {}}
-                            </div>
-                        </div>
-                        <div>
-                            <div onClick={this.prevQuestion}>
-                                <Typography>prev</Typography>
-                            </div>
-                            {
-                                this.state.nowQuestionIdx === this.state.questions.length - 1 ?
-                                    <div onClick={() => this.checkComplteTest()}>
-                                        <Typography>submit</Typography>
-                                    </div> :
-                                    <div onClick={this.nextQuestion}>
-                                        <Typography>next</Typography>
+                <div className={classes.testBody}>
+                    <div className={classes.testContents}>
+                        <div className={classes.script}>
+                            {scripts ? scripts.map((script, index) => {
+                                return (
+                                    <div className={classes.scriptItem} key={index}>
+                                        <div style={{ display: 'flex' }}>
+                                            <div style={{ backgroundColor: '#fbbb4b', marginRight: '7px', borderRadius: 5, height: 25, width: 5 }}></div>
+                                            <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
+                                        </div>
+                                        <div style={{ padding: 10, border: '1px dashed grey', borderRadius: 5 }}>
+                                            <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{script.contents}</Typography>
+                                        </div>
                                     </div>
-                            }
+                                )
+                            })
+                                : {}}
                         </div>
+                        <div className={classes.subQuestion}>
+                            {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
+                                return (
+                                    <div className={classes.subQuestionItem} key={subQuestionIdx}>
+                                        <div style={{ marginLeft: 15 }}>
+                                            <Typography variant="subtitle1">Q{subQuestionIdx + 1}.{subQuestion.subtilte}</Typography>
+                                        </div>
+                                        <Divider variant="middle" />
+                                        <div style={{ marginLeft: 15 }} >
+                                            {subQuestion.selections.map((selection, selectionIdx) => {
+                                                return (
+                                                    <div className={classes.selection}
+                                                        key={selectionIdx}
+                                                    >
+                                                        <Checkbox
+                                                            checked={this.state.markingSheet[subQuestion.subQuestionNo].has(selection.id)}
+                                                            onChange={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
+                                                        />
+                                                        <div onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}>
+                                                            <Typography style={{ marginTop: 14 }} gutterBottom>
+                                                                {selection.text}
+                                                            </Typography>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
+                                )
+                            })
+                                : {}}
+                        </div>
+                        <div style={{marginBottom:50}}></div>>
+                    </div>
+                    <div className={classes.footer}>
+                        <div onClick={this.prevQuestion}>
+                            <Button>prev</Button>
+                        </div>
+                        {
+                            this.state.nowQuestionIdx === this.state.questions.length - 1 ?
+                                <div onClick={() => this.checkComplteTest()}>
+                                    <Button>submit</Button>
+                                </div> :
+                                <div onClick={this.nextQuestion}>
+                                    <Button>next</Button>
+                                </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -108,7 +112,8 @@ class TestViewer extends Component {
 
     getQuestions = () => {
 
-        const bookId = this.props.location.state.bookId;
+        //const bookId = this.props.location.state.bookId;
+        const bookId = '99999999'
 
         axios({
             method: 'get',
@@ -281,29 +286,47 @@ class TestViewer extends Component {
 const styles = theme => ({
     wrap: {
         display: 'flex',
-        height: '97%'
+        height: '100%',
+        backgroundColor: 'steelblue',
     },
-    body: {
-        display: 'flex',
+    testBody: {
         flex: '0 1 1280px',
         margin: '0 auto',
-        height: '100%',
-        padding: 10,
+        minWidth: 320
+    },
+    testContents: {
         backgroundColor: 'steelblue',
+        padding: 10
+    },
+    script: {
+
+    },
+    subQuestion: {
+
+    },
+    subQuestionItem: {
+        backgroundColor: 'white',
+        padding: 7,
+        margin: 5,
         borderRadius: 5
     },
-    viewer: {
-        flex: '1 1 1000px',
+    scriptItem: {
         backgroundColor: 'white',
-        padding: 10,
-        overflowY: 'scroll',
-        overflowX: 'hidden',
-        
+        padding: 7,
+        margin: 5,
+        borderRadius: 5
     },
-    side: {
-        flex: '0 1 200px',
-        overflowY: 'scroll',
-        overflowX: 'hidden',
+    selection: {
+        display: 'flex'
+    },
+    footer: {
+        position: 'fixed',
+        width: '100%',
+        bottom: 0,
+        left: 0,
+        backgroundColor:'#bee6d1',
+        display: 'flex',
+        justifyContent: 'center'	
     }
 });
 

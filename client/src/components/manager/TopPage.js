@@ -21,12 +21,11 @@ class TopPage extends Component {
     }
 
     render() {
-        const { classes } = this.props;
 
         return (
             <BrowserRouter>
-                <Route exact path='/testbook' component={BookList} />
-                <Route path='/testbook/start' component={TestViewer} />
+                <Route path={'/testbook'} component={BookList} />
+                <Route path='/start' component={TestViewer} />
             </BrowserRouter>
         );
     }
