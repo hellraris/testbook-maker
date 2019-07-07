@@ -14,7 +14,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const styles = theme => ({
     body: {
-        maxWidth: '480px',
         margin: '5px'
     },
     head: {
@@ -111,45 +110,6 @@ class Explanation extends Component {
         this.props.updateExplanationData(this.state.explanations);
     }
 
-    handleExpanded = () => {
-        this.setState({
-            ...this,
-            expanded: !this.state.expanded
-        })
-    }
-
-    addExplanation = () => {
-        this.setState({
-            ...this.state,
-            explanations: this.state.explanations.concat({ subtilte: '', contents: '' })
-        })
-    }
-
-    deleteExplanation = (explanationIdx) => {
-        this.setState({
-            ...this.state,
-            explanations: this.state.explanations.filter((_, index) => index !== explanationIdx)
-        })
-    }
-
-    updateSubtitle = (explanationIdx, event) => {
-        this.setState({
-            ...this.state,
-            explanations: this.state.explanations.map((explanation, index) => {
-                return index === explanationIdx ? { ...explanation, subtilte: event.target.value } : explanation
-            })
-        })
-    }
-
-    updateExplanation = (explanationIdx, event) => {
-        this.setState({
-            ...this.state,
-            explanations: this.state.explanations.map((explanation, index) => {
-                return index === explanationIdx ? { ...explanation, contents: event.target.value } : explanation
-            })
-        })
-    }
-
     render() {
         const { classes } = this.props;
         const { explanations } = this.state;
@@ -207,6 +167,46 @@ class Explanation extends Component {
             </div>
         );
     }
+
+    handleExpanded = () => {
+        this.setState({
+            ...this,
+            expanded: !this.state.expanded
+        })
+    }
+
+    addExplanation = () => {
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.concat({ subtilte: '', contents: '' })
+        })
+    }
+
+    deleteExplanation = (explanationIdx) => {
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.filter((_, index) => index !== explanationIdx)
+        })
+    }
+
+    updateSubtitle = (explanationIdx, event) => {
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.map((explanation, index) => {
+                return index === explanationIdx ? { ...explanation, subtilte: event.target.value } : explanation
+            })
+        })
+    }
+
+    updateExplanation = (explanationIdx, event) => {
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.map((explanation, index) => {
+                return index === explanationIdx ? { ...explanation, contents: event.target.value } : explanation
+            })
+        })
+    }
+
 }
 
 export default withStyles(styles)(Explanation);

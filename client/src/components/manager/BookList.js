@@ -17,8 +17,7 @@ class BookList extends Component {
 
         this.state = {
             books: [],
-            userId: 'test',
-            openModal: true
+            userId: 'test'
         }
     }
 
@@ -45,13 +44,23 @@ class BookList extends Component {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button size="small">Detail</Button>
-                                        <Button size="small" onClick={() => this.props.history.push({
-                                            pathname: '/testbook/start',
-                                            state: {
-                                                bookId: book.testbook_id
+                                        <Button size="small" onClick={() => this.props.history.push(
+                                            {
+                                                pathname: '/testbook/questions',
+                                                state: {
+                                                    userId: this.state.userId,
+                                                    bookId: book.testbook_id
+                                                }
                                             }
-                                        })}>Start</Button>
+                                        )}>Detail</Button>
+                                        <Button size="small" onClick={() => this.props.history.push(
+                                            {
+                                                pathname: '/testbook/start',
+                                                state: {
+                                                    bookId: book.testbook_id
+                                                }
+                                            }
+                                        )}>Start</Button>
                                     </CardActions>
                                 </Card>
                             )

@@ -1,13 +1,117 @@
 import React, { Component } from 'react';
 
+import axios from 'axios';
+
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+
+
 class QuestionList extends Component {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            userId: this.props.location.state.userId,
+            bookId: this.props.location.state.bookId,
+            questionList: []
+        }
+    }
+
+    componentDidMount() {
+        console.log(this.state.bookId);
+        this.getQuestionList()
+    }
+
     render() {
+        const { classes } = this.props;
+
         return (
-            <div>
-                
+            <div className={classes.wrap}>
+                <div className={classes.bookBody}>
+                    <div className={classes.bookContent}>
+                        {this.state.questionList ? this.state.questionList.map((question, index) => {
+                            return (
+                                <Card key={index} className={classes.card}>
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            {question.title}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button size="small">Detail</Button>
+                                    </CardActions>
+                                </Card>
+                            )
+                        }) : ''}
+                    </div>
+                </div>
+                <div className={classes.footer}>
+                    <Button onClick={() => this.props.history.push('/testbook')}>BACK</Button>
+                    <Button onClick={() => this.props.history.push(
+                        {
+                            pathname: '/testbook/questions/create',
+                            state: {
+                                userId: this.state.userId,
+                                bookId: this.state.bookId
+                            }
+                        }
+                    )}>ADD</Button>
+                </div>
             </div>
         );
     }
+
+    getQuestionList = () => {
+        axios({
+            method: 'get',
+            url: '/api/' + this.state.userId + '/testbook/' + this.state.bookId + '/questions'
+        }).then(res => {
+            const list = res.data;
+            console.log(list);
+            this.setState({ questionList: list })
+        })
+            .catch(err => console.log(err));
+    }
 }
 
-export default QuestionList;
+const styles = theme => ({
+    wrap: {
+        display: 'flex',
+        height: '100%'
+    },
+    bookBody: {
+        flex: '0 1 1280px',
+        margin: '0 auto',
+        height: '100%'
+    },
+    bookHeader: {
+        display: 'flex',
+        height: theme.spacing.unit * 7,
+        backgroundColor: 'gray'
+    },
+    bookContent: {
+        backgroundColor: 'steelblue',
+        padding: 10,
+        height: '100%'
+    },
+    card: {
+        marginBottom: 10
+    },
+    footer: {
+        position: 'fixed',
+        width: '100%',
+        bottom: 0,
+        left: 0,
+        backgroundColor: '#bee6d1',
+        display: 'flex',
+        justifyContent: 'center'
+    }
+});
+
+
+export default withStyles(styles)(QuestionList);

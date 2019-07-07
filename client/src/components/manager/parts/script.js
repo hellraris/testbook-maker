@@ -129,7 +129,6 @@ class Script extends Component {
 // styles
 const styles = theme => ({
     body: {
-        maxWidth: '480px',
         margin: '5px'
     },
     head: {

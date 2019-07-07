@@ -40,7 +40,6 @@ class TestViewer extends Component {
                                 return (
                                     <div className={classes.scriptItem} key={index}>
                                         <div style={{ display: 'flex' }}>
-                                            <div style={{ backgroundColor: '#fbbb4b', marginRight: '7px', borderRadius: 5, height: 25, width: 5 }}></div>
                                             <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
                                         </div>
                                         <div style={{ padding: 10, border: '1px dashed grey', borderRadius: 5 }}>

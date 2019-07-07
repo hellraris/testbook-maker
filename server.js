@@ -71,11 +71,30 @@ app.get('/api/:userId/testbook', (req, res) => {
     );
 });
 
-
 // webからQuestionリスト取得
-app.get('/api/testbook/:bookId', (req, res) => {
+app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
 
     console.log("hiru?", req.params.bookId);
+
+    let sql = "SELECT title FROM question WHERE testbook_id = ?";
+    let bookId = req.params.bookId;
+    let params = [bookId];
+
+    connection.query(
+        sql,params,
+        (err, results, fields) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log(results);
+            res.send(results);
+        }
+    );
+});
+
+
+// webからQuestions取得
+app.get('/api/testbook/:bookId', (req, res) => {
 
     let sql = "SELECT * FROM question WHERE testbook_id = ?";
     let bookId = req.params.bookId;
@@ -159,12 +178,12 @@ const getQuestionCount = (testbookId) => {
 }
 
 // Question追加
-app.post('/api/book/:testbookId/question/add', (req, res) => {
+app.post('/api/book/question/add', (req, res) => {
 
     const sql = "INSERT INTO QUESTION VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, null)";
-    const testbookId = req.params.testbookId;
-    const title = 'test';
-    const tag = null;
+    const testbookId = req.body.testbookId;
+    const title = req.body.title;
+    const tagList = req.body.tagList;
     const favorite = 0;
     const version = 0;
     const questionOrder = 0;
@@ -177,7 +196,7 @@ app.post('/api/book/:testbookId/question/add', (req, res) => {
     const params = [
         testbookId,
         title,
-        tag,
+        tagList,
         favorite,
         version,
         questionOrder,

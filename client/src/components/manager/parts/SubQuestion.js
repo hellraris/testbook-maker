@@ -300,7 +300,6 @@ const ExpansionPanelDetails = withStyles(theme => ({
 
 const styles = theme => ({
     body: {
-        maxWidth: '480px',
         margin: '5px'
     },
     head: {
