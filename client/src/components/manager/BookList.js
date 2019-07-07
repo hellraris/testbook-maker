@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -10,8 +9,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import QuestionCreator from './QuestionCreator';
-import QuestionModal from './QuestionModal';
 
 class BookList extends Component {
 
@@ -35,13 +32,6 @@ class BookList extends Component {
         return (
             <div className={classes.wrap}>
                 <div className={classes.bookBody}>
-                    <div className={classes.bookHeader}>
-                        <Button className={classes.addBtn} onClick={() => this.exportBookJson(this.state.questions)}>Export</Button>
-                        <Button className={classes.addBtn}>DELETE</Button>
-                        <Button className={classes.addBtn} to="/template" >ADD</Button>
-                    </div>
-                    <Route exact path='/template' component={QuestionCreator} />
-
                     <div className={classes.bookContent}>
                         {this.state.books ? this.state.books.map((book, index) => {
                             return (
@@ -55,7 +45,7 @@ class BookList extends Component {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button size="small">Learn More</Button>
+                                        <Button size="small">Detail</Button>
                                         <Button size="small" onClick={() => this.props.history.push({
                                             pathname: '/testbook/start',
                                             state: {

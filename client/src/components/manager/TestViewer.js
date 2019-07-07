@@ -2,14 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import { withStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
 
 class TestViewer extends Component {
 
@@ -87,7 +83,7 @@ class TestViewer extends Component {
                             })
                                 : {}}
                         </div>
-                        <div style={{marginBottom:50}}></div>>
+                        <div style={{ marginBottom: 50 }}></div>
                     </div>
                     <div className={classes.footer}>
                         <div onClick={this.prevQuestion}>
@@ -95,7 +91,7 @@ class TestViewer extends Component {
                         </div>
                         {
                             this.state.nowQuestionIdx === this.state.questions.length - 1 ?
-                                <div onClick={() => this.checkComplteTest()}>
+                                <div onClick={() => this.checkCompleteTest()}>
                                     <Button>submit</Button>
                                 </div> :
                                 <div onClick={this.nextQuestion}>
@@ -113,7 +109,7 @@ class TestViewer extends Component {
     getQuestions = () => {
 
         //const bookId = this.props.location.state.bookId;
-        const bookId = '99999999'
+        const bookId = this.props.location.state.bookId
 
         axios({
             method: 'get',
@@ -144,7 +140,7 @@ class TestViewer extends Component {
         })
     }
 
-    checkComplteTest = () => {
+    checkCompleteTest = () => {
         let result = true
         this.state.markingSheet.forEach((data) => {
             if (data.size === 0) {
@@ -152,6 +148,9 @@ class TestViewer extends Component {
                 return;
             }
         })
+        if (result) {
+            this.submitTest();
+        }
     }
 
     prevQuestion = (event) => {
@@ -274,10 +273,51 @@ class TestViewer extends Component {
 
     submitTest = () => {
 
-        this.setState({
-            ...this.state,
-            complete: true
+        const results = this.setResult();
+
+        let correctCnt = 0;
+        let incorrectCnt = 0;
+
+        results.forEach((data) => {
+            data.isAnswer ? correctCnt = correctCnt + 1 : incorrectCnt = incorrectCnt + 1
         })
+
+        this.props.history.push({
+            pathname: "/testbook/result",
+            state: {
+                results: results,
+                correctCnt: correctCnt,
+                incorrectCnt: incorrectCnt
+            }
+        });
+
+    }
+
+    setResult = () => {
+
+        const results = [];
+
+        this.state.questions.forEach((question, questionIdx) => {
+            question.subQuestions.forEach((subQuestion) => {
+                let isAnswer = true;
+                if (this.state.markingSheet[subQuestion.subQuestionNo].size === subQuestion.answer.length) {
+                    this.state.markingSheet[subQuestion.subQuestionNo].forEach((value) => {
+                        if (!subQuestion.answer.includes(value)) {
+                            isAnswer = false;
+                        }
+                    })
+                } else {
+                    isAnswer = false;
+                }
+
+                const answerIdx = subQuestion.answer;
+                const markingIdx = [...this.state.markingSheet[subQuestion.subQuestionNo]];
+
+                results.push({ questionIdx: questionIdx, subQuestionNo: subQuestion.subQuestionNo, answer: answerIdx.sort(), marking: markingIdx.sort(), isAnswer: isAnswer })
+            })
+        })
+
+        return results;
     }
 
     // function End
@@ -286,7 +326,7 @@ class TestViewer extends Component {
 const styles = theme => ({
     wrap: {
         display: 'flex',
-        height: '100%',
+        minHeight: '100%',
         backgroundColor: 'steelblue',
     },
     testBody: {
@@ -324,9 +364,9 @@ const styles = theme => ({
         width: '100%',
         bottom: 0,
         left: 0,
-        backgroundColor:'#bee6d1',
+        backgroundColor: '#bee6d1',
         display: 'flex',
-        justifyContent: 'center'	
+        justifyContent: 'center'
     }
 });
 

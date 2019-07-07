@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { Route, NavLink, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter } from 'react-router-dom';
 
 import BookList from './BookList';
 import TestViewer from './TestViewer';
+import ResultPage from './ResultPage';
 
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+
+import QuestionCreator from './QuestionCreator';
 
 class TopPage extends Component {
 
@@ -21,12 +25,22 @@ class TopPage extends Component {
     }
 
     render() {
+        const { classes } = this.props;
 
         return (
-            <BrowserRouter>
-                <Route path={'/testbook'} component={BookList} />
-                <Route path='/start' component={TestViewer} />
-            </BrowserRouter>
+            <div className={classes.wrap}>
+                <div className={classes.topBar}>
+                    <Button className={classes.addBtn} onClick={() => this.exportBookJson(this.state.questions)}>Export</Button>
+                    <Button className={classes.addBtn}>DELETE</Button>
+                    <Button className={classes.addBtn} to="/template" >ADD</Button>
+                </div>
+                <BrowserRouter>
+                    <Route exact path='/testbook' component={BookList} />
+                    <Route path='/testbook/start' component={TestViewer} />
+                    <Route path='/testbook/result' component={ResultPage} />
+                    <Route exact path='/template' component={QuestionCreator} />
+                </BrowserRouter>
+            </div>
         );
     }
 
@@ -40,14 +54,14 @@ class TopPage extends Component {
 }
 
 const styles = theme => ({
-    header: {
-        display:'flex'
+    wrap: {
+        height: '100%',
     },
-    headerMenu: {
-        textDecoration: 'none',
-        padding: 10
-    }
-
+    topBar: {
+        display: 'flex',
+        height: theme.spacing.unit * 5,
+        backgroundColor: '#cecece'
+    },
 });
 
 
