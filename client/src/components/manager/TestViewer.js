@@ -82,7 +82,7 @@ class TestViewer extends Component {
                             })
                                 : {}}
                         </div>
-                        <div style={{ marginBottom: 50 }}></div>
+                        <div style={{ marginBottom: 30 }}></div>
                     </div>
                     <div className={classes.footer}>
                         <div onClick={this.prevQuestion}>

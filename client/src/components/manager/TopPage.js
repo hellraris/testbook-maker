@@ -58,7 +58,7 @@ class TopPage extends Component {
 
 const styles = theme => ({
     wrap: {
-        height: '100%',
+        height: '93.5%',
     },
     topBar: {
         display: 'flex',

@@ -32,8 +32,8 @@ class QuestionList extends Component {
 
         return (
             <div className={classes.wrap}>
-                <div className={classes.bookBody}>
-                    <div className={classes.bookContent}>
+                <div className={classes.body}>
+                    <div className={classes.contents}>
                         {this.state.questionList ? this.state.questionList.map((question, index) => {
                             return (
                                 <Card key={index} className={classes.card}>
@@ -49,6 +49,7 @@ class QuestionList extends Component {
                             )
                         }) : ''}
                     </div>
+                    <div style={{ marginBottom: 30 }}></div>
                 </div>
                 <div className={classes.footer}>
                     <Button onClick={() => this.props.history.push('/testbook')}>BACK</Button>
@@ -82,9 +83,10 @@ class QuestionList extends Component {
 const styles = theme => ({
     wrap: {
         display: 'flex',
-        height: '100%'
+        minHeight: '100%',
+        backgroundColor: 'steelblue'
     },
-    bookBody: {
+    body: {
         flex: '0 1 1280px',
         margin: '0 auto',
         height: '100%'
@@ -94,7 +96,7 @@ const styles = theme => ({
         height: theme.spacing.unit * 7,
         backgroundColor: 'gray'
     },
-    bookContent: {
+    contents: {
         backgroundColor: 'steelblue',
         padding: 10,
         height: '100%'

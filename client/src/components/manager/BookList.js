@@ -100,7 +100,8 @@ class BookList extends Component {
 const styles = theme => ({
     wrap: {
         display: 'flex',
-        height: '100%'
+        minHeight: '100%',
+        backgroundColor: 'steelblue'
     },
     bookBody: {
         flex: '0 1 1280px',
