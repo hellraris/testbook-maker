@@ -44,6 +44,7 @@ class QuestionList extends Component {
                                     </CardContent>
                                     <CardActions>
                                         <Button size="small">Detail</Button>
+                                        <Button size="small" onClick={() => this.removeQuestion(question.question_id)}>Remove</Button>
                                     </CardActions>
                                 </Card>
                             )
@@ -75,6 +76,23 @@ class QuestionList extends Component {
             const list = res.data;
             console.log(list);
             this.setState({ questionList: list })
+        })
+            .catch(err => console.log(err));
+    }
+
+    removeQuestion = (questionId) => {
+
+        const requestData = {
+            bookId: this.state.bookId,
+            questionId: questionId
+        }
+
+        axios({
+            method: 'post',
+            url: '/api/book/question/remove',
+            data: requestData
+        }).then(res => {
+            this.getQuestionList();
         })
             .catch(err => console.log(err));
     }

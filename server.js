@@ -26,7 +26,7 @@ const upload = multer({ dest: './upload' })
 // webからbookリスト取得
 app.get('/api/:userId/testbook', (req, res) => {
 
-    let sql = "SELECT * FROM TESTBOOK WHERE user_id = ?";
+    let sql = "SELECT * FROM TESTBOOK WHERE user_id = ? AND del_flg = 0";
     let userId = req.params.userId;
     let params = [userId];
 
@@ -47,7 +47,7 @@ app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
 
     console.log("hiru?", req.params.bookId);
 
-    let sql = "SELECT title FROM question WHERE testbook_id = ?";
+    let sql = "SELECT question_id, title FROM question WHERE testbook_id = ? AND del_flg = 0";
     let bookId = req.params.bookId;
     let params = [bookId];
 
@@ -67,7 +67,7 @@ app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
 // webからQuestions取得
 app.get('/api/testbook/:bookId', (req, res) => {
 
-    let sql = "SELECT * FROM question WHERE testbook_id = ?";
+    let sql = "SELECT * FROM question WHERE testbook_id = ? AND del_flg = 0";
     let bookId = req.params.bookId;
     let params = [bookId];
 
@@ -149,7 +149,7 @@ const getQuestionCount = (testbookId) => {
 }
 
 // Question追加
-app.post('/api/book/question/add', (req, res) => {
+app.post('/api/book/question', (req, res) => {
 
     const sql = "INSERT INTO QUESTION VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, null)";
     const testbookId = req.body.testbookId;
@@ -161,7 +161,7 @@ app.post('/api/book/question/add', (req, res) => {
     const scripts = req.body.scripts;
     const subQuestions = req.body.subQuestions;
     const explanations = req.body.explanations;
-    const files = req.body.files;
+    const files = null;
     const regDate = new Date();
 
     const params = [
@@ -176,6 +176,28 @@ app.post('/api/book/question/add', (req, res) => {
         explanations,
         files,
         regDate
+    ];
+    connection.query(sql, params,
+        (err, results, fields) => {
+            if (err) {
+                console.log(err);
+            }
+            res.send(results);
+        }
+    );
+
+});
+
+// Question削除
+app.post('/api/book/question/remove', (req, res) => {
+
+    const sql = "UPDATE QUESTION SET DEL_FLG = 1 WHERE testbook_id = ? AND question_id = ?";
+    const testbookId = req.body.bookId;
+    const questionId = req.body.questionId;
+
+    const params = [
+        testbookId,
+        questionId
     ];
     connection.query(sql, params,
         (err, results, fields) => {

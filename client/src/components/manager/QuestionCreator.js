@@ -80,7 +80,7 @@ class QuestionCreator extends Component {
 
         axios({
             method: 'post',
-            url: '/api/book/question/add',
+            url: '/api/book/question',
             data: requestData
         }).then(res => {
                this.goToQuestionList();
