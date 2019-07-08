@@ -6,6 +6,7 @@ import QuestionList from './QuestionList';
 import TestViewer from './TestViewer';
 import ResultPage from './ResultPage';
 import QuestionCreator from './QuestionCreator';
+import QuestionViewer from './QuestionViewer';
 
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -42,6 +43,7 @@ class TopPage extends Component {
                     <Route path='/testbook/start' component={TestViewer} />
                     <Route path='/testbook/result' component={ResultPage} />
                     <Route path='/testbook/questions/create' component={QuestionCreator} />
+                    <Route path='/testbook/question' component={QuestionViewer} />
                 </BrowserRouter>
             </div>
         );

@@ -107,7 +107,6 @@ class TestViewer extends Component {
 
     getQuestions = () => {
 
-        //const bookId = this.props.location.state.bookId;
         const bookId = this.props.location.state.bookId
 
         axios({
@@ -284,6 +283,7 @@ class TestViewer extends Component {
         this.props.history.push({
             pathname: "/testbook/result",
             state: {
+                bookId: this.props.location.state.bookId,
                 results: results,
                 correctCnt: correctCnt,
                 incorrectCnt: incorrectCnt
@@ -312,7 +312,7 @@ class TestViewer extends Component {
                 const answerIdx = subQuestion.answer;
                 const markingIdx = [...this.state.markingSheet[subQuestion.subQuestionNo]];
 
-                results.push({ questionIdx: questionIdx, subQuestionNo: subQuestion.subQuestionNo, answer: answerIdx.sort(), marking: markingIdx.sort(), isAnswer: isAnswer })
+                results.push({ questionId: question.question_id , subQuestionNo: subQuestion.subQuestionNo, answer: answerIdx.sort(), marking: markingIdx.sort(), isAnswer: isAnswer })
             })
         })
 

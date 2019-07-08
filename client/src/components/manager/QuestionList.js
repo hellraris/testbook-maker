@@ -53,7 +53,7 @@ class QuestionList extends Component {
                     <div style={{ marginBottom: 30 }}></div>
                 </div>
                 <div className={classes.footer}>
-                    <Button onClick={() => this.props.history.push('/testbook')}>BACK</Button>
+                    <Button onClick={() => this.props.history.goBack()}>BACK</Button>
                     <Button onClick={() => this.props.history.push(
                         {
                             pathname: '/testbook/questions/create',

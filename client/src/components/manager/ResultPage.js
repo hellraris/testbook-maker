@@ -37,7 +37,7 @@ class ResultPage extends Component {
                                     </div>
                                     {this.props.location.state.results.map((result, index) => {
                                         return (
-                                            <ListItem key={index}>
+                                            <ListItem key={index} onClick={() => this.showQuestionDetail(result)}>
                                                 <ListItemText
                                                     primary={"Q." + (result.subQuestionNo + 1)}
                                                     secondary={"Answer: " + (Number(result.answer) + 1) + "  YourMarking: " + (Number(result.marking) + 1)}
@@ -61,55 +61,27 @@ class ResultPage extends Component {
 
     // functions
 
-    returnToBookList = () =>{
+    returnToBookList = () => {
         this.props.history.push('/testbook');
     }
 
-    outputResult = () => {
-        const results = this.setResult();
-        let correctCnt = 0;
-        let incorrectCnt = 0;
-
-        results.forEach((data) => {
-            data.isAnswer ? correctCnt = correctCnt + 1 : incorrectCnt = incorrectCnt + 1
-        })
-
-
-        this.setState({
-            ...this.state,
-            results: results,
-            correctCnt: correctCnt,
-            incorrectCnt: incorrectCnt
-        })
-    }
-
-    setResult = () => {
-
-        const results = [];
-
-        this.props.location.state.questions.forEach((question, questionIdx) => {
-            question.subQuestions.forEach((subQuestion) => {
-                let isAnswer = true;
-                if (this.props.location.state.markingSheet[subQuestion.subQuestionNo].size === subQuestion.answer.length) {
-                    this.props.location.state.markingSheet[subQuestion.subQuestionNo].forEach((value) => {
-                        if (!subQuestion.answer.includes(value)) {
-                            isAnswer = false;
-                        }
-                    })
-                } else {
-                    isAnswer = false;
+    showQuestionDetail = (result) => {
+        axios({
+            method: 'get',
+            url: '/api/testbook/' + this.props.location.state.bookId + '/question/' + result.questionId
+        }).then(res => {
+            const question = res.data;
+            console.log(question);
+            this.props.history.push({
+                pathname: "/testbook/question",
+                state: {
+                    question: question,
+                    marking: result.marking
                 }
-
-                const answerIdx = subQuestion.answer;
-                const markingIdx = [...this.props.location.state.markingSheet[subQuestion.subQuestionNo]];
-
-                results.push({ questionIdx: questionIdx, subQuestionNo: subQuestion.subQuestionNo, answer: answerIdx.sort(), marking: markingIdx.sort(), isAnswer: isAnswer })
-            })
+            });
         })
-
-        return results;
+           .catch(err => console.log(err));
     }
-
 
     // function End
 }

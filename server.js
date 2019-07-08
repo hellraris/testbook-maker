@@ -45,8 +45,6 @@ app.get('/api/:userId/testbook', (req, res) => {
 // webからQuestionリスト取得
 app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
 
-    console.log("hiru?", req.params.bookId);
-
     let sql = "SELECT question_id, title FROM question WHERE testbook_id = ? AND del_flg = 0";
     let bookId = req.params.bookId;
     let params = [bookId];
@@ -86,6 +84,33 @@ app.get('/api/testbook/:bookId', (req, res) => {
                     explanations: JSON.parse(question.explanations)
                 }
             })
+            res.send(resData);
+        }
+    );
+});
+
+// webからQuestion取得
+app.get('/api/testbook/:bookId/question/:questionId', (req, res) => {
+
+    const sql = "SELECT * FROM question WHERE testbook_id = ? AND question_id = ? AND del_flg = 0";
+    const bookId = req.params.bookId;
+    const questionId = req.params.questionId;
+    let params = [bookId, questionId];
+
+    connection.query(
+        sql,params,
+        (err, results, fields) => {
+            if (err) {
+                console.log(err);
+            }
+            const tmpData = results[0]
+            const resData = {
+                ...tmpData,
+                scripts: JSON.parse(tmpData.scripts),
+                subQuestions: JSON.parse(tmpData.subquestions),
+                explanations: JSON.parse(tmpData.explanations)
+            }
+
             res.send(resData);
         }
     );
