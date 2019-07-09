@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -12,7 +14,7 @@ class TestViewer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            navi: 0
         }
     }
 
@@ -29,6 +31,16 @@ class TestViewer extends Component {
         return (
             <div className={classes.wrap}>
                 <div className={classes.testBody}>
+                    <BottomNavigation
+                        value={this.state.navi}
+                        onChange={this.handleNaviChange}
+                        showLabels
+                        className={classes.navigation}
+                    >
+                        <BottomNavigationAction label="Question" />
+                        <BottomNavigationAction label="Answer" />
+                        <BottomNavigationAction label="Both" />
+                    </BottomNavigation>
                     <div className={classes.testContents}>
                         <div className={classes.script}>
                             {scripts ? scripts.map((script, index) => {
@@ -90,6 +102,12 @@ class TestViewer extends Component {
 
     // functions
 
+    handleNaviChange = (event, value) => {
+        this.setState({
+            navi: value
+        })
+    }
+
     // function End
 }
 
@@ -137,6 +155,11 @@ const styles = theme => ({
         backgroundColor: '#bee6d1',
         display: 'flex',
         justifyContent: 'center'
+    },
+    navigation: {
+        width: '30%',
+        margin: '0 auto',
+        backgroundColor: 'steelblue'
     }
 });
 
