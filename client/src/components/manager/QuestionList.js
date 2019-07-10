@@ -43,7 +43,7 @@ class QuestionList extends Component {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button size="small">Detail</Button>
+                                        <Button size="small" onClick={() => this.showQuestionDetail(question.question_id)}>Detail</Button>
                                         <Button size="small" onClick={() => this.removeQuestion(question.question_id)}>Remove</Button>
                                     </CardActions>
                                 </Card>
@@ -66,6 +66,24 @@ class QuestionList extends Component {
                 </div>
             </div>
         );
+    }
+
+    showQuestionDetail = (questionId) => {
+        axios({
+            method: 'get',
+            url: '/api/testbook/' + this.props.location.state.bookId + '/question/' + questionId
+        }).then(res => {
+            const question = res.data;
+            console.log(question);
+            this.props.history.push({
+                pathname: "/testbook/question",
+                state: {
+                    question: question,
+                    marking: []
+                }
+            });
+        })
+           .catch(err => console.log(err));
     }
 
     getQuestionList = () => {
