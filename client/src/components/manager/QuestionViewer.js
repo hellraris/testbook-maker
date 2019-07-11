@@ -24,7 +24,7 @@ class TestViewer extends Component {
 
     render() {
 
-        const { scripts, subQuestions } = this.props.location.state.question;
+        const { scripts, subQuestions, explanations } = this.props.location.state.question;
 
         const { classes } = this.props;
 
@@ -42,46 +42,63 @@ class TestViewer extends Component {
                         <BottomNavigationAction label="Both" />
                     </BottomNavigation>
                     <div className={classes.testContents}>
-                        <div className={classes.script}>
-                            {scripts ? scripts.map((script, index) => {
+                        <div className={classes.question}>
+                            <div className={classes.script}>
+                                {scripts ? scripts.map((script, index) => {
+                                    return (
+                                        <div className={classes.scriptItem} key={index}>
+                                            <div style={{ display: 'flex' }}>
+                                                <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
+                                            </div>
+                                            <div style={{ padding: 10, border: '1px dashed grey', borderRadius: 5 }}>
+                                                <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{script.contents}</Typography>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                                    : {}}
+                            </div>
+                            <div className={classes.subQuestion}>
+                                {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
+                                    return (
+                                        <div className={classes.subQuestionItem} key={subQuestionIdx}>
+                                            <div style={{ marginLeft: 15 }}>
+                                                <Typography variant="subtitle1">Q{subQuestionIdx + 1}.{subQuestion.subtilte}</Typography>
+                                            </div>
+                                            <Divider variant="middle" />
+                                            <div style={{ marginLeft: 15 }} >
+                                                {subQuestion.selections.map((selection, selectionIdx) => {
+                                                    return (
+                                                        <div className={classes.selection}
+                                                            key={selectionIdx}
+                                                        >
+                                                            <Checkbox
+                                                                checked={this.props.location.state.marking.includes(selection.id)}
+                                                            />
+                                                            <div>
+                                                                <Typography style={{ marginTop: 14 }} gutterBottom>
+                                                                    {selection.text}
+                                                                </Typography>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                                    : {}}
+                            </div>
+                        </div>
+                        <div className={classes.explanation}>
+                            {explanations ? explanations.map((explanation, index) => {
                                 return (
-                                    <div className={classes.scriptItem} key={index}>
+                                    <div className={classes.explanationItem} key={index}>
                                         <div style={{ display: 'flex' }}>
-                                            <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
+                                            <Typography variant="subtitle1" gutterBottom>{explanation.subtilte}</Typography>
                                         </div>
                                         <div style={{ padding: 10, border: '1px dashed grey', borderRadius: 5 }}>
-                                            <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{script.contents}</Typography>
-                                        </div>
-                                    </div>
-                                )
-                            })
-                                : {}}
-                        </div>
-                        <div className={classes.subQuestion}>
-                            {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
-                                return (
-                                    <div className={classes.subQuestionItem} key={subQuestionIdx}>
-                                        <div style={{ marginLeft: 15 }}>
-                                            <Typography variant="subtitle1">Q{subQuestionIdx + 1}.{subQuestion.subtilte}</Typography>
-                                        </div>
-                                        <Divider variant="middle" />
-                                        <div style={{ marginLeft: 15 }} >
-                                            {subQuestion.selections.map((selection, selectionIdx) => {
-                                                return (
-                                                    <div className={classes.selection}
-                                                        key={selectionIdx}
-                                                    >
-                                                        <Checkbox
-                                                            checked={this.props.location.state.marking.includes(selection.id)}
-                                                        />
-                                                        <div>
-                                                            <Typography style={{ marginTop: 14 }} gutterBottom>
-                                                                {selection.text}
-                                                            </Typography>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })}
+                                            <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{explanation.contents}</Typography>
                                         </div>
                                     </div>
                                 )
@@ -123,14 +140,16 @@ const styles = theme => ({
         minWidth: 320
     },
     testContents: {
+        display: 'flex',
+        flexDirection: 'row',
         backgroundColor: 'steelblue',
         padding: 10
     },
     script: {
 
     },
-    subQuestion: {
-
+    question: {
+        width: '50%'
     },
     subQuestionItem: {
         backgroundColor: 'white',
@@ -139,6 +158,15 @@ const styles = theme => ({
         borderRadius: 5
     },
     scriptItem: {
+        backgroundColor: 'white',
+        padding: 7,
+        margin: 5,
+        borderRadius: 5
+    },
+    explanation: {
+        width: '50%'
+    },
+    explanationItem: {
         backgroundColor: 'white',
         padding: 7,
         margin: 5,
