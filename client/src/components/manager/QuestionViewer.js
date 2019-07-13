@@ -143,13 +143,16 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: 'steelblue',
-        padding: 10
+        padding: 10,
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        alignContent: 'space-around'
     },
     script: {
 
     },
     question: {
-        width: '50%'
+        width: '500px'
     },
     subQuestionItem: {
         backgroundColor: 'white',
@@ -164,7 +167,7 @@ const styles = theme => ({
         borderRadius: 5
     },
     explanation: {
-        width: '50%'
+        width: '500px'
     },
     explanationItem: {
         backgroundColor: 'white',
