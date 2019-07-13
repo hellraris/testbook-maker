@@ -145,7 +145,7 @@ const styles = theme => ({
         backgroundColor: 'steelblue',
         padding: 10,
         flexWrap: 'wrap',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         alignContent: 'space-around'
     },
     script: {
