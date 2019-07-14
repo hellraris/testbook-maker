@@ -39,7 +39,7 @@ class TopPage extends Component {
                 </div>
                 <BrowserRouter>
                     <Route exact path='/testbook' component={BookList} />
-                    <Route exact path='/testbook/questions' component={QuestionList} />
+                    <Route exact path='/testbook/questionList' component={QuestionList} />
                     <Route path='/testbook/start' component={TestViewer} />
                     <Route path='/testbook/result' component={ResultPage} />
                     <Route path='/testbook/questions/create' component={QuestionCreator} />

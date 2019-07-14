@@ -91,7 +91,7 @@ class TestViewer extends Component {
                             </div>
                         </div>
                         <div className={classes.explanation}>
-                            {explanations ? explanations.map((explanation, index) => {
+                            {explanations.length > 0 ? explanations.map((explanation, index) => {
                                 return (
                                     <div className={classes.explanationItem} key={index}>
                                         <div style={{ display: 'flex' }}>
@@ -103,7 +103,7 @@ class TestViewer extends Component {
                                     </div>
                                 )
                             })
-                                : {}}
+                                : <div></div>}
                         </div>
                         <div style={{ marginBottom: 30 }}></div>
                     </div>
@@ -152,7 +152,7 @@ const styles = theme => ({
 
     },
     question: {
-        width: '500px'
+        minWidth: '480px'
     },
     subQuestionItem: {
         backgroundColor: 'white',
@@ -167,7 +167,7 @@ const styles = theme => ({
         borderRadius: 5
     },
     explanation: {
-        width: '500px'
+        minWidth: '480px'
     },
     explanationItem: {
         backgroundColor: 'white',

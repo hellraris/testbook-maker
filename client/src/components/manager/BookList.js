@@ -8,6 +8,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
+import BookCreatorModal from './BookCreatorModal'
 
 
 class BookList extends Component {
@@ -17,7 +19,8 @@ class BookList extends Component {
 
         this.state = {
             books: [],
-            userId: 'test'
+            userId: 'test',
+            openModal: false
         }
     }
 
@@ -30,8 +33,15 @@ class BookList extends Component {
 
         return (
             <div className={classes.wrap}>
-                <div className={classes.bookBody}>
-                    <div className={classes.bookContent}>
+                <Modal
+                    open={this.state.openModal}
+                >
+                    <div className={classes.modal}>
+                        <BookCreatorModal closeModal={this.showModal}></BookCreatorModal>
+                    </div>
+                </Modal>
+                <div className={classes.body}>
+                    <div className={classes.contents}>
                         {this.state.books ? this.state.books.map((book, index) => {
                             return (
                                 <Card key={index} className={classes.card}>
@@ -46,7 +56,7 @@ class BookList extends Component {
                                     <CardActions>
                                         <Button size="small" onClick={() => this.props.history.push(
                                             {
-                                                pathname: '/testbook/questions',
+                                                pathname: '/testbook/questionList',
                                                 state: {
                                                     userId: this.state.userId,
                                                     bookId: book.testbook_id
@@ -66,6 +76,11 @@ class BookList extends Component {
                             )
                         }) : ''}
                     </div>
+                    <div style={{ marginBottom: 30 }}></div>
+                </div>
+                <div className={classes.footer}>
+                    <Button onClick={() => this.props.history.goBack()}>BACK</Button>
+                    <Button onClick={() => this.showModal()}>ADD</Button>
                 </div>
             </div>
         );
@@ -95,6 +110,14 @@ class BookList extends Component {
 
     }
 
+    showModal = () => {
+        console.log('push?');
+        this.setState({
+            ...this.state,
+            openModal: !this.state.openModal
+        })
+    }
+
 }
 
 const styles = theme => ({
@@ -103,23 +126,40 @@ const styles = theme => ({
         minHeight: '100%',
         backgroundColor: 'steelblue'
     },
-    bookBody: {
+    body: {
         flex: '0 1 1280px',
         margin: '0 auto',
         height: '100%'
     },
-    bookHeader: {
-        display: 'flex',
-        height: theme.spacing.unit * 7,
-        backgroundColor: 'gray'
-    },
-    bookContent: {
+    contents: {
         backgroundColor: 'steelblue',
         padding: 10,
         height: '100%'
     },
     card: {
         marginBottom: 10
+    },
+    footer: {
+        position: 'fixed',
+        width: '100%',
+        bottom: 0,
+        left: 0,
+        backgroundColor: '#bee6d1',
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    modal: {
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        outline: 'none',
+        width: '480px',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        borderRadius: 3
     }
 
 });
