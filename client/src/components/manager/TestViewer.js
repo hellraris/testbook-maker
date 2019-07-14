@@ -62,12 +62,12 @@ class TestViewer extends Component {
                                                 return (
                                                     <div className={classes.selectionItem}
                                                         key={selectionIdx}
+                                                        onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
                                                     >
                                                         <Checkbox
                                                             checked={this.state.markingSheet[subQuestion.subQuestionNo].has(selection.id)}
-                                                            onChange={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
                                                         />
-                                                        <div onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}>
+                                                        <div>
                                                             <Typography gutterBottom>
                                                                 {selection.text}
                                                             </Typography>
@@ -309,7 +309,7 @@ class TestViewer extends Component {
                 const answerIdx = subQuestion.answer;
                 const markingIdx = [...this.state.markingSheet[subQuestion.subQuestionNo]];
 
-                results.push({ questionId: question.question_id , subQuestionNo: subQuestion.subQuestionNo, answer: answerIdx.sort(), marking: markingIdx.sort(), isAnswer: isAnswer })
+                results.push({ questionId: question.question_id, subQuestionNo: subQuestion.subQuestionNo, answer: answerIdx.sort(), marking: markingIdx.sort(), isAnswer: isAnswer })
             })
         })
 
@@ -347,7 +347,7 @@ const styles = theme => ({
         border: '0.5px solid #c0c0c0',
         borderRadius: 5,
         backgroundColor: '#D9EAD9',
-     },
+    },
     subQuestionItem: {
         backgroundColor: 'white',
         margin: 3,
@@ -360,7 +360,14 @@ const styles = theme => ({
         alignItems: 'center',
         backgroundColor: '#E5F5FB',
         borderRadius: 5,
-        margin: 5
+        margin: 5,
+        cursor: 'pointer',
+        "&:hover ": {
+            backgroundColor: "#ABB7BC"
+        },
+        "&:active": {
+            transform: "translateY(3px)"
+        }
     },
     footer: {
         display: 'flex',
