@@ -173,6 +173,38 @@ const getQuestionCount = (testbookId) => {
     );
 }
 
+// Book追加
+app.post('/api/book', (req, res) => {
+
+    const sql = "INSERT INTO TESTBOOK VALUES (null, ?, ?, ?, ?, ?, ?, 0, ?, null)";
+    const userId = req.body.userId;
+    const title = req.body.title;
+    const description = req.body.description;
+    const tag = req.body.tagList;
+    const favorite = 0;
+    const version = 0;
+    const regDate = new Date();
+
+    const params = [
+        userId,
+        title,
+        description,
+        tag,
+        favorite,
+        version,
+        regDate
+    ];
+    connection.query(sql, params,
+        (err, results, fields) => {
+            if (err) {
+                console.log(err);
+            }
+            res.send(results);
+        }
+    );
+
+});
+
 // Question追加
 app.post('/api/book/question', (req, res) => {
 
