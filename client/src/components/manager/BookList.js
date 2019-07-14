@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { connect } from 'react-redux';
+
 import axios from 'axios';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -12,6 +14,11 @@ import Modal from '@material-ui/core/Modal';
 import BookCreatorModal from './BookCreatorModal'
 
 
+const mapStateToProps = state => ({
+    userId: state.userInfo.userId
+});
+
+
 class BookList extends Component {
 
     constructor(props) {
@@ -19,7 +26,6 @@ class BookList extends Component {
 
         this.state = {
             books: [],
-            userId: 'test',
             openModal: false
         }
     }
@@ -37,7 +43,7 @@ class BookList extends Component {
                     open={this.state.openModal}
                 >
                     <div className={classes.modal}>
-                        <BookCreatorModal closeModal={this.showModal}></BookCreatorModal>
+                        <BookCreatorModal userId={this.props.userId} closeModal={this.showModal}></BookCreatorModal>
                     </div>
                 </Modal>
                 <div className={classes.body}>
@@ -49,8 +55,8 @@ class BookList extends Component {
                                         <Typography gutterBottom variant="h5" component="h2">
                                             {book.title}
                                         </Typography>
-                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-
+                                        <Typography color="textSecondary" gutterBottom>
+                                            {book.description}
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
@@ -58,7 +64,6 @@ class BookList extends Component {
                                             {
                                                 pathname: '/testbook/questionList',
                                                 state: {
-                                                    userId: this.state.userId,
                                                     bookId: book.testbook_id
                                                 }
                                             }
@@ -87,13 +92,12 @@ class BookList extends Component {
     }
 
     getBooks = () => {
+
         axios({
             method: 'get',
-            url: '/api/' + this.state.userId + '/testbook'
+            url: '/api/' + this.props.userId + '/testbook'
         }).then(res => {
-            const list = res.data;
-            console.log(list);
-            this.setState({ books: list })
+            this.setState({ books: res.data })
         })
             .catch(err => console.log(err));
     }
@@ -111,7 +115,12 @@ class BookList extends Component {
     }
 
     showModal = () => {
-        console.log('push?');
+
+        // モーダルを閉じる時はBookリストを更新する。
+        if (this.state.openModal) {
+            this.getBooks()
+        }
+
         this.setState({
             ...this.state,
             openModal: !this.state.openModal
@@ -165,4 +174,8 @@ const styles = theme => ({
 });
 
 
-export default withStyles(styles)(BookList);
+export default withStyles(styles)(
+    connect(
+        mapStateToProps
+    )(BookList)
+);

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Route, BrowserRouter } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import { setUserId } from '../manager/store/userInfo';
+
 import BookList from './BookList';
 import QuestionList from './QuestionList';
 import TestViewer from './TestViewer';
@@ -12,6 +15,12 @@ import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 
+const mapStateToProps = state => ({
+});
+
+const mapDispatchToProps = dispatch => ({
+    setUserId: (userId) => dispatch(setUserId(userId))
+});
 
 
 class TopPage extends Component {
@@ -19,12 +28,10 @@ class TopPage extends Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-        }
+        this.setUserId();
     }
 
     componentDidMount() {
-
     }
 
     render() {
@@ -56,6 +63,11 @@ class TopPage extends Component {
             menu: newValue
         })
     }
+
+    setUserId = () => {
+
+        this.props.setUserId('test');
+    }
 }
 
 const styles = theme => ({
@@ -71,4 +83,9 @@ const styles = theme => ({
 
 
 
-export default withStyles(styles)(TopPage);
+export default withStyles(styles)(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(TopPage)
+);
