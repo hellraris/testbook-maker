@@ -19,7 +19,7 @@ class BookCreatorModal extends Component {
         this.state = {
             title: '',
             tag: '',
-            description:'',
+            description: '',
             tagList: []
         }
 
@@ -32,7 +32,7 @@ class BookCreatorModal extends Component {
             <div className={classes.wrap}>
                 <div style={{ backgroundColor: '#00b07b', height: 7 }}></div>
                 <div className={classes.body}>
-                    <Typography style={{marginTop: 10}} variant="h4">Create Book</Typography>
+                    <Typography style={{ marginTop: 10 }} variant="h4">Create Book</Typography>
                     <div className={classes.contents}>
                         <div>
                             <TextField
@@ -81,7 +81,8 @@ class BookCreatorModal extends Component {
                         </div>
                     </div>
                     <div className={classes.footer}>
-                            <Button onClick={() => this.props.closeModal()}>CLOSE</Button>
+                        <Button onClick={() => this.createBook()}>Create</Button>
+                        <Button onClick={() => this.props.closeModal()}>CLOSE</Button>
                     </div>
                 </div>
             </div>
@@ -93,7 +94,7 @@ class BookCreatorModal extends Component {
     addInfoTag = (tag) => {
 
         if (tag === null || tag === '') {
-          return;  
+            return;
         }
 
         this.setState({
@@ -117,25 +118,22 @@ class BookCreatorModal extends Component {
         })
     }
 
-    addQuestion = () => {
+    createBook = () => {
+
+        const requestData = {
+            userId: this.props.userId,
+            title: this.state.title,
+            description: this.state.description,
+            tag: this.state.tagList,
+        }
 
         axios({
             method: 'post',
-            url: '/api/book/question',
+            url: '/api/book',
+            data: requestData
         }).then(res => {
+            this.props.closeModal()
         }).catch(err => console.log(err));
-    }
-
-    goToQuestionList = () => {
-        this.props.history.push(
-            {
-                pathname: '/testbook',
-                state: {
-                    userId: this.props.location.state.userId,
-                    bookId: this.props.location.state.bookId
-                }
-            }
-        );
     }
 
 }
