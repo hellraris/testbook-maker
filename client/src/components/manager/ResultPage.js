@@ -27,8 +27,8 @@ class ResultPage extends Component {
         return (
             <div className={classes.wrap}>
                 <div style={{ backgroundColor: '#00b07b', height: 13 }}></div>
-                <div className={classes.resultBody}>
-                    <div className={classes.resultContents}>
+                <div className={classes.body}>
+                    <div className={classes.contents}>
                         <div>
                             {this.props.location.state.results ?
                                 <div>
@@ -89,15 +89,14 @@ class ResultPage extends Component {
 const styles = theme => ({
     wrap: {
         display: 'flex',
-        height: '94%',
-        backgroundColor: 'steelblue',
+        height: '94%'
     },
-    resultBody: {
+    body: {
         margin: '0 auto',
         minWidth: 320,
         padding: 10
     },
-    resultContents: {
+    contents: {
         backgroundColor: 'white',
         height: '90%',
         padding: 10,

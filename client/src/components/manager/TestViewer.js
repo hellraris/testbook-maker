@@ -325,8 +325,7 @@ class TestViewer extends Component {
 const styles = theme => ({
     wrap: {
         display: 'flex',
-        minHeight: '100%',
-        backgroundColor: 'steelblue',
+        minHeight: '100%'
     },
     testBody: {
         flex: '0 1 1280px',
@@ -334,7 +333,6 @@ const styles = theme => ({
         minWidth: 320
     },
     testContents: {
-        backgroundColor: 'steelblue',
         padding: 10
     },
     script: {

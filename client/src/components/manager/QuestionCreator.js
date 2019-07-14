@@ -104,8 +104,7 @@ class QuestionCreator extends Component {
 const styles = theme => ({
     wrap: {
         display: 'flex',
-        minHeight: '100%',
-        backgroundColor: 'steelblue'
+        minHeight: '100%'
     },
     body: {
         flex: '0 1 800px',

@@ -119,8 +119,7 @@ class QuestionList extends Component {
 const styles = theme => ({
     wrap: {
         display: 'flex',
-        minHeight: '100%',
-        backgroundColor: 'steelblue'
+        minHeight: '100%'
     },
     body: {
         flex: '0 1 1280px',
@@ -133,7 +132,6 @@ const styles = theme => ({
         backgroundColor: 'gray'
     },
     contents: {
-        backgroundColor: 'steelblue',
         padding: 10,
         height: '100%'
     },

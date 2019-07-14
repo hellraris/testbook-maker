@@ -133,7 +133,6 @@ const styles = theme => ({
     wrap: {
         display: 'flex',
         minHeight: '100%',
-        backgroundColor: 'steelblue'
     },
     body: {
         flex: '0 1 1280px',
@@ -141,7 +140,6 @@ const styles = theme => ({
         height: '100%'
     },
     contents: {
-        backgroundColor: 'steelblue',
         padding: 10,
         height: '100%'
     },

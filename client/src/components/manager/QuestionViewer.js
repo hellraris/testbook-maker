@@ -30,27 +30,18 @@ class TestViewer extends Component {
 
         return (
             <div className={classes.wrap}>
-                <div className={classes.testBody}>
-                    <BottomNavigation
-                        value={this.state.navi}
-                        onChange={this.handleNaviChange}
-                        showLabels
-                        className={classes.navigation}
-                    >
-                        <BottomNavigationAction label="Question" />
-                        <BottomNavigationAction label="Answer" />
-                        <BottomNavigationAction label="Both" />
-                    </BottomNavigation>
-                    <div className={classes.testContents}>
+                <div className={classes.body}>
+                    <div className={classes.contents}>
                         <div className={classes.question}>
+                            <Typography variant="h5">Question</Typography>
                             <div className={classes.script}>
                                 {scripts ? scripts.map((script, index) => {
                                     return (
                                         <div className={classes.scriptItem} key={index}>
-                                            <div style={{ display: 'flex' }}>
+                                            <div className={classes.scriptTitle}>
                                                 <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
                                             </div>
-                                            <div style={{ padding: 10, border: '1px dashed grey', borderRadius: 5 }}>
+                                            <div className={classes.scriptContents}>
                                                 <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{script.contents}</Typography>
                                             </div>
                                         </div>
@@ -65,7 +56,6 @@ class TestViewer extends Component {
                                             <div style={{ marginLeft: 15 }}>
                                                 <Typography variant="subtitle1">Q{subQuestionIdx + 1}.{subQuestion.subtilte}</Typography>
                                             </div>
-                                            <Divider variant="middle" />
                                             <div style={{ marginLeft: 15 }} >
                                                 {subQuestion.selections.map((selection, selectionIdx) => {
                                                     return (
@@ -76,7 +66,7 @@ class TestViewer extends Component {
                                                                 checked={this.props.location.state.marking.includes(selection.id)}
                                                             />
                                                             <div>
-                                                                <Typography style={{ marginTop: 14 }} gutterBottom>
+                                                                <Typography gutterBottom>
                                                                     {selection.text}
                                                                 </Typography>
                                                             </div>
@@ -91,6 +81,7 @@ class TestViewer extends Component {
                             </div>
                         </div>
                         <div className={classes.explanation}>
+                            <Typography variant="h5">Explanation</Typography>
                             {explanations.length > 0 ? explanations.map((explanation, index) => {
                                 return (
                                     <div className={classes.explanationItem} key={index}>
@@ -132,51 +123,65 @@ const styles = theme => ({
     wrap: {
         display: 'flex',
         minHeight: '100%',
-        backgroundColor: 'steelblue',
     },
-    testBody: {
+    body: {
         flex: '0 1 1280px',
         margin: '0 auto',
-        minWidth: 320
+        minWidth: 320,
+        padding: '15px'
     },
-    testContents: {
+    contents: {
         display: 'flex',
         flexDirection: 'row',
-        backgroundColor: 'steelblue',
-        padding: 10,
         flexWrap: 'wrap',
         justifyContent: 'center',
-        alignContent: 'space-around'
+        alignContent: 'space-around',
+        backgroundColor: 'white',
+        borderRadius: 5,
+        margin: '0 auto'
     },
     script: {
 
     },
+    scriptItem: {
+        backgroundColor: 'white',
+        margin: 5,
+        borderRadius: 5
+    },
+    scriptTitle: {
+        marginLeft: 5
+    },
+    scriptContents: {
+       padding: 7,
+       border: '0.5px solid #c0c0c0',
+       borderRadius: 5
+    },
     question: {
-        minWidth: '480px'
+        flex: '1 1 320px',
+        backgroundColor: 'white',
+        borderRadius: 5,
+        padding: 7,
+        margin: 5,
     },
     subQuestionItem: {
         backgroundColor: 'white',
-        padding: 7,
-        margin: 5,
-        borderRadius: 5
-    },
-    scriptItem: {
-        backgroundColor: 'white',
-        padding: 7,
-        margin: 5,
-        borderRadius: 5
+        margin: 3,
     },
     explanation: {
-        minWidth: '480px'
+        flex: '1 1 320px',
+        backgroundColor: 'white',
+        borderRadius: 5,
+        padding: 7,
+        margin: 5
     },
     explanationItem: {
         backgroundColor: 'white',
-        padding: 7,
         margin: 5,
         borderRadius: 5
     },
     selection: {
-        display: 'flex'
+        display: 'flex',
+        alignItems: 'center'
     },
     footer: {
         position: 'fixed',
@@ -186,11 +191,6 @@ const styles = theme => ({
         backgroundColor: '#bee6d1',
         display: 'flex',
         justifyContent: 'center'
-    },
-    navigation: {
-        width: '30%',
-        margin: '0 auto',
-        backgroundColor: 'steelblue'
     }
 });
 

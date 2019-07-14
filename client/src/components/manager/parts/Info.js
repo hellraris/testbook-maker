@@ -11,89 +11,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 import AddCircle from '@material-ui/icons/AddCircle';
 
-
-const styles = theme => ({
-    body: {
-        margin: '5px'
-    },
-    head: {
-        display: 'flex',
-        height: '40px'
-    },
-    headLabel: {
-        margin: 'auto auto auto 20px',
-    },
-    addBtn: {
-        margin: 'auto 10px 10px auto'
-    },
-    item: {
-        display: 'flex',
-        flexDirection: 'row-reverse'
-    },
-    itemBar: {
-        display: 'flex'
-    },
-    itemBody: {
-        width: '94%'
-    },
-    removeBtnConteiner: {
-        margin: '14px auto auto auto'
-    },
-    itemSubtitle: {
-        marginTop: '12px',
-        width: '97%'
-    },
-    removeBtn: {
-        fontSize: '20px'
-    }
-});
-
-const ExpansionPanel = withStyles({
-    root: {
-        border: '1px solid rgba(0,0,0,.125)',
-        boxShadow: 'none',
-        '&:not(:last-child)': {
-            borderBottom: 0,
-        },
-        '&:before': {
-            display: 'none',
-        },
-    },
-    expanded: {
-        margin: 'auto',
-    },
-})(MuiExpansionPanel);
-
-const ExpansionPanelSummary = withStyles({
-    root: {
-        backgroundColor: 'rgba(0,0,0,.03)',
-        borderBottom: '1px solid rgba(0,0,0,.125)',
-        marginBottom: -1,
-        height: 52,
-        '& div': {
-            margin: 'auto 0',
-        },
-        '&$expanded': {
-            height: 52,
-            minHeight: 52
-        },
-    },
-    content: {
-        '&$expanded': {
-        },
-    },
-    expanded: {},
-})(props => <MuiExpansionPanelSummary  {...props} />);
-
-ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
-
-const ExpansionPanelDetails = withStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column'
-    },
-}))(MuiExpansionPanelDetails);
-
 class Info extends Component {
 
     constructor(props) {
@@ -120,9 +37,9 @@ class Info extends Component {
         const { explanations } = this.state;
 
         return (
-            <div className={classes.body} >
+            <div className={classes.wrap} >
                 <ExpansionPanel expanded={this.state.expanded} >
-                    <ExpansionPanelSummary className={classes.head} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
+                    <ExpansionPanelSummary className={classes.panelSummary} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
                         <Typography className={classes.headLabel} variant="title" gutterBottom>Info</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
@@ -131,14 +48,12 @@ class Info extends Component {
                                 name='title'
                                 label="Title"
                                 margin="normal"
-                                className={classes.selection}
                                 value={this.state.title}
                                 onChange={this.handleTextChange}
                             />
                         </div>
                         <div className={classes.tag}>
                             <TextField
-                                className={classes.tagText}
                                 name="tag"
                                 label="Tag"
                                 margin="normal"
@@ -198,5 +113,65 @@ class Info extends Component {
         })
     }
 }
+
+const styles = theme => ({
+    wrap: {
+        margin: '5px'
+    },
+    panelSummary: {
+        display: 'flex',
+        height: '40px'
+    },
+    tag: {
+        display: 'flex',
+        alignItems: 'center'
+    }
+});
+
+const ExpansionPanel = withStyles({
+    root: {
+        border: '1px solid rgba(0,0,0,.125)',
+        boxShadow: 'none',
+        '&:not(:last-child)': {
+            borderBottom: 0,
+        },
+        '&:before': {
+            display: 'none',
+        },
+    },
+    expanded: {
+        margin: 'auto',
+    },
+})(MuiExpansionPanel);
+
+const ExpansionPanelSummary = withStyles({
+    root: {
+        backgroundColor: 'rgba(0,0,0,.03)',
+        borderBottom: '1px solid rgba(0,0,0,.125)',
+        marginBottom: -1,
+        height: 52,
+        '& div': {
+            margin: 'auto 0',
+        },
+        '&$expanded': {
+            height: 52,
+            minHeight: 52
+        },
+    },
+    content: {
+        '&$expanded': {
+        },
+    },
+    expanded: {},
+})(props => <MuiExpansionPanelSummary  {...props} />);
+
+ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
+
+const ExpansionPanelDetails = withStyles(theme => ({
+    root: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+}))(MuiExpansionPanelDetails);
 
 export default withStyles(styles)(Info);
