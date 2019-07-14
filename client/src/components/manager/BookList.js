@@ -68,6 +68,7 @@ class BookList extends Component {
                                                 }
                                             }
                                         )}>Detail</Button>
+                                        <Button size="small" onClick={() => this.removeBook(book.testbook_id)}>REMOVE</Button>
                                         <Button size="small" onClick={() => this.props.history.push(
                                             {
                                                 pathname: '/testbook/start',
@@ -97,6 +98,22 @@ class BookList extends Component {
             url: '/api/' + this.props.userId + '/testbook'
         }).then(res => {
             this.setState({ books: res.data })
+        })
+            .catch(err => console.log(err));
+    }
+
+    removeBook = (bookId) => {
+
+        const requestData = {
+            bookId: bookId
+        }
+
+        axios({
+            method: 'post',
+            url: '/api/book/remove',
+            data: requestData
+        }).then(res => {
+            this.getBooks();
         })
             .catch(err => console.log(err));
     }

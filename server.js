@@ -36,7 +36,6 @@ app.get('/api/:userId/testbook', (req, res) => {
             if (err) {
                 console.log(err);
             }
-            console.log(results);
             res.send(results);
         }
     );
@@ -55,7 +54,6 @@ app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
             if (err) {
                 console.log(err);
             }
-            console.log(results);
             res.send(results);
         }
     );
@@ -75,7 +73,6 @@ app.get('/api/testbook/:bookId', (req, res) => {
             if (err) {
                 console.log(err);
             }
-            console.log(results);
             let resData = results.map((question) => {
                 return {
                     ...question,
@@ -126,7 +123,6 @@ app.get('/api/app/testbook/list', (req, res) => {
             if (err) {
                 console.log(err);
             }
-            console.log(results);
             res.send(results);
         }
     );
@@ -159,19 +155,6 @@ app.get('/api/app/testbook/:testbookId/', (req, res) => {
         }
     );
 });
-
-const getQuestionCount = (testbookId) => {
-
-    let sql = "SELECT COUNT(question_id) as total FROM question where TESTBOOK_ID = ? AND del_flg='0'";
-    let params = [testbookId];
-
-    connection.query(sql, params,
-        (err, result) => {
-            console.log('count', result[0].total);
-            return result[0].total
-        }
-    );
-}
 
 // Book追加
 app.post('/api/book', (req, res) => {
@@ -233,6 +216,26 @@ app.post('/api/book/question', (req, res) => {
         explanations,
         files,
         regDate
+    ];
+    connection.query(sql, params,
+        (err, results, fields) => {
+            if (err) {
+                console.log(err);
+            }
+            res.send(results);
+        }
+    );
+
+});
+
+// Book削除
+app.post('/api/book/remove', (req, res) => {
+
+    const sql = "UPDATE TESTBOOK SET DEL_FLG = 1 WHERE testbook_id = ?";
+    const testbookId = req.body.bookId;
+
+    const params = [
+        testbookId
     ];
     connection.query(sql, params,
         (err, results, fields) => {
