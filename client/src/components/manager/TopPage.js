@@ -12,8 +12,12 @@ import QuestionCreator from './QuestionCreator';
 import QuestionViewer from './QuestionViewer';
 
 import { withStyles } from '@material-ui/core/styles';
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import Slide from '@material-ui/core/Slide';
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+
 
 const mapStateToProps = state => ({
 });
@@ -22,6 +26,16 @@ const mapDispatchToProps = dispatch => ({
     setUserId: (userId) => dispatch(setUserId(userId))
 });
 
+function HideOnScroll(props) {
+    const { children, window } = props;
+    const trigger = useScrollTrigger({ target: window ? window() : undefined });
+
+    return (
+        <Slide appear={false} direction="down" in={!trigger}>
+            {children}
+        </Slide>
+    );
+}
 
 class TopPage extends Component {
 
@@ -31,28 +45,29 @@ class TopPage extends Component {
         this.setUserId();
     }
 
-    componentDidMount() {
-    }
-
     render() {
         const { classes } = this.props;
 
         return (
             <div className={classes.wrap}>
-                <div className={classes.topBar}>
-                    <Button className={classes.addBtn} onClick={() => this.exportBookJson(this.state.questions)}>Export</Button>
-                    <Button className={classes.addBtn}>DELETE</Button>
-                    <Button className={classes.addBtn} to="/template" >ADD</Button>
+                <HideOnScroll {...this.props}>
+                    <AppBar style={{backgroundColor: 'steelblue'}}>
+                        <Toolbar variant="dense">
+                            <Typography gutterBottom variant="h5" component="h2">TnaLog</Typography>
+                        </Toolbar>
+                    </AppBar>
+                </HideOnScroll>
+                <div className={classes.body}>
+                    <BrowserRouter>
+                        <Route exact path='/testbook' component={BookList} />
+                        <Route exact path='/testbook/questionList' component={QuestionList} />
+                        <Route path='/testbook/start' component={TestViewer} />
+                        <Route path='/testbook/result' component={ResultPage} />
+                        <Route path='/testbook/questions/create' component={QuestionCreator} />
+                        <Route path='/testbook/question' component={QuestionViewer} />
+                    </BrowserRouter>
                 </div>
-                <BrowserRouter>
-                    <Route exact path='/testbook' component={BookList} />
-                    <Route exact path='/testbook/questionList' component={QuestionList} />
-                    <Route path='/testbook/start' component={TestViewer} />
-                    <Route path='/testbook/result' component={ResultPage} />
-                    <Route path='/testbook/questions/create' component={QuestionCreator} />
-                    <Route path='/testbook/question' component={QuestionViewer} />
-                </BrowserRouter>
-            </div>
+            </div >
         );
     }
 
@@ -71,14 +86,29 @@ class TopPage extends Component {
 }
 
 const styles = theme => ({
-    wrap: {
-        backgroundColor: 'steelblue'
+    wrap:{
+    },
+    body: {
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '50px 0px'
     },
     topBar: {
-        display: 'flex',
-        height: theme.spacing.unit * 5,
-        backgroundColor: '#cecece'
+        backgroundColor: '#5e7e9b'
     },
+    topBox: {
+        height: 60,
+        margin: '0 auto',
+        backgroundColor: '#bee6d1'
+    },
+    bottomBox: {
+        height: 70,
+        margin: '0 auto',
+        backgroundColor: '#bee6d1'
+    },
+    menuButton: {
+        marginRight: theme.spacing.unit * 1,
+    }
 });
 
 

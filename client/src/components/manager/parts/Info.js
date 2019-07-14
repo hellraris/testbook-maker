@@ -125,6 +125,12 @@ const styles = theme => ({
     tag: {
         display: 'flex',
         alignItems: 'center'
+    },
+    chip: {
+        marginRight: 3
+    },
+    headLabel: {
+        margin: 'auto auto auto 15px',
     }
 });
 

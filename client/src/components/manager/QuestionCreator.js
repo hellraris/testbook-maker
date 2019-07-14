@@ -38,7 +38,6 @@ class QuestionCreator extends Component {
                             <Explanation updateExplanationData={this.updateExplanationData} />
                         </div>
                     </div>
-                    <div style={{ marginBottom: 50 }}></div>
                 </div>
                 <div className={classes.footer}>
                     <Button onClick={() => this.props.history.goBack()}>CANCEL</Button>
@@ -103,8 +102,7 @@ class QuestionCreator extends Component {
 
 const styles = theme => ({
     wrap: {
-        display: 'flex',
-        minHeight: '100%'
+        display: 'flex'
     },
     body: {
         flex: '0 1 800px',
@@ -114,16 +112,16 @@ const styles = theme => ({
     },
     contents: {
         backgroundColor: 'white',
-        minHeight: '92%',
         padding: 10,
         borderRadius: 5
     },
     footer: {
         position: 'fixed',
+        height: '48px',
         width: '100%',
         bottom: 0,
         left: 0,
-        backgroundColor: '#bee6d1',
+        backgroundColor: 'navajowhite',
         display: 'flex',
         justifyContent: 'center'
     }

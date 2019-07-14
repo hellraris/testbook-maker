@@ -28,21 +28,20 @@ class TestViewer extends Component {
         }
 
         const { scripts, subQuestions } = this.state.questions[this.state.nowQuestionIdx];
-
         const { classes } = this.props;
 
         return (
             <div className={classes.wrap}>
-                <div className={classes.testBody}>
-                    <div className={classes.testContents}>
+                <div className={classes.body}>
+                    <div className={classes.contents}>
                         <div className={classes.script}>
                             {scripts ? scripts.map((script, index) => {
                                 return (
                                     <div className={classes.scriptItem} key={index}>
-                                        <div style={{ display: 'flex' }}>
+                                        <div className={classes.scriptTitle}>
                                             <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
                                         </div>
-                                        <div style={{ padding: 10, border: '1px dashed grey', borderRadius: 5 }}>
+                                        <div className={classes.scriptContents}>
                                             <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{script.contents}</Typography>
                                         </div>
                                     </div>
@@ -58,10 +57,10 @@ class TestViewer extends Component {
                                             <Typography variant="subtitle1">Q{subQuestionIdx + 1}.{subQuestion.subtilte}</Typography>
                                         </div>
                                         <Divider variant="middle" />
-                                        <div style={{ marginLeft: 15 }} >
+                                        <div className={classes.selection}>
                                             {subQuestion.selections.map((selection, selectionIdx) => {
                                                 return (
-                                                    <div className={classes.selection}
+                                                    <div className={classes.selectionItem}
                                                         key={selectionIdx}
                                                     >
                                                         <Checkbox
@@ -69,7 +68,7 @@ class TestViewer extends Component {
                                                             onChange={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
                                                         />
                                                         <div onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}>
-                                                            <Typography style={{ marginTop: 14 }} gutterBottom>
+                                                            <Typography gutterBottom>
                                                                 {selection.text}
                                                             </Typography>
                                                         </div>
@@ -82,7 +81,6 @@ class TestViewer extends Component {
                             })
                                 : {}}
                         </div>
-                        <div style={{ marginBottom: 30 }}></div>
                     </div>
                     <div className={classes.footer}>
                         <div onClick={this.prevQuestion}>
@@ -264,7 +262,6 @@ class TestViewer extends Component {
         }
     }
 
-
     confirmMarking = (subQuestionNo, selectionId) => {
         return this.state.markingSheet[subQuestionNo].has(selectionId);
     }
@@ -324,45 +321,56 @@ class TestViewer extends Component {
 
 const styles = theme => ({
     wrap: {
-        display: 'flex',
-        minHeight: '100%'
+        display: 'flex'
     },
-    testBody: {
+    body: {
         flex: '0 1 1280px',
         margin: '0 auto',
         minWidth: 320
     },
-    testContents: {
+    contents: {
         padding: 10
     },
     script: {
 
     },
-    subQuestion: {
-
-    },
-    subQuestionItem: {
-        backgroundColor: 'white',
-        padding: 7,
-        margin: 5,
-        borderRadius: 5
-    },
     scriptItem: {
         backgroundColor: 'white',
-        padding: 7,
         margin: 5,
         borderRadius: 5
     },
+    scriptTitle: {
+        marginLeft: 5
+    },
+    scriptContents: {
+        padding: '10px 15px',
+        border: '0.5px solid #c0c0c0',
+        borderRadius: 5,
+        backgroundColor: '#D9EAD9',
+     },
+    subQuestionItem: {
+        backgroundColor: 'white',
+        margin: 3,
+    },
     selection: {
-        display: 'flex'
+        padding: '7px 12px'
+    },
+    selectionItem: {
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#E5F5FB',
+        borderRadius: 5,
+        margin: 5
     },
     footer: {
+        display: 'flex',
         position: 'fixed',
+        height: '48px',
         width: '100%',
         bottom: 0,
         left: 0,
-        backgroundColor: '#bee6d1',
-        display: 'flex',
+        backgroundColor: 'navajowhite',
+        alignItems: 'center',
         justifyContent: 'center'
     }
 });

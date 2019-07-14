@@ -22,7 +22,6 @@ class BookCreatorModal extends Component {
             description: '',
             tagList: []
         }
-
     }
 
     render() {

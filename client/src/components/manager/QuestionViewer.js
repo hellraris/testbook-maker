@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+
 
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
-class TestViewer extends Component {
+class QuestionViewer extends Component {
 
     constructor(props) {
         super(props);
@@ -18,14 +16,8 @@ class TestViewer extends Component {
         }
     }
 
-    componentDidMount() {
-
-    }
-
     render() {
-
         const { scripts, subQuestions, explanations } = this.props.location.state.question;
-
         const { classes } = this.props;
 
         return (
@@ -56,10 +48,11 @@ class TestViewer extends Component {
                                             <div style={{ marginLeft: 15 }}>
                                                 <Typography variant="subtitle1">Q{subQuestionIdx + 1}.{subQuestion.subtilte}</Typography>
                                             </div>
-                                            <div style={{ marginLeft: 15 }} >
+                                            <Divider variant="middle" />
+                                            <div className={classes.selection}>
                                                 {subQuestion.selections.map((selection, selectionIdx) => {
                                                     return (
-                                                        <div className={classes.selection}
+                                                        <div className={classes.selectionItem}
                                                             key={selectionIdx}
                                                         >
                                                             <Checkbox
@@ -96,7 +89,6 @@ class TestViewer extends Component {
                             })
                                 : <div></div>}
                         </div>
-                        <div style={{ marginBottom: 30 }}></div>
                     </div>
                     <div className={classes.footer}>
                         <div>
@@ -121,14 +113,12 @@ class TestViewer extends Component {
 
 const styles = theme => ({
     wrap: {
-        display: 'flex',
-        minHeight: '100%',
+        display: 'flex'
     },
     body: {
         flex: '0 1 1280px',
         margin: '0 auto',
-        minWidth: 320,
-        padding: '15px'
+        minWidth: 320
     },
     contents: {
         display: 'flex',
@@ -138,10 +128,10 @@ const styles = theme => ({
         alignContent: 'space-around',
         backgroundColor: 'white',
         borderRadius: 5,
-        margin: '0 auto'
+        margin: '0 auto',
     },
     script: {
-
+        backgroundColor: '#FFFFF9',
     },
     scriptItem: {
         backgroundColor: 'white',
@@ -152,9 +142,10 @@ const styles = theme => ({
         marginLeft: 5
     },
     scriptContents: {
-       padding: 7,
+       padding: '10px 15px',
        border: '0.5px solid #c0c0c0',
-       borderRadius: 5
+       borderRadius: 5,
+       backgroundColor: '#D9EAD9',
     },
     question: {
         flex: '1 1 320px',
@@ -166,6 +157,16 @@ const styles = theme => ({
     subQuestionItem: {
         backgroundColor: 'white',
         margin: 3,
+    },
+    selection: {
+        padding: '7px 12px'
+    },
+    selectionItem: {
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#E5F5FB',
+        borderRadius: 5,
+        margin: 5
     },
     explanation: {
         flex: '1 1 320px',
@@ -179,19 +180,17 @@ const styles = theme => ({
         margin: 5,
         borderRadius: 5
     },
-    selection: {
-        display: 'flex',
-        alignItems: 'center'
-    },
     footer: {
+        display: 'flex',
         position: 'fixed',
+        height: '48px',
         width: '100%',
         bottom: 0,
         left: 0,
-        backgroundColor: '#bee6d1',
-        display: 'flex',
+        backgroundColor: 'navajowhite',
+        alignItems: 'center',
         justifyContent: 'center'
     }
 });
 
-export default withStyles(styles)(TestViewer);
+export default withStyles(styles)(QuestionViewer);

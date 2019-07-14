@@ -21,7 +21,7 @@ const styles = theme => ({
         height: '40px'
     },
     headLabel: {
-        margin: 'auto auto auto 20px',
+        margin: 'auto auto auto 15px',
     },
     addBtn: {
         margin: 'auto 10px 10px auto'

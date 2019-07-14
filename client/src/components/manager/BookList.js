@@ -81,7 +81,6 @@ class BookList extends Component {
                             )
                         }) : ''}
                     </div>
-                    <div style={{ marginBottom: 30 }}></div>
                 </div>
                 <div className={classes.footer}>
                     <Button onClick={() => this.props.history.goBack()}>BACK</Button>
@@ -131,27 +130,27 @@ class BookList extends Component {
 
 const styles = theme => ({
     wrap: {
-        display: 'flex',
-        minHeight: '100%',
+        display: 'flex'
     },
     body: {
         flex: '0 1 1280px',
-        margin: '0 auto',
-        height: '100%'
+        margin: '0 auto'
     },
     contents: {
         padding: 10,
-        height: '100%'
     },
     card: {
-        marginBottom: 10
+        marginBottom: 10,
+        backgroundColor: '#FFFFF9',
+        border: '1px solid #DFDFDF'
     },
     footer: {
         position: 'fixed',
+        height: '48px',
         width: '100%',
         bottom: 0,
         left: 0,
-        backgroundColor: '#bee6d1',
+        backgroundColor: 'navajowhite',
         display: 'flex',
         justifyContent: 'center'
     },
@@ -162,7 +161,7 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         outline: 'none',
-        width: '480px',
+        maxWidth: '350px',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',

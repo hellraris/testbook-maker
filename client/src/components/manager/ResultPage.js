@@ -50,7 +50,6 @@ class ResultPage extends Component {
                             }
                         </div>
                     </div>
-                    <div style={{ marginBottom: 50 }}></div>
                 </div>
                 <div className={classes.footer}>
                     <Button onClick={() => this.returnToBookList()}>OK</Button>
@@ -88,8 +87,7 @@ class ResultPage extends Component {
 
 const styles = theme => ({
     wrap: {
-        display: 'flex',
-        height: '94%'
+        display: 'flex'
     },
     body: {
         margin: '0 auto',
@@ -98,18 +96,18 @@ const styles = theme => ({
     },
     contents: {
         backgroundColor: 'white',
-        height: '90%',
         padding: 10,
         borderRadius: 5
     },
     footer: {
         position: 'fixed',
+        height: '48px',
         width: '100%',
         bottom: 0,
         left: 0,
-        backgroundColor:'#bee6d1',
+        backgroundColor: 'navajowhite',
         display: 'flex',
-        justifyContent: 'center'	
+        justifyContent: 'center'
     }
 });
 
