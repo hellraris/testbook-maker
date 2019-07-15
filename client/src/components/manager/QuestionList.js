@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { connect } from 'react-redux';
+
 import axios from 'axios';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -8,7 +10,13 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
+const mapStateToProps = state => ({
+    userId: state.userInfo.userId
+});
 
 class QuestionList extends Component {
 
@@ -16,9 +24,11 @@ class QuestionList extends Component {
         super(props)
 
         this.state = {
-            userId: this.props.location.state.userId,
             bookId: this.props.location.state.bookId,
-            questionList: []
+            questionList: [],
+            openDialog: false,
+            dialogTitle: null,
+            removeTarget: null
         }
     }
 
@@ -32,6 +42,21 @@ class QuestionList extends Component {
 
         return (
             <div className={classes.wrap}>
+                <Dialog
+                    open={this.state.openDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{this.state.dialogTitle}</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={() => this.closeDialog()} color="primary">
+                            No
+                    </Button>
+                        <Button onClick={() => this.removeQuestion()} color="primary" autoFocus>
+                            Yes
+                    </Button>
+                    </DialogActions>
+                </Dialog>
                 <div className={classes.body}>
                     <div className={classes.contents}>
                         {this.state.questionList ? this.state.questionList.map((question, index) => {
@@ -44,7 +69,7 @@ class QuestionList extends Component {
                                     </CardContent>
                                     <CardActions>
                                         <Button size="small" onClick={() => this.showQuestionDetail(question.question_id)}>Detail</Button>
-                                        <Button size="small" onClick={() => this.removeQuestion(question.question_id)}>Remove</Button>
+                                        <Button size="small" onClick={() => this.confirmRemove(question)}>Remove</Button>
                                     </CardActions>
                                 </Card>
                             )
@@ -57,7 +82,7 @@ class QuestionList extends Component {
                         {
                             pathname: '/testbook/questions/create',
                             state: {
-                                userId: this.state.userId,
+                                userId: this.props.userId,
                                 bookId: this.state.bookId
                             }
                         }
@@ -82,13 +107,13 @@ class QuestionList extends Component {
                 }
             });
         })
-           .catch(err => console.log(err));
+            .catch(err => console.log(err));
     }
 
     getQuestionList = () => {
         axios({
             method: 'get',
-            url: '/api/' + this.state.userId + '/testbook/' + this.state.bookId + '/questions'
+            url: '/api/' + this.props.userId + '/testbook/' + this.state.bookId + '/questions'
         }).then(res => {
             const list = res.data;
             console.log(list);
@@ -97,11 +122,19 @@ class QuestionList extends Component {
             .catch(err => console.log(err));
     }
 
-    removeQuestion = (questionId) => {
+    confirmRemove = (question) => {
+        this.setState({
+            openDialog: true,
+            dialogTitle: 'Are you sure you want to remove ' + question.title + '?',
+            removeTarget: question.question_id 
+        })
+    }
+
+    removeQuestion = () => {
 
         const requestData = {
             bookId: this.state.bookId,
-            questionId: questionId
+            questionId: this.state.removeTarget
         }
 
         axios({
@@ -110,9 +143,19 @@ class QuestionList extends Component {
             data: requestData
         }).then(res => {
             this.getQuestionList();
+            this.closeDialog();
         })
             .catch(err => console.log(err));
     }
+
+    closeDialog = () => {
+        this.setState({
+            ...this.state,
+            openDialog: false,
+            removeTarget: null
+        })
+    }
+
 }
 
 const styles = theme => ({
@@ -144,4 +187,8 @@ const styles = theme => ({
 });
 
 
-export default withStyles(styles)(QuestionList);
+export default withStyles(styles)(
+    connect(
+        mapStateToProps
+    )(QuestionList)
+);

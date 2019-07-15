@@ -89,7 +89,7 @@ class QuestionCreator extends Component {
     goToQuestionList = () => {
         this.props.history.push(
             {
-                pathname: '/testbook/questions',
+                pathname: '/testbook/questionList',
                 state: {
                     userId: this.props.location.state.userId,
                     bookId: this.props.location.state.bookId
