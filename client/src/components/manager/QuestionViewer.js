@@ -14,6 +14,8 @@ class QuestionViewer extends Component {
         this.state = {
             navi: 0
         }
+
+        console.log(this.props.location.state.question);
     }
 
     render() {
@@ -39,7 +41,7 @@ class QuestionViewer extends Component {
                                         </div>
                                     )
                                 })
-                                    : {}}
+                                    : null}
                             </div>
                             <div className={classes.subQuestion}>
                                 {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
@@ -74,22 +76,23 @@ class QuestionViewer extends Component {
                                     : {}}
                             </div>
                         </div>
-                        <div className={classes.explanation}>
-                            <Typography variant="h5">Explanation</Typography>
-                            {explanations.length > 0 ? explanations.map((explanation, index) => {
-                                return (
-                                    <div className={classes.explanationItem} key={index}>
-                                        <div style={{ display: 'flex' }}>
-                                            <Typography variant="subtitle1" gutterBottom>{explanation.subtilte}</Typography>
+                        {explanations ?
+                            <div className={classes.explanation}>
+                                <Typography variant="h5">Explanation</Typography>
+                                {explanations.map((explanation, index) => {
+                                    return (
+                                        <div className={classes.explanationItem} key={index}>
+                                            <div style={{ display: 'flex' }}>
+                                                <Typography variant="subtitle1" gutterBottom>{explanation.subtilte}</Typography>
+                                            </div>
+                                            <div style={{ padding: 10, border: '1px dashed grey', borderRadius: 5 }}>
+                                                <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{explanation.contents}</Typography>
+                                            </div>
                                         </div>
-                                        <div style={{ padding: 10, border: '1px dashed grey', borderRadius: 5 }}>
-                                            <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{explanation.contents}</Typography>
-                                        </div>
-                                    </div>
-                                )
-                            })
-                                : <div></div>}
-                        </div>
+                                    )
+                                })}
+                            </div> : null
+                        }
                     </div>
                     <div className={classes.footer}>
                         <div>
@@ -112,17 +115,17 @@ class QuestionViewer extends Component {
     choiceSelectionColor = (selectionId, answer) => {
         const isChecked = this.props.location.state.marking.includes(selectionId)
         if (isChecked) {
-           const isAnswer = answer.includes(selectionId)
-           if (isAnswer) {
-               return {
-                backgroundColor: '#99ffcc'
-               }
-           } else {
-            return {
-                backgroundColor: '#F4A8A7'
-               }
-           }
-        } 
+            const isAnswer = answer.includes(selectionId)
+            if (isAnswer) {
+                return {
+                    backgroundColor: '#99ffcc'
+                }
+            } else {
+                return {
+                    backgroundColor: '#F4A8A7'
+                }
+            }
+        }
         return null
     }
 
@@ -160,10 +163,10 @@ const styles = theme => ({
         marginLeft: 5
     },
     scriptContents: {
-       padding: '10px 15px',
-       border: '0.5px solid #c0c0c0',
-       borderRadius: 5,
-       backgroundColor: '#D9EAD9',
+        padding: '10px 15px',
+        border: '0.5px solid #c0c0c0',
+        borderRadius: 5,
+        backgroundColor: '#D9EAD9',
     },
     question: {
         flex: '1 1 320px',

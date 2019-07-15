@@ -47,7 +47,7 @@ class TestViewer extends Component {
                                     </div>
                                 )
                             })
-                                : {}}
+                                : null}
                         </div>
                         <div className={classes.subQuestion}>
                             {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
@@ -81,7 +81,7 @@ class TestViewer extends Component {
                                     </div>
                                 )
                             })
-                                : {}}
+                                : null}
                         </div>
                     </div>
                     <div className={classes.footer}>
