@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { connect } from 'react-redux';
 
 import axios from 'axios';
@@ -113,6 +112,8 @@ class BookList extends Component {
         );
     }
 
+    // functions
+
     getBookList = () => {
 
         axios({
@@ -128,7 +129,7 @@ class BookList extends Component {
         this.setState({
             openDialog: true,
             dialogTitle: 'Are you sure you want to remove ' + book.title + '?',
-            removeTarget: book.testbook_id 
+            removeTarget: book.testbook_id
         })
     }
 
@@ -150,7 +151,7 @@ class BookList extends Component {
     }
 
     exportBookJson = (testbook) => {
-        console.log(testbook);
+        
         const link = document.createElement('a');
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(testbook));
         link.href = dataStr;
@@ -184,6 +185,8 @@ class BookList extends Component {
 
 }
 
+// styles
+
 const styles = theme => ({
     wrap: {
         display: 'flex'
@@ -209,7 +212,7 @@ const styles = theme => ({
         left: 0,
         backgroundColor: 'navajowhite',
         justifyContent: 'center',
-        "& Button":{
+        "& Button": {
             backgroundColor: '#f2f2f2',
             margin: 7,
             borderRadius: 5,

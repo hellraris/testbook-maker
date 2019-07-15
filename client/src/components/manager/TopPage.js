@@ -37,7 +37,7 @@ function HideOnScroll(props) {
         <Slide appear={false} direction="down" in={!trigger}>
             {children}
         </Slide>
-    );
+    )
 }
 
 class TopPage extends Component {
@@ -96,8 +96,9 @@ class TopPage extends Component {
         );
     }
 
+    // functions
+
     handleChange = (event, newValue) => {
-        console.log(newValue);
         this.setState({
             ...this.state,
             menu: newValue
@@ -118,7 +119,7 @@ class TopPage extends Component {
 
     goToMainPage = (requiredCloseDialog) => {
         if (requiredCloseDialog) {
-           this.closeDialog();
+            this.closeDialog();
         }
         this.props.history.push('/testbook');
     }
@@ -135,6 +136,8 @@ class TopPage extends Component {
         this.props.setUserId('test');
     }
 }
+
+// styles
 
 const styles = theme => ({
     wrap: {

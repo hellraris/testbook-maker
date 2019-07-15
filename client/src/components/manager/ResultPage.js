@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { grey } from '@material-ui/core/colors';
 
 class ResultPage extends Component {
 
@@ -17,9 +16,6 @@ class ResultPage extends Component {
             correctCnt: 0,
             incorrectCnt: 0,
         }
-    }
-
-    componentDidMount() {
     }
 
     render() {
@@ -93,9 +89,9 @@ class ResultPage extends Component {
         })
             .catch(err => console.log(err));
     }
-
-    // function End
 }
+
+// styles
 
 const styles = theme => ({
     wrap: {

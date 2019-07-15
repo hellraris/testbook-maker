@@ -20,7 +20,6 @@ class Script extends Component {
             expanded: false
         }
     }
-
     
     componentDidUpdate () {
         this.props.updateScriptData(this.state.scripts);
@@ -86,6 +85,7 @@ class Script extends Component {
     }
 
     // functions
+
     handleExpanded = () => {
         this.setState({
             ...this,
@@ -127,6 +127,7 @@ class Script extends Component {
 }
 
 // styles
+
 const styles = theme => ({
     body: {
         margin: '5px'

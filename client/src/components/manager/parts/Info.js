@@ -34,7 +34,6 @@ class Info extends Component {
 
     render() {
         const { classes } = this.props;
-        const { explanations } = this.state;
 
         return (
             <div className={classes.wrap} >
@@ -84,6 +83,8 @@ class Info extends Component {
         );
     }
 
+    // functions
+
     handleExpanded = () => {
         this.setState({
             ...this,
@@ -113,6 +114,8 @@ class Info extends Component {
         })
     }
 }
+
+// styles
 
 const styles = theme => ({
     wrap: {

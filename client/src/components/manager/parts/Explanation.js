@@ -11,6 +11,123 @@ import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
+class Explanation extends Component {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            explanations: [],
+            expanded: false
+        }
+    }
+
+    componentDidUpdate() {
+        this.props.updateExplanationData(this.state.explanations);
+    }
+
+    render() {
+        const { classes } = this.props;
+        const { explanations } = this.state;
+
+        return (
+            <div className={classes.body} >
+                <ExpansionPanel expanded={this.state.expanded} >
+                    <ExpansionPanelSummary className={classes.head} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
+                        <Typography className={classes.headLabel} variant="h6" gutterBottom>Explanation</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <div className="flexbox">
+                            <Icon className={"btn-right"} color="action">
+                                <AddCircleOutline className={["btn", classes.addBtn].join(' ')} onClick={this.addExplanation} />
+                            </Icon>
+                        </div>
+                        <div>
+                            {explanations ?
+                                explanations.map((explanation, explanationIdx) => {
+                                    return <div key={explanationIdx} className={classes.item}>
+                                        <div className={classes.itemBar}>
+                                            <Icon className={classes.removeBtnConteiner} color="action">
+                                                <Clear className={["btn", classes.removeBtn].join(' ')} onClick={() => this.deleteExplanation(explanationIdx)} />
+                                            </Icon>
+                                        </div>
+                                        <div className={classes.itemBody}>
+                                            <TextField
+                                                placeholder="Subtitle"
+                                                className={classes.itemSubtitle}
+                                                fullWidth
+                                                multiline
+                                                value={explanation.subtilte}
+                                                onChange={(event) => this.updateSubtitle(explanationIdx, event)}
+                                            />
+                                            <TextField
+                                                value={explanation.contents}
+                                                onChange={(event) => this.updateExplanation(explanationIdx, event)}
+                                                multiline
+                                                fullWidth
+                                                margin="normal"
+                                                variant="outlined"
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                })
+                                :
+                                ''
+                            }
+                        </div>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+            </div>
+        );
+    }
+
+    // functions
+
+    handleExpanded = () => {
+        this.setState({
+            ...this,
+            expanded: !this.state.expanded
+        })
+    }
+
+    addExplanation = () => {
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.concat({ subtilte: '', contents: '' })
+        })
+    }
+
+    deleteExplanation = (explanationIdx) => {
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.filter((_, index) => index !== explanationIdx)
+        })
+    }
+
+    updateSubtitle = (explanationIdx, event) => {
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.map((explanation, index) => {
+                return index === explanationIdx ? { ...explanation, subtilte: event.target.value } : explanation
+            })
+        })
+    }
+
+    updateExplanation = (explanationIdx, event) => {
+        this.setState({
+            ...this.state,
+            explanations: this.state.explanations.map((explanation, index) => {
+                return index === explanationIdx ? { ...explanation, contents: event.target.value } : explanation
+            })
+        })
+    }
+
+}
+
+// styles
 
 const styles = theme => ({
     body: {
@@ -93,120 +210,5 @@ const ExpansionPanelDetails = withStyles(theme => ({
         flexDirection: 'column'
     },
 }))(MuiExpansionPanelDetails);
-
-class Explanation extends Component {
-
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            explanations: [],
-            expanded: false
-        }
-
-    }
-
-    componentDidUpdate () {
-        this.props.updateExplanationData(this.state.explanations);
-    }
-
-    render() {
-        const { classes } = this.props;
-        const { explanations } = this.state;
-
-        return (
-            <div className={classes.body} >
-                <ExpansionPanel expanded={this.state.expanded} >
-                    <ExpansionPanelSummary className={classes.head} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
-                        <Typography className={classes.headLabel} variant="h6" gutterBottom>Explanation</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <div className="flexbox">
-                            <Icon className={"btn-right"} color="action">
-                                <AddCircleOutline className={["btn", classes.addBtn].join(' ')} onClick={this.addExplanation} />
-                            </Icon>
-                        </div>
-                        <div>
-                            {explanations ?
-                                explanations.map((explanation, explanationIdx) => {
-                                    return <div key={explanationIdx} className={classes.item}>
-                                        <div className={classes.itemBar}>
-                                            <Icon className={classes.removeBtnConteiner} color="action">
-                                                <Clear className={["btn", classes.removeBtn].join(' ')} onClick={() => this.deleteExplanation(explanationIdx)} />
-                                            </Icon>
-                                        </div>
-                                        <div className={classes.itemBody}>
-                                            <TextField
-                                                placeholder="Subtitle"
-                                                className={classes.itemSubtitle}
-                                                fullWidth
-                                                multiline
-                                                value={explanation.subtilte}
-                                                onChange={(event) => this.updateSubtitle(explanationIdx, event)}
-                                            />
-                                            <TextField
-                                                value={explanation.contents}
-                                                onChange={(event) => this.updateExplanation(explanationIdx, event)}
-                                                multiline
-                                                fullWidth
-                                                margin="normal"
-                                                variant="outlined"
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                })
-                                :
-                                ''
-                            }
-                        </div>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-            </div>
-        );
-    }
-
-    handleExpanded = () => {
-        this.setState({
-            ...this,
-            expanded: !this.state.expanded
-        })
-    }
-
-    addExplanation = () => {
-        this.setState({
-            ...this.state,
-            explanations: this.state.explanations.concat({ subtilte: '', contents: '' })
-        })
-    }
-
-    deleteExplanation = (explanationIdx) => {
-        this.setState({
-            ...this.state,
-            explanations: this.state.explanations.filter((_, index) => index !== explanationIdx)
-        })
-    }
-
-    updateSubtitle = (explanationIdx, event) => {
-        this.setState({
-            ...this.state,
-            explanations: this.state.explanations.map((explanation, index) => {
-                return index === explanationIdx ? { ...explanation, subtilte: event.target.value } : explanation
-            })
-        })
-    }
-
-    updateExplanation = (explanationIdx, event) => {
-        this.setState({
-            ...this.state,
-            explanations: this.state.explanations.map((explanation, index) => {
-                return index === explanationIdx ? { ...explanation, contents: event.target.value } : explanation
-            })
-        })
-    }
-
-}
 
 export default withStyles(styles)(Explanation);

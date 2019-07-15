@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { connect } from 'react-redux';
 
 import axios from 'axios';
@@ -33,7 +32,6 @@ class QuestionList extends Component {
     }
 
     componentDidMount() {
-        console.log(this.state.bookId);
         this.getQuestionList()
     }
 
@@ -92,13 +90,14 @@ class QuestionList extends Component {
         );
     }
 
+    // functions
+
     showQuestionDetail = (questionId) => {
         axios({
             method: 'get',
             url: '/api/testbook/' + this.props.location.state.bookId + '/question/' + questionId
         }).then(res => {
             const question = res.data;
-            console.log(question);
             this.props.history.push({
                 pathname: "/testbook/question",
                 state: {
@@ -116,7 +115,6 @@ class QuestionList extends Component {
             url: '/api/' + this.props.userId + '/testbook/' + this.state.bookId + '/questions'
         }).then(res => {
             const list = res.data;
-            console.log(list);
             this.setState({ questionList: list })
         })
             .catch(err => console.log(err));
@@ -126,7 +124,7 @@ class QuestionList extends Component {
         this.setState({
             openDialog: true,
             dialogTitle: 'Are you sure you want to remove ' + question.title + '?',
-            removeTarget: question.question_id 
+            removeTarget: question.question_id
         })
     }
 
@@ -158,6 +156,8 @@ class QuestionList extends Component {
 
 }
 
+// styles
+
 const styles = theme => ({
     wrap: {
         display: 'flex',
@@ -183,7 +183,7 @@ const styles = theme => ({
         backgroundColor: 'navajowhite',
         display: 'flex',
         justifyContent: 'center',
-        "& Button":{
+        "& Button": {
             backgroundColor: '#f2f2f2',
             margin: 7,
             borderRadius: 5,

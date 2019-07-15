@@ -113,7 +113,6 @@ class TestViewer extends Component {
             method: 'get',
             url: '/api/testbook/' + bookId
         }).then(res => {
-            console.log(res.data);
             this.setTestingState(res.data);
         })
             .catch(err => console.log(err));
@@ -317,9 +316,9 @@ class TestViewer extends Component {
 
         return results;
     }
-
-    // function End
 }
+
+// styles
 
 const styles = theme => ({
     wrap: {

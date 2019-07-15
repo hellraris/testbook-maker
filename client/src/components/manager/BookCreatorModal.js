@@ -137,6 +137,8 @@ class BookCreatorModal extends Component {
 
 }
 
+// styles
+
 const styles = theme => ({
     wrap: {
 

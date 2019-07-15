@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -8,15 +7,6 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
 class QuestionViewer extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            navi: 0
-        }
-
-        console.log(this.props.location.state.question);
-    }
 
     render() {
         const { scripts, subQuestions, explanations } = this.props.location.state.question;
@@ -106,12 +96,6 @@ class QuestionViewer extends Component {
 
     // functions
 
-    handleNaviChange = (event, value) => {
-        this.setState({
-            navi: value
-        })
-    }
-
     choiceSelectionColor = (selectionId, answer) => {
         const isChecked = this.props.location.state.marking.includes(selectionId)
         if (isChecked) {
@@ -128,9 +112,9 @@ class QuestionViewer extends Component {
         }
         return null
     }
-
-    // function End
 }
+
+// styles
 
 const styles = theme => ({
     wrap: {

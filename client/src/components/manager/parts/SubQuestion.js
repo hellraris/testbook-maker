@@ -26,10 +26,9 @@ class Question extends Component {
         this.state = {
             subQuestions: []
         }
-
     }
 
-    componentDidUpdate () {
+    componentDidUpdate() {
         this.props.updateSubQuestionData(this.state.subQuestions);
     }
 
@@ -116,12 +115,13 @@ class Question extends Component {
     }
 
     // functions
+
     addSubQuestion = () => {
         this.setState({
             ...this.state,
-            subQuestions: this.state.subQuestions.concat({ 
-                id: this.state.subQuestions.length > 0 ?  
-                                ((this.state.subQuestions[this.state.subQuestions.length - 1].id) + 1) : 0,
+            subQuestions: this.state.subQuestions.concat({
+                id: this.state.subQuestions.length > 0 ?
+                    ((this.state.subQuestions[this.state.subQuestions.length - 1].id) + 1) : 0,
                 subtilte: '',
                 selectionType: 1,
                 selections: [],
@@ -138,9 +138,11 @@ class Question extends Component {
                     return {
                         ...subQuestion,
                         selections: subQuestion.selections.concat(
-                            {id: subQuestion.selections.length > 0 ?  
-                                ((subQuestion.selections[subQuestion.selections.length - 1].id) + 1) : 0 ,
-                                text: ''})
+                            {
+                                id: subQuestion.selections.length > 0 ?
+                                    ((subQuestion.selections[subQuestion.selections.length - 1].id) + 1) : 0,
+                                text: ''
+                            })
                     }
                 } else {
                     return subQuestion;
@@ -193,7 +195,7 @@ class Question extends Component {
 
     updateSelection = (subQuestionIdx, selectionIdx, event) => {
         const updatedSelections = this.state.subQuestions[subQuestionIdx].selections.map((selection, index) => {
-            return selectionIdx === index ? {...selection, text: event.target.value} : selection
+            return selectionIdx === index ? { ...selection, text: event.target.value } : selection
         });
 
         this.setState({
@@ -220,7 +222,7 @@ class Question extends Component {
         } else {
             updatedAnswer.splice(index, 1);
         }
-        
+
         this.setState({
             ...this.state,
             subQuestions: this.state.subQuestions.map((subQuestion, index) => {
@@ -250,8 +252,8 @@ class Question extends Component {
     }
 }
 
-
 // styles
+
 const ExpansionPanel = withStyles({
     root: {
         border: '1px solid rgba(0,0,0,.125)',

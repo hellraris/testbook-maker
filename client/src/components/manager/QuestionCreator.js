@@ -19,10 +19,6 @@ const questionData = {
 
 class QuestionCreator extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { classes } = this.props;
 
@@ -48,6 +44,7 @@ class QuestionCreator extends Component {
     }
 
     // functions
+
     updateScriptData = (data) => {
         questionData.scripts = data;
     }
@@ -75,7 +72,6 @@ class QuestionCreator extends Component {
         requestData.testbookId = this.props.location.state.bookId;
         requestData.title = questionData.title;
         requestData.tagList = JSON.stringify(questionData.tagList);
-        console.log("requestDataJson", requestData);
 
         axios({
             method: 'post',
@@ -99,6 +95,8 @@ class QuestionCreator extends Component {
     }
 
 }
+
+// styles
 
 const styles = theme => ({
     wrap: {
