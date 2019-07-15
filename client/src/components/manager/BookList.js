@@ -29,7 +29,7 @@ class BookList extends Component {
         super(props)
 
         this.state = {
-            books: [],
+            bookList: [],
             openModal: false,
             openDialog: false,
             dialogTitle: null,
@@ -38,7 +38,7 @@ class BookList extends Component {
     }
 
     componentDidMount() {
-        this.getBooks()
+        this.getBookList()
     }
 
     render() {
@@ -70,7 +70,7 @@ class BookList extends Component {
                 </Dialog>
                 <div className={classes.body}>
                     <div className={classes.contents}>
-                        {this.state.books ? this.state.books.map((book, index) => {
+                        {this.state.bookList ? this.state.bookList.map((book, index) => {
                             return (
                                 <Card key={index} className={classes.card}>
                                     <CardContent>
@@ -113,13 +113,13 @@ class BookList extends Component {
         );
     }
 
-    getBooks = () => {
+    getBookList = () => {
 
         axios({
             method: 'get',
             url: '/api/' + this.props.userId + '/testbook'
         }).then(res => {
-            this.setState({ books: res.data })
+            this.setState({ bookList: res.data })
         })
             .catch(err => console.log(err));
     }
@@ -143,7 +143,7 @@ class BookList extends Component {
             url: '/api/book/remove',
             data: requestData
         }).then(res => {
-            this.getBooks();
+            this.getBookList();
             this.closeDialog();
         })
             .catch(err => console.log(err));
@@ -173,7 +173,7 @@ class BookList extends Component {
 
         // モーダルを閉じる時はBookリストを更新する。
         if (this.state.openModal) {
-            this.getBooks()
+            this.getBookList()
         }
 
         this.setState({
