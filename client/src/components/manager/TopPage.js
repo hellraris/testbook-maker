@@ -17,7 +17,10 @@ import Slide from '@material-ui/core/Slide';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const mapStateToProps = state => ({
 });
@@ -42,6 +45,10 @@ class TopPage extends Component {
     constructor(props) {
         super(props)
 
+        this.state = {
+            openDialog: false
+        }
+
         this.setUserId();
 
     }
@@ -51,25 +58,40 @@ class TopPage extends Component {
 
         return (
             <div className={classes.wrap}>
-                    <HideOnScroll {...this.props}>
-                        <AppBar style={{ backgroundColor: 'steelblue' }}>
-                            <Toolbar variant="dense">
-                                <div className={classes.logo} onClick={() => this.props.history.push('/testbook')}>
-                                    <Typography gutterBottom variant="h5" component="h2">TnaLog</Typography>
-                                </div>
-                            </Toolbar>
-                        </AppBar>
-                    </HideOnScroll>
-                    <div className={classes.body}>
-                        <Switch>
-                            <Route exact path='/testbook' component={BookList} />
-                            <Route exact path='/testbook/questionList' component={QuestionList} />
-                            <Route path='/testbook/start' component={TestViewer} />
-                            <Route path='/testbook/result' component={ResultPage} />
-                            <Route path='/testbook/questions/create' component={QuestionCreator} />
-                            <Route path='/testbook/question' component={QuestionViewer} />
-                        </Switch>
-                    </div>
+                <HideOnScroll {...this.props}>
+                    <AppBar style={{ backgroundColor: 'steelblue' }}>
+                        <Toolbar variant="dense">
+                            <div className={classes.logo} onClick={() => this.checkNowPage()}>
+                                <Typography gutterBottom variant="h5" component="h2">TnaLog</Typography>
+                            </div>
+                        </Toolbar>
+                    </AppBar>
+                </HideOnScroll>
+                <div className={classes.body}>
+                    <Dialog
+                        open={this.state.openDialog}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Are you sure you want to this page?"}</DialogTitle>
+                        <DialogActions>
+                            <Button onClick={() => this.closeDialog()} color="primary">
+                                No
+                    </Button>
+                            <Button onClick={() => this.goToMainPage(true)} color="primary" autoFocus>
+                                Yes
+                    </Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Switch>
+                        <Route exact path='/testbook' component={BookList} />
+                        <Route exact path='/testbook/questionList' component={QuestionList} />
+                        <Route path='/testbook/start' component={TestViewer} />
+                        <Route path='/testbook/result' component={ResultPage} />
+                        <Route path='/testbook/questions/create' component={QuestionCreator} />
+                        <Route path='/testbook/question' component={QuestionViewer} />
+                    </Switch>
+                </div>
             </div>
         );
     }
@@ -79,6 +101,32 @@ class TopPage extends Component {
         this.setState({
             ...this.state,
             menu: newValue
+        })
+    }
+
+    checkNowPage = () => {
+
+        if (this.props.location.pathname === "/testbook/start" || this.props.location.pathname === "/testbook/questions/create") {
+            this.setState({
+                ...this.state,
+                openDialog: true
+            })
+            return
+        }
+        this.goToMainPage(false);
+    }
+
+    goToMainPage = (requiredCloseDialog) => {
+        if (requiredCloseDialog) {
+           this.closeDialog();
+        }
+        this.props.history.push('/testbook');
+    }
+
+    closeDialog = () => {
+        this.setState({
+            ...this.state,
+            openDialog: false
         })
     }
 

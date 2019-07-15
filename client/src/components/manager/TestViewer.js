@@ -334,11 +334,11 @@ const styles = theme => ({
         padding: 10
     },
     script: {
-
+        marginBottom: 30
     },
     scriptItem: {
         backgroundColor: 'white',
-        margin: 5,
+        margin: '20px 5px',
         borderRadius: 5
     },
     scriptTitle: {
@@ -380,7 +380,15 @@ const styles = theme => ({
         left: 0,
         backgroundColor: 'navajowhite',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        "& Button":{
+            backgroundColor: '#f2f2f2',
+            margin: 7,
+            borderRadius: 5,
+            "&:hover ": {
+                backgroundColor: "#ababab"
+            }
+        }
     }
 });
 

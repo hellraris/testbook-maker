@@ -182,7 +182,15 @@ const styles = theme => ({
         left: 0,
         backgroundColor: 'navajowhite',
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        "& Button":{
+            backgroundColor: '#f2f2f2',
+            margin: 7,
+            borderRadius: 5,
+            "&:hover ": {
+                backgroundColor: "#ababab"
+            }
+        }
     }
 });
 

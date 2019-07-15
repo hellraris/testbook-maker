@@ -208,7 +208,15 @@ const styles = theme => ({
         bottom: 0,
         left: 0,
         backgroundColor: 'navajowhite',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        "& Button":{
+            backgroundColor: '#f2f2f2',
+            margin: 7,
+            borderRadius: 5,
+            "&:hover ": {
+                backgroundColor: "#ababab"
+            }
+        }
     },
     modal: {
         display: 'flex',
