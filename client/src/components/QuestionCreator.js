@@ -36,7 +36,7 @@ class QuestionCreator extends Component {
                     </div>
                 </div>
                 <div className={classes.footer}>
-                    <Button onClick={() => this.props.history.goBack()}>CANCEL</Button>
+                    <Button onClick={() => this.goToQuestionList()}>CANCEL</Button>
                     <Button onClick={() => this.addQuestion()}>Add</Button>
                 </div>
             </div>

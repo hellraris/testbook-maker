@@ -86,7 +86,7 @@ class QuestionViewer extends Component {
                     </div>
                     <div className={classes.footer}>
                         <div>
-                            <Button onClick={() => this.props.history.goBack()}>BACK</Button>
+                            <Button onClick={() => this.props.history.push('/testbook/questionList')}>BACK</Button>
                         </div>
                     </div>
                 </div>

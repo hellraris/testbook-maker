@@ -60,17 +60,13 @@ class ResultPage extends Component {
                     </div>
                 </div>
                 <div className={classes.footer}>
-                    <Button onClick={() => this.returnToBookList()}>OK</Button>
+                    <Button onClick={() => this.props.history.push('/testbook')}>OK</Button>
                 </div>
             </div>
         )
     }
 
     // functions
-
-    returnToBookList = () => {
-        this.props.history.push('/testbook');
-    }
 
     showQuestionDetail = (result) => {
         axios({
