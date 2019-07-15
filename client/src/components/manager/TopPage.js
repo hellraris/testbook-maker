@@ -51,9 +51,11 @@ class TopPage extends Component {
         return (
             <div className={classes.wrap}>
                 <HideOnScroll {...this.props}>
-                    <AppBar style={{backgroundColor: 'steelblue'}}>
+                    <AppBar style={{ backgroundColor: 'steelblue' }}>
                         <Toolbar variant="dense">
-                            <Typography gutterBottom variant="h5" component="h2">TnaLog</Typography>
+                            <div onClick= {() => this.props.history.push('/testbook')}>
+                                <Typography gutterBottom variant="h5" component="h2">TnaLog</Typography>
+                            </div>
                         </Toolbar>
                     </AppBar>
                 </HideOnScroll>
@@ -86,28 +88,12 @@ class TopPage extends Component {
 }
 
 const styles = theme => ({
-    wrap:{
+    wrap: {
     },
     body: {
         display: 'flex',
         flexDirection: 'column',
         padding: '50px 0px'
-    },
-    topBar: {
-        backgroundColor: '#5e7e9b'
-    },
-    topBox: {
-        height: 60,
-        margin: '0 auto',
-        backgroundColor: '#bee6d1'
-    },
-    bottomBox: {
-        height: 70,
-        margin: '0 auto',
-        backgroundColor: '#bee6d1'
-    },
-    menuButton: {
-        marginRight: theme.spacing.unit * 1,
     }
 });
 

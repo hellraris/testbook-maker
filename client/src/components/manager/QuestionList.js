@@ -123,11 +123,6 @@ const styles = theme => ({
         flex: '0 1 1280px',
         margin: '0 auto',
     },
-    bookHeader: {
-        display: 'flex',
-        height: theme.spacing.unit * 7,
-        backgroundColor: 'gray'
-    },
     contents: {
         padding: 10,
     },
