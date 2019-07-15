@@ -1,4 +1,4 @@
-## TestMaker
+## TnaLog(Test And Analytics Log)
 個人用の問題集を作るアプリケーション
 
 ## The Development Environment
