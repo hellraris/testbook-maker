@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route, withRouter, Switch } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { setUserId } from '../manager/store/userInfo';
@@ -43,6 +43,7 @@ class TopPage extends Component {
         super(props)
 
         this.setUserId();
+
     }
 
     render() {
@@ -50,25 +51,25 @@ class TopPage extends Component {
 
         return (
             <div className={classes.wrap}>
-                <HideOnScroll {...this.props}>
-                    <AppBar style={{ backgroundColor: 'steelblue' }}>
-                        <Toolbar variant="dense">
-                            <div onClick= {() => this.props.history.push('/testbook')}>
-                                <Typography gutterBottom variant="h5" component="h2">TnaLog</Typography>
-                            </div>
-                        </Toolbar>
-                    </AppBar>
-                </HideOnScroll>
-                <div className={classes.body}>
-                    <BrowserRouter>
-                        <Route exact path='/testbook' component={BookList} />
-                        <Route exact path='/testbook/questionList' component={QuestionList} />
-                        <Route path='/testbook/start' component={TestViewer} />
-                        <Route path='/testbook/result' component={ResultPage} />
-                        <Route path='/testbook/questions/create' component={QuestionCreator} />
-                        <Route path='/testbook/question' component={QuestionViewer} />
-                    </BrowserRouter>
-                </div>
+                    <HideOnScroll {...this.props}>
+                        <AppBar style={{ backgroundColor: 'steelblue' }}>
+                            <Toolbar variant="dense">
+                                <div className={classes.logo} onClick={() => this.props.history.push('/testbook')}>
+                                    <Typography gutterBottom variant="h5" component="h2">TnaLog</Typography>
+                                </div>
+                            </Toolbar>
+                        </AppBar>
+                    </HideOnScroll>
+                    <div className={classes.body}>
+                        <Switch>
+                            <Route exact path='/testbook' component={BookList} />
+                            <Route exact path='/testbook/questionList' component={QuestionList} />
+                            <Route path='/testbook/start' component={TestViewer} />
+                            <Route path='/testbook/result' component={ResultPage} />
+                            <Route path='/testbook/questions/create' component={QuestionCreator} />
+                            <Route path='/testbook/question' component={QuestionViewer} />
+                        </Switch>
+                    </div>
             </div >
         );
     }
@@ -94,6 +95,12 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         padding: '50px 0px'
+    },
+    logo: {
+        cursor: 'pointer',
+        "&:active": {
+            transform: "translateY(3px)"
+        }
     }
 });
 
@@ -103,5 +110,5 @@ export default withStyles(styles)(
     connect(
         mapStateToProps,
         mapDispatchToProps
-    )(TopPage)
+    )(withRouter(TopPage))
 );
