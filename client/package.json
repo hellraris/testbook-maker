@@ -1,6 +1,6 @@
 {
-  "name": "test-maker",
-  "version": "0.1.0",
+  "name": "tnalog",
+  "version": "0.7.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.2.0",

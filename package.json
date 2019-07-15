@@ -1,6 +1,6 @@
 {
-    "name": "test-maker",
-    "version": "0.1.0",
+    "name": "tnalog",
+    "version": "0.7.0",
     "scripts": {
         "client": "cd client && yarn start",
         "server": "nodemon server.js",
