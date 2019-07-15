@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter } from 'react-router-dom';
 
-import TopPage from './components/manager/TopPage'
+import TopPage from './components/TopPage'
 import './App.css';
 
 class App extends Component {

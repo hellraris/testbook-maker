@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, withRouter, Switch } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { setUserId } from '../manager/store/userInfo';
+import { setUserId } from './store/userInfo';
 
 import BookList from './BookList';
 import QuestionList from './QuestionList';
