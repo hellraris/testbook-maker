@@ -3,7 +3,7 @@ drop table script;
 drop table analytics;
 
 
-CREATE TABLE testbook ( 
+CREATE TABLE TESTBOOK ( 
   testbook_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   user_id varchar(30) NOT NULL,
   title varchar(100) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE testbook (
   PRIMARY KEY (testbook_id)
 );
 
-CREATE TABLE question ( 
+CREATE TABLE QUESTION ( 
   question_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   testbook_id bigint(20) NOT NULL,
   title varchar(100),
@@ -35,7 +35,7 @@ CREATE TABLE question (
   PRIMARY KEY (question_id)
 );
 
-CREATE TABLE analytics ( 
+CREATE TABLE ANALYTICS ( 
   user_id varchar(20) NOT NULL,
   target_id bigint(20) NOT NULL,
   target_type char(1) NOT NULL,

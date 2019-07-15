@@ -44,7 +44,7 @@ app.get('/api/:userId/testbook', (req, res) => {
 // webからQuestionリスト取得
 app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
 
-    let sql = "SELECT question_id, title FROM question WHERE testbook_id = ? AND del_flg = 0";
+    let sql = "SELECT question_id, title FROM QUESTION WHERE testbook_id = ? AND del_flg = 0";
     let bookId = req.params.bookId;
     let params = [bookId];
 
@@ -63,7 +63,7 @@ app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
 // webからQuestions取得
 app.get('/api/testbook/:bookId', (req, res) => {
 
-    let sql = "SELECT * FROM question WHERE testbook_id = ? AND del_flg = 0";
+    let sql = "SELECT * FROM QUESTION WHERE testbook_id = ? AND del_flg = 0";
     let bookId = req.params.bookId;
     let params = [bookId];
 
@@ -89,7 +89,7 @@ app.get('/api/testbook/:bookId', (req, res) => {
 // webからQuestion取得
 app.get('/api/testbook/:bookId/question/:questionId', (req, res) => {
 
-    const sql = "SELECT * FROM question WHERE testbook_id = ? AND question_id = ? AND del_flg = 0";
+    const sql = "SELECT * FROM QUESTION WHERE testbook_id = ? AND question_id = ? AND del_flg = 0";
     const bookId = req.params.bookId;
     const questionId = req.params.questionId;
     let params = [bookId, questionId];

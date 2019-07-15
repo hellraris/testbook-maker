@@ -28,7 +28,7 @@ class BookList extends Component {
         super(props)
 
         this.state = {
-            bookList: [],
+            bookList: null,
             openModal: false,
             openDialog: false,
             dialogTitle: null,
