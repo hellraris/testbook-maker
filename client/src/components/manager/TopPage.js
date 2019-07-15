@@ -70,7 +70,7 @@ class TopPage extends Component {
                             <Route path='/testbook/question' component={QuestionViewer} />
                         </Switch>
                     </div>
-            </div >
+            </div>
         );
     }
 

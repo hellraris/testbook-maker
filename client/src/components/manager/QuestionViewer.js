@@ -54,9 +54,10 @@ class QuestionViewer extends Component {
                                                     return (
                                                         <div className={classes.selectionItem}
                                                             key={selectionIdx}
+                                                            style={this.choiceSelectionColor(selection.id, subQuestion.answer)}
                                                         >
                                                             <Checkbox
-                                                                checked={this.props.location.state.marking.includes(selection.id)}
+                                                                checked={subQuestion.answer.includes(selection.id)}
                                                             />
                                                             <div>
                                                                 <Typography gutterBottom>
@@ -106,6 +107,23 @@ class QuestionViewer extends Component {
         this.setState({
             navi: value
         })
+    }
+
+    choiceSelectionColor = (selectionId, answer) => {
+        const isChecked = this.props.location.state.marking.includes(selectionId)
+        if (isChecked) {
+           const isAnswer = answer.includes(selectionId)
+           if (isAnswer) {
+               return {
+                backgroundColor: '#99ffcc'
+               }
+           } else {
+            return {
+                backgroundColor: '#F4A8A7'
+               }
+           }
+        } 
+        return null
     }
 
     // function End

@@ -11,8 +11,12 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
-import BookCreatorModal from './BookCreatorModal'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
+
+import BookCreatorModal from './BookCreatorModal'
 
 const mapStateToProps = state => ({
     userId: state.userInfo.userId
@@ -26,7 +30,10 @@ class BookList extends Component {
 
         this.state = {
             books: [],
-            openModal: false
+            openModal: false,
+            openDialog: false,
+            dialogTitle: null,
+            removeTarget: null
         }
     }
 
@@ -43,9 +50,24 @@ class BookList extends Component {
                     open={this.state.openModal}
                 >
                     <div className={classes.modal}>
-                        <BookCreatorModal userId={this.props.userId} closeModal={this.showModal}></BookCreatorModal>
+                        <BookCreatorModal userId={this.props.userId} closeModal={this.showModal} />
                     </div>
                 </Modal>
+                <Dialog
+                    open={this.state.openDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{this.state.dialogTitle}</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={() => this.closeDialog()} color="primary">
+                            No
+                    </Button>
+                        <Button onClick={() => this.removeBook()} color="primary" autoFocus>
+                            Yes
+                    </Button>
+                    </DialogActions>
+                </Dialog>
                 <div className={classes.body}>
                     <div className={classes.contents}>
                         {this.state.books ? this.state.books.map((book, index) => {
@@ -68,7 +90,7 @@ class BookList extends Component {
                                                 }
                                             }
                                         )}>Detail</Button>
-                                        <Button size="small" onClick={() => this.removeBook(book.testbook_id)}>REMOVE</Button>
+                                        <Button size="small" onClick={() => this.confirmRemove(book)}>REMOVE</Button>
                                         <Button size="small" onClick={() => this.props.history.push(
                                             {
                                                 pathname: '/testbook/start',
@@ -102,10 +124,18 @@ class BookList extends Component {
             .catch(err => console.log(err));
     }
 
-    removeBook = (bookId) => {
+    confirmRemove = (book) => {
+        this.setState({
+            openDialog: true,
+            dialogTitle: 'Are you sure you want to remove ' + book.title + '?',
+            removeTarget: book.testbook_id 
+        })
+    }
+
+    removeBook = () => {
 
         const requestData = {
-            bookId: bookId
+            bookId: this.state.removeTarget
         }
 
         axios({
@@ -114,6 +144,7 @@ class BookList extends Component {
             data: requestData
         }).then(res => {
             this.getBooks();
+            this.closeDialog();
         })
             .catch(err => console.log(err));
     }
@@ -128,6 +159,14 @@ class BookList extends Component {
         link.click();
         document.body.removeChild(link);
 
+    }
+
+    closeDialog = () => {
+        this.setState({
+            ...this.state,
+            openDialog: false,
+            removeTarget: null
+        })
     }
 
     showModal = () => {
