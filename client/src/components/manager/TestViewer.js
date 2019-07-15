@@ -59,13 +59,15 @@ class TestViewer extends Component {
                                         <Divider variant="middle" />
                                         <div className={classes.selection}>
                                             {subQuestion.selections.map((selection, selectionIdx) => {
+                                                const isChecked = this.state.markingSheet[subQuestion.subQuestionNo].has(selection.id)
                                                 return (
                                                     <div className={classes.selectionItem}
                                                         key={selectionIdx}
                                                         onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
+                                                        style={isChecked? {backgroundColor: '#F0F6ED'} : null }
                                                     >
                                                         <Checkbox
-                                                            checked={this.state.markingSheet[subQuestion.subQuestionNo].has(selection.id)}
+                                                            checked={isChecked}
                                                         />
                                                         <div>
                                                             <Typography gutterBottom>
@@ -363,7 +365,7 @@ const styles = theme => ({
         margin: 5,
         cursor: 'pointer',
         "&:hover ": {
-            backgroundColor: "#ABB7BC"
+            backgroundColor: "#B7C4C9"
         },
         "&:active": {
             transform: "translateY(3px)"
