@@ -118,7 +118,7 @@ class Explanation extends Component {
             <div className={classes.body} >
                 <ExpansionPanel expanded={this.state.expanded} >
                     <ExpansionPanelSummary className={classes.head} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
-                        <Typography className={classes.headLabel} variant="title" gutterBottom>Explanation</Typography>
+                        <Typography className={classes.headLabel} variant="h6" gutterBottom>Explanation</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <div className="flexbox">

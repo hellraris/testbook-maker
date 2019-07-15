@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import { grey } from '@material-ui/core/colors';
 
 class ResultPage extends Component {
 
@@ -32,12 +33,23 @@ class ResultPage extends Component {
                         <div>
                             {this.props.location.state.results ?
                                 <div>
-                                    <div>
-                                        correct: {this.props.location.state.correctCnt} Incorrect: {this.props.location.state.incorrectCnt}
+                                    <div className={classes.resultInfo}>
+                                        <div style={{ backgroundColor: '#cbcbcb' }} className={classes.resultInfoBox}>
+                                            <Typography>Total</Typography>
+                                            <Typography variant="h2" gutterBottom>{this.props.location.state.results.length}</Typography>
+                                        </div>
+                                        <div style={{ backgroundColor: '#88c34c' }} className={classes.resultInfoBox}>
+                                            <Typography>Correct</Typography>
+                                            <Typography variant="h2" gutterBottom>{this.props.location.state.correctCnt}</Typography>
+                                        </div>
+                                        <div style={{ backgroundColor: '#D24D4D' }} className={classes.resultInfoBox}>
+                                            <Typography>Incorrect</Typography>
+                                            <Typography variant="h2" gutterBottom>{this.props.location.state.incorrectCnt}</Typography>
+                                        </div>
                                     </div>
                                     {this.props.location.state.results.map((result, index) => {
                                         return (
-                                            <ListItem key={index} onClick={() => this.showQuestionDetail(result)}>
+                                            <ListItem className={classes.itemDetail} key={index} onClick={() => this.showQuestionDetail(result)}>
                                                 <ListItemText
                                                     primary={"Q." + (result.subQuestionNo + 1)}
                                                     secondary={"Answer: " + (Number(result.answer) + 1) + "  YourMarking: " + (Number(result.marking) + 1)}
@@ -79,7 +91,7 @@ class ResultPage extends Component {
                 }
             });
         })
-           .catch(err => console.log(err));
+            .catch(err => console.log(err));
     }
 
     // function End
@@ -87,17 +99,41 @@ class ResultPage extends Component {
 
 const styles = theme => ({
     wrap: {
-        display: 'flex'
+        display: 'flex',
     },
     body: {
+        flex: '0 1 1280px',
         margin: '0 auto',
-        minWidth: 320,
-        padding: 10
     },
     contents: {
-        backgroundColor: 'white',
         padding: 10,
-        borderRadius: 5
+    },
+    resultInfo: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    resultInfoBox: {
+        display: 'flex',
+        flexDirection: 'column',
+        flex: '0 1 20%',
+        margin: '15px 10px',
+        borderRadius: 5,
+        color: 'snow',
+        padding: 10,
+        alignItems: 'center'
+    },
+    itemDetail: {
+        marginBottom: 10,
+        backgroundColor: '#FFFFF9',
+        border: '1px solid #DFDFDF',
+        borderRadius: 5,
+        cursor: 'pointer',
+        "&:hover ": {
+            backgroundColor: "#B7C4C9"
+        },
+        "&:active": {
+            transform: "translateY(3px)"
+        }
     },
     footer: {
         position: 'fixed',

@@ -170,7 +170,7 @@ const styles = theme => ({
         padding: 10,
     },
     card: {
-        marginBottom: 10,
+        marginBottom: 7,
         backgroundColor: '#FFFFF9',
         border: '1px solid #DFDFDF'
     },

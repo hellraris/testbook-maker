@@ -34,7 +34,7 @@ class Script extends Component {
             <div className={classes.body} >
                 <ExpansionPanel expanded={this.state.expanded} >
                     <ExpansionPanelSummary className={classes.head} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
-                        <Typography className={classes.headLabel} variant="title" gutterBottom>Script</Typography>
+                        <Typography className={classes.headLabel} variant="h6" gutterBottom>Script</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <div className="flexbox">

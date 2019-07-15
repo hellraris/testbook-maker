@@ -196,18 +196,18 @@ const styles = theme => ({
         padding: 10,
     },
     card: {
-        marginBottom: 10,
+        marginBottom: 7,
         backgroundColor: '#FFFFF9',
         border: '1px solid #DFDFDF'
     },
     footer: {
+        display: 'flex',
         position: 'fixed',
         height: '48px',
         width: '100%',
         bottom: 0,
         left: 0,
         backgroundColor: 'navajowhite',
-        display: 'flex',
         justifyContent: 'center'
     },
     modal: {

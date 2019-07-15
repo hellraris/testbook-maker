@@ -41,7 +41,7 @@ class Question extends Component {
             <div className={classes.body}>
                 <ExpansionPanel expanded={this.state.expanded} >
                     <ExpansionPanelSummary className={classes.head} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
-                        <Typography className={classes.headLabel} variant="title" gutterBottom>Question</Typography>
+                        <Typography className={classes.headLabel} variant="h6" gutterBottom>Question</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <div className="flexbox">

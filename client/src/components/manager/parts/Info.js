@@ -40,7 +40,7 @@ class Info extends Component {
             <div className={classes.wrap} >
                 <ExpansionPanel expanded={this.state.expanded} >
                     <ExpansionPanelSummary className={classes.panelSummary} expandIcon={<ExpandMoreIcon />} onClick={this.handleExpanded}>
-                        <Typography className={classes.headLabel} variant="title" gutterBottom>Info</Typography>
+                        <Typography className={classes.headLabel} variant="h6" gutterBottom>Info</Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <div>
