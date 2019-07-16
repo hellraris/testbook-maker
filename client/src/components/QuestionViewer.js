@@ -106,7 +106,7 @@ class QuestionViewer extends Component {
                     </div>
                     <div className={classes.footer}>
                         <div>
-                            <Button onClick={() => this.props.history.goBack()}>BACK</Button>
+                            <Button variant="contained" size="small" onClick={() => this.props.history.goBack()}>BACK</Button>
                         </div>
                     </div>
                 </div>
@@ -216,12 +216,7 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         "& Button": {
-            backgroundColor: '#f2f2f2',
-            margin: 7,
-            borderRadius: 5,
-            "&:hover ": {
-                backgroundColor: "#ababab"
-            }
+            margin: 7
         }
     }
 });

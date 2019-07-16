@@ -36,8 +36,8 @@ class QuestionCreator extends Component {
                     </div>
                 </div>
                 <div className={classes.footer}>
-                    <Button onClick={() => this.goToQuestionList()}>CANCEL</Button>
-                    <Button onClick={() => this.addQuestion()}>Add</Button>
+                    <Button variant="contained" size="small" onClick={() => this.goToQuestionList()}>CANCEL</Button>
+                    <Button variant="contained" size="small" onClick={() => this.addQuestion()}>ADD</Button>
                 </div>
             </div>
         );
@@ -113,14 +113,18 @@ const styles = theme => ({
         borderRadius: 5
     },
     footer: {
+        display: 'flex',
         position: 'fixed',
         height: '48px',
         width: '100%',
         bottom: 0,
         left: 0,
         backgroundColor: 'navajowhite',
-        display: 'flex',
-        justifyContent: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
+        "& Button": {
+            margin: 7
+        }
     }
 });
 

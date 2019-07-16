@@ -80,7 +80,7 @@ class BookList extends Component {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button size="small" onClick={() => this.props.history.push(
+                                        <Button variant="outlined" size="small" onClick={() => this.props.history.push(
                                             {
                                                 pathname: '/testbook/questionList',
                                                 state: {
@@ -88,8 +88,8 @@ class BookList extends Component {
                                                 }
                                             }
                                         )}>Detail</Button>
-                                        <Button size="small" onClick={() => this.confirmRemove(book)}>REMOVE</Button>
-                                        <Button size="small" onClick={() => this.props.history.push(
+                                        <Button variant="outlined" size="small" onClick={() => this.confirmRemove(book)}>REMOVE</Button>
+                                        <Button style={{marginLeft: 'auto'}} variant="contained" color="secondary" onClick={() => this.props.history.push(
                                             {
                                                 pathname: '/testbook/start',
                                                 state: {
@@ -104,7 +104,7 @@ class BookList extends Component {
                     </div>
                 </div>
                 <div className={classes.footer}>
-                    <Button onClick={() => this.showModal()}>CREATE</Button>
+                    <Button variant="contained" size="small" onClick={() => this.showModal()}>CREATE</Button>
                 </div>
             </div>
         );
@@ -211,12 +211,7 @@ const styles = theme => ({
         backgroundColor: 'navajowhite',
         justifyContent: 'center',
         "& Button": {
-            backgroundColor: '#f2f2f2',
-            margin: 7,
-            borderRadius: 5,
-            "&:hover ": {
-                backgroundColor: "#ababab"
-            }
+            margin: 7
         }
     },
     modal: {

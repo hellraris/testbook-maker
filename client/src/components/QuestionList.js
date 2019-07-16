@@ -66,8 +66,8 @@ class QuestionList extends Component {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button size="small" onClick={() => this.showQuestionDetail(question.question_id)}>Detail</Button>
-                                        <Button size="small" onClick={() => this.confirmRemove(question)}>Remove</Button>
+                                        <Button variant="outlined" size="small" onClick={() => this.showQuestionDetail(question.question_id)}>Detail</Button>
+                                        <Button variant="outlined" size="small" onClick={() => this.confirmRemove(question)}>Remove</Button>
                                     </CardActions>
                                 </Card>
                             )
@@ -75,8 +75,8 @@ class QuestionList extends Component {
                     </div>
                 </div>
                 <div className={classes.footer}>
-                    <Button onClick={() => this.props.history.push('/testbook')}>BACK</Button>
-                    <Button onClick={() => this.props.history.push(
+                    <Button variant="contained" size="small" onClick={() => this.props.history.push('/testbook')}>BACK</Button>
+                    <Button variant="contained" size="small" onClick={() => this.props.history.push(
                         {
                             pathname: '/testbook/questions/create',
                             state: {
@@ -183,12 +183,7 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'center',
         "& Button": {
-            backgroundColor: '#f2f2f2',
-            margin: 7,
-            borderRadius: 5,
-            "&:hover ": {
-                backgroundColor: "#ababab"
-            }
+            margin: 7
         }
     }
 });

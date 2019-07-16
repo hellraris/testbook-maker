@@ -98,17 +98,17 @@ class TestViewer extends Component {
                         {
                             this.state.nowQuestionIdx !== 0 ?
                                 <div onClick={this.prevQuestion}>
-                                    <Button>prev</Button>
+                                    <Button variant="contained" size="small">prev</Button>
                                 </div>
                                 : null
                         }
                         {
                             this.state.nowQuestionIdx === this.state.questions.length - 1 ?
                                 <div onClick={() => this.this.submitTest()}>
-                                    <Button>submit</Button>
+                                    <Button variant="contained" color="secondary" size="small" >submit</Button>
                                 </div> :
                                 <div onClick={this.nextQuestion}>
-                                    <Button>next</Button>
+                                    <Button variant="contained" size="small">next</Button>
                                 </div>
                         }
                     </div>
@@ -388,12 +388,7 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'center',
         "& Button": {
-            backgroundColor: '#f2f2f2',
-            margin: 7,
-            borderRadius: 5,
-            "&:hover ": {
-                backgroundColor: "#ababab"
-            }
+            margin: 7
         }
     }
 });
