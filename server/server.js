@@ -7,10 +7,10 @@ const port = process.env.port || 5000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '/client/public')))
-app.use(express.static(path.join(__dirname, '/client/build')))
+app.use(express.static(path.join(__dirname, '../client/public')))
+app.use(express.static(path.join(__dirname, '../client/build')))
 
-const data = fs.readFileSync('./database.json');
+const data = fs.readFileSync('./config/database.json');
 const conf = JSON.parse(data);
 const mysql = require('mysql');
 
@@ -26,9 +26,8 @@ connection.connect();
 const multer = require('multer');
 const upload = multer({ dest: './upload' })
 
-
 app.get('/testbook', function(req, res) {
-    res.sendFile(__dirname + "/client/build/index.html");
+    res.sendFile(path.join(__dirname, "../client/build/index.html"));
   });
 
 // webからbookリスト取得

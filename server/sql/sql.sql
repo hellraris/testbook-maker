@@ -1,6 +1,6 @@
-drop table question;
-drop table script;
-drop table analytics;
+drop table TESTBOOK;
+drop table QUESTION;
+drop table ANALYTICS;
 
 
 CREATE TABLE TESTBOOK ( 
