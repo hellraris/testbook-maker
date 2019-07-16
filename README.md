@@ -5,7 +5,7 @@
 http://ec2-3-113-133-221.ap-northeast-1.compute.amazonaws.com/testbook
 
 ## The Development Environment
-front-end: react <br>
-back-end: node.js <br>
-database: MySQL <br>
-etc: redux, AWS EC2 <br>
+Front-end: React <br>
+Back-end: Node.js <br>
+Database: MySQL <br>
+Etc: Redux, AWS EC2 <br>
