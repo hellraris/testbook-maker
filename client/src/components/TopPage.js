@@ -10,6 +10,7 @@ import TestViewer from './TestViewer';
 import ResultPage from './ResultPage';
 import QuestionCreator from './QuestionCreator';
 import QuestionViewer from './QuestionViewer';
+import ErrorPage from './ErrorPage';
 
 import { withStyles } from '@material-ui/core/styles';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
@@ -90,6 +91,7 @@ class TopPage extends Component {
                         <Route path='/testbook/result' component={ResultPage} />
                         <Route path='/testbook/questions/create' component={QuestionCreator} />
                         <Route path='/testbook/question' component={QuestionViewer} />
+                        <Route component={ErrorPage} />
                     </Switch>
                 </div>
             </div>
