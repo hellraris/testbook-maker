@@ -104,8 +104,7 @@ class BookList extends Component {
                     </div>
                 </div>
                 <div className={classes.footer}>
-                    <Button onClick={() => this.props.history.goBack()}>BACK</Button>
-                    <Button onClick={() => this.showModal()}>ADD</Button>
+                    <Button onClick={() => this.showModal()}>CREATE</Button>
                 </div>
             </div>
         );
