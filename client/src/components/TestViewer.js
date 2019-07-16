@@ -64,7 +64,7 @@ class TestViewer extends Component {
                                                     <div className={classes.selectionItem}
                                                         key={selectionIdx}
                                                         onClick={() => this.handleMarking(subQuestion.selectionType, subQuestion.subQuestionNo, selection.id, subQuestion.answer.length)}
-                                                        style={isChecked? {backgroundColor: '#F0F6ED'} : null }
+                                                        style={isChecked ? { backgroundColor: '#F0F6ED' } : null}
                                                     >
                                                         <Checkbox
                                                             checked={isChecked}
@@ -85,9 +85,13 @@ class TestViewer extends Component {
                         </div>
                     </div>
                     <div className={classes.footer}>
-                        <div onClick={this.prevQuestion}>
-                            <Button>prev</Button>
-                        </div>
+                        {
+                            this.state.nowQuestionIdx !== 0 ?
+                                <div onClick={this.prevQuestion}>
+                                    <Button>prev</Button>
+                                </div>
+                                : null
+                        }
                         {
                             this.state.nowQuestionIdx === this.state.questions.length - 1 ?
                                 <div onClick={() => this.checkCompleteTest()}>
@@ -380,7 +384,7 @@ const styles = theme => ({
         backgroundColor: 'navajowhite',
         alignItems: 'center',
         justifyContent: 'center',
-        "& Button":{
+        "& Button": {
             backgroundColor: '#f2f2f2',
             margin: 7,
             borderRadius: 5,
