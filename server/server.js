@@ -26,9 +26,6 @@ connection.connect();
 const multer = require('multer');
 const upload = multer({ dest: './upload' })
 
-app.get('/testbook', function(req, res) {
-    res.sendFile(path.join(__dirname, "../client/build/index.html"));
-  });
 
 // webからbookリスト取得
 app.get('/api/:userId/testbook', (req, res) => {
@@ -38,7 +35,7 @@ app.get('/api/:userId/testbook', (req, res) => {
     let params = [userId];
 
     connection.query(
-        sql,params,
+        sql, params,
         (err, results, fields) => {
             if (err) {
                 console.log(err);
@@ -56,7 +53,7 @@ app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
     let params = [bookId];
 
     connection.query(
-        sql,params,
+        sql, params,
         (err, results, fields) => {
             if (err) {
                 console.log(err);
@@ -75,7 +72,7 @@ app.get('/api/testbook/:bookId', (req, res) => {
     let params = [bookId];
 
     connection.query(
-        sql,params,
+        sql, params,
         (err, results, fields) => {
             if (err) {
                 console.log(err);
@@ -102,7 +99,7 @@ app.get('/api/testbook/:bookId/question/:questionId', (req, res) => {
     let params = [bookId, questionId];
 
     connection.query(
-        sql,params,
+        sql, params,
         (err, results, fields) => {
             if (err) {
                 console.log(err);
@@ -275,6 +272,12 @@ app.post('/api/book/question/remove', (req, res) => {
         }
     );
 
+});
+
+// 初期アクセス
+app.get('*', function (req, res) {
+    console.log("join")
+    res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
