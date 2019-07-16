@@ -74,10 +74,10 @@ class ResultPage extends Component {
             url: '/api/testbook/' + this.props.location.state.bookId + '/question/' + result.questionId
         }).then(res => {
             const question = res.data;
-            console.log(question);
             this.props.history.push({
                 pathname: "/testbook/question",
                 state: {
+                    bookId: this.props.location.state.bookId,
                     question: question,
                     marking: result.marking
                 }

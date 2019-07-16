@@ -27,7 +27,7 @@ class QuestionViewer extends Component {
                                             </div>
                                             <div className={classes.scriptContents}>
                                                 {script.contents.split("\n\n").map((newParagraphs, index) => {
-                                                    return <div key={index} style={{marginBottom: '1em'}}>
+                                                    return <div key={index} style={{ marginBottom: '1em' }}>
                                                         {
                                                             newParagraphs.split("\n").map((newLineText, index) => {
                                                                 return <Typography key={index} style={{ wordBreak: 'break-all' }}>
@@ -87,7 +87,7 @@ class QuestionViewer extends Component {
                                             </div>
                                             <div style={{ padding: 10, border: '1px dashed grey', borderRadius: 5 }}>
                                                 {explanation.contents.split("\n\n").map((newParagraphs, index) => {
-                                                    return <div key={index} style={{marginBottom: '1em'}}>
+                                                    return <div key={index} style={{ marginBottom: '1em' }}>
                                                         {
                                                             newParagraphs.split("\n").map((newLineText, index) => {
                                                                 return <Typography key={index} style={{ wordBreak: 'break-all' }}>
@@ -106,7 +106,7 @@ class QuestionViewer extends Component {
                     </div>
                     <div className={classes.footer}>
                         <div>
-                            <Button onClick={() => this.props.history.push('/testbook/questionList')}>BACK</Button>
+                            <Button onClick={() => this.props.history.goBack()}>BACK</Button>
                         </div>
                     </div>
                 </div>

@@ -80,7 +80,6 @@ class QuestionList extends Component {
                         {
                             pathname: '/testbook/questions/create',
                             state: {
-                                userId: this.props.userId,
                                 bookId: this.state.bookId
                             }
                         }
@@ -95,12 +94,13 @@ class QuestionList extends Component {
     showQuestionDetail = (questionId) => {
         axios({
             method: 'get',
-            url: '/api/testbook/' + this.props.location.state.bookId + '/question/' + questionId
+            url: '/api/testbook/' + this.state.bookId + '/question/' + questionId
         }).then(res => {
             const question = res.data;
             this.props.history.push({
                 pathname: "/testbook/question",
                 state: {
+                    bookId: this.state.bookId,
                     question: question,
                     marking: []
                 }

@@ -87,7 +87,6 @@ class QuestionCreator extends Component {
             {
                 pathname: '/testbook/questionList',
                 state: {
-                    userId: this.props.location.state.userId,
                     bookId: this.props.location.state.bookId
                 }
             }
