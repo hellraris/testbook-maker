@@ -42,7 +42,17 @@ class TestViewer extends Component {
                                             <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
                                         </div>
                                         <div className={classes.scriptContents}>
-                                            <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{script.contents}</Typography>
+                                            {script.contents.split("\n\n").map((newParagraphs, index) => {
+                                                return <div key={index} style={{ marginBottom: '1em' }}>
+                                                    {
+                                                        newParagraphs.split("\n").map((newLineText, index) => {
+                                                            return <Typography key={index} style={{ wordBreak: 'break-all' }}>
+                                                                {newLineText}
+                                                            </Typography>
+                                                        })
+                                                    }
+                                                </div>
+                                            })}
                                         </div>
                                     </div>
                                 )
@@ -317,8 +327,10 @@ class TestViewer extends Component {
                 const answerList = subQuestion.answer;
                 const markingList = [...this.state.markingSheet[subQuestion.subQuestionNo]];
 
-                results.push({ questionId: question.question_id, subQuestionNo: subQuestion.subQuestionNo,
-                     answer: answerList.sort(), marking: markingList.sort(), isAnswer: isAnswer })
+                results.push({
+                    questionId: question.question_id, subQuestionNo: subQuestion.subQuestionNo,
+                    answer: answerList.sort(), marking: markingList.sort(), isAnswer: isAnswer
+                })
             })
         })
 

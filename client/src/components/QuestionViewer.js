@@ -23,10 +23,20 @@ class QuestionViewer extends Component {
                                     return (
                                         <div className={classes.scriptItem} key={index}>
                                             <div className={classes.scriptTitle}>
-                                                <Typography variant="subtitle1" gutterBottom>{script.subtilte}</Typography>
+                                                <Typography variant="subtitle1" gutterBottom >{script.subtilte}</Typography>
                                             </div>
                                             <div className={classes.scriptContents}>
-                                                <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{script.contents}</Typography>
+                                                {script.contents.split("\n\n").map((newParagraphs, index) => {
+                                                    return <div key={index} style={{marginBottom: '1em'}}>
+                                                        {
+                                                            newParagraphs.split("\n").map((newLineText, index) => {
+                                                                return <Typography key={index} style={{ wordBreak: 'break-all' }}>
+                                                                    {newLineText}
+                                                                </Typography>
+                                                            })
+                                                        }
+                                                    </div>
+                                                })}
                                             </div>
                                         </div>
                                     )
@@ -63,7 +73,7 @@ class QuestionViewer extends Component {
                                         </div>
                                     )
                                 })
-                                    : null }
+                                    : null}
                             </div>
                         </div>
                         {explanations ?
@@ -76,7 +86,17 @@ class QuestionViewer extends Component {
                                                 <Typography variant="subtitle1" gutterBottom>{explanation.subtilte}</Typography>
                                             </div>
                                             <div style={{ padding: 10, border: '1px dashed grey', borderRadius: 5 }}>
-                                                <Typography style={{ wordBreak: 'break-all' }} gutterBottom>{explanation.contents}</Typography>
+                                                {explanation.contents.split("\n\n").map((newParagraphs, index) => {
+                                                    return <div key={index} style={{marginBottom: '1em'}}>
+                                                        {
+                                                            newParagraphs.split("\n").map((newLineText, index) => {
+                                                                return <Typography key={index} style={{ wordBreak: 'break-all' }}>
+                                                                    {newLineText}
+                                                                </Typography>
+                                                            })
+                                                        }
+                                                    </div>
+                                                })}
                                             </div>
                                         </div>
                                     )
@@ -195,7 +215,7 @@ const styles = theme => ({
         backgroundColor: 'navajowhite',
         alignItems: 'center',
         justifyContent: 'center',
-        "& Button":{
+        "& Button": {
             backgroundColor: '#f2f2f2',
             margin: 7,
             borderRadius: 5,
