@@ -176,13 +176,13 @@ class TestViewer extends Component {
         }
     }
 
-    // 테스트 준비 상태 세팅
+    // テスト準備セッチング
     setTestingState = async (questions) => {
 
         if (questions.length === 0) return;
 
         let subQuestionNo = 0;
-        // 서브퀘스트에 questionNo부여
+        // SubQuestionに順番を付与
         const newQuestions = questions.map((question) => {
             const newSubQuestion = question.subQuestions.map((subQuestion) => {
                 const newSubQuestion = {
@@ -200,7 +200,7 @@ class TestViewer extends Component {
             return newQuestion;
         });
 
-        // 서브퀘스트 수만큼 답안시트 작성
+        // SubQuestion数ほどAnswerSheetを作成
         const newMarkingSheet = []
         for (let index = 0; index < subQuestionNo; index++) {
             newMarkingSheet.push(new Set());
@@ -218,8 +218,9 @@ class TestViewer extends Component {
 
         let newMarkingSheet = this.state.markingSheet;
 
+        //　TODO: 現在は「case 1:１つの選択肢に選択可能」に固定設定
         switch (selectionType) {
-            // 답선택수 제한 없음
+            // 選択肢の制限なし
             case 0: {
 
                 newMarkingSheet[subQuestionNo].has(selectionId) ? newMarkingSheet[subQuestionNo].delete(selectionId) : newMarkingSheet[subQuestionNo].add(selectionId);
@@ -230,7 +231,7 @@ class TestViewer extends Component {
                 })
                 return
             }
-            // 1개의 답선택가능
+            // １つの選択肢に選択可能
             case 1: {
                 if (newMarkingSheet[subQuestionNo].has(selectionId)) {
                     newMarkingSheet[subQuestionNo].clear();
@@ -245,7 +246,7 @@ class TestViewer extends Component {
                 })
                 return
             }
-            // 정답수만큼 답선택가능
+            // 正答ほど選択肢を選択可能
             case 2: {
                 if (newMarkingSheet[subQuestionNo].has(selectionId)) {
                     newMarkingSheet[subQuestionNo].delete(selectionId)
@@ -301,8 +302,10 @@ class TestViewer extends Component {
         this.state.questions.forEach((question, questionIdx) => {
             question.subQuestions.forEach((subQuestion) => {
                 let isAnswer = true;
+                //　選択した選択肢の数と正答数が一致しない場合は誤答
                 if (this.state.markingSheet[subQuestion.subQuestionNo].size === subQuestion.answer.length) {
                     this.state.markingSheet[subQuestion.subQuestionNo].forEach((value) => {
+
                         if (!subQuestion.answer.includes(value)) {
                             isAnswer = false;
                         }
@@ -311,10 +314,11 @@ class TestViewer extends Component {
                     isAnswer = false;
                 }
 
-                const answerIdx = subQuestion.answer;
-                const markingIdx = [...this.state.markingSheet[subQuestion.subQuestionNo]];
+                const answerList = subQuestion.answer;
+                const markingList = [...this.state.markingSheet[subQuestion.subQuestionNo]];
 
-                results.push({ questionId: question.question_id, subQuestionNo: subQuestion.subQuestionNo, answer: answerIdx.sort(), marking: markingIdx.sort(), isAnswer: isAnswer })
+                results.push({ questionId: question.question_id, subQuestionNo: subQuestion.subQuestionNo,
+                     answer: answerList.sort(), marking: markingList.sort(), isAnswer: isAnswer })
             })
         })
 

@@ -21,7 +21,6 @@ const mapStateToProps = state => ({
     userId: state.userInfo.userId
 });
 
-
 class BookList extends Component {
 
     constructor(props) {

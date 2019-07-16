@@ -63,7 +63,7 @@ class QuestionViewer extends Component {
                                         </div>
                                     )
                                 })
-                                    : {}}
+                                    : null }
                             </div>
                         </div>
                         {explanations ?

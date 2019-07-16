@@ -153,7 +153,6 @@ class QuestionList extends Component {
             removeTarget: null
         })
     }
-
 }
 
 // styles

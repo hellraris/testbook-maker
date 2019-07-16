@@ -97,15 +97,13 @@ class Question extends Component {
                                                             </ListItem>
                                                         )
                                                     })
-                                                    :
-                                                    ''
+                                                    : null
                                                 }
                                             </List>
                                         </div>
                                     </div>
                                 })
-                                :
-                                ''
+                                : null
                             }
                         </div>
                     </ExpansionPanelDetails>
@@ -148,7 +146,6 @@ class Question extends Component {
                     return subQuestion;
                 }
             })
-
         })
     }
 
@@ -236,7 +233,6 @@ class Question extends Component {
                 }
             })
         })
-
     }
 
     handleExpanded = () => {

@@ -62,7 +62,7 @@ class QuestionCreator extends Component {
         questionData.tagList = data.tagList;
     }
 
-
+    // TODO: Validationチェック処理
     addQuestion = () => {
         let requestData = {
             scripts: JSON.stringify(questionData.scripts),

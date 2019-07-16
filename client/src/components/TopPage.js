@@ -107,6 +107,7 @@ class TopPage extends Component {
 
     checkNowPage = () => {
 
+        // 画面遷移でデータ損失が行う恐れがある遷移元ではDialogで遷移確認する
         if (this.props.location.pathname === "/testbook/start" || this.props.location.pathname === "/testbook/questions/create") {
             this.setState({
                 ...this.state,
@@ -131,8 +132,8 @@ class TopPage extends Component {
         })
     }
 
+    //　TODO: ログイン機能開発
     setUserId = () => {
-
         this.props.setUserId('test');
     }
 }

@@ -22,7 +22,6 @@ class Info extends Component {
             tagList: [],
             expanded: true
         }
-
     }
 
     componentDidUpdate() {
