@@ -104,7 +104,7 @@ class TestViewer extends Component {
                         }
                         {
                             this.state.nowQuestionIdx === this.state.questions.length - 1 ?
-                                <div onClick={() => this.this.submitTest()}>
+                                <div onClick={() => this.submitTest()}>
                                     <Button variant="contained" color="secondary" size="small" >submit</Button>
                                 </div> :
                                 <div onClick={this.nextQuestion}>

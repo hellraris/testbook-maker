@@ -48,7 +48,7 @@ class ResultPage extends Component {
                                             <ListItem className={classes.itemDetail} key={index} onClick={() => this.showQuestionDetail(result)}>
                                                 <ListItemText
                                                     primary={"Q." + (result.subQuestionNo + 1)}
-                                                    secondary={"Answer: " + (Number(result.answer) + 1) + "  YourMarking: " + (Number(result.marking) + 1)}
+                                                    secondary={"Answer: " + (Number(result.answer) + 1) + "  YourMarking: " + (result.marking.length === 0 ? "未回答" : (Number(result.marking) + 1))}
                                                 />
                                             </ListItem>
                                         )
