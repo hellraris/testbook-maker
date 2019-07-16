@@ -104,7 +104,7 @@ class TestViewer extends Component {
                         }
                         {
                             this.state.nowQuestionIdx === this.state.questions.length - 1 ?
-                                <div onClick={() => this.checkCompleteTest()}>
+                                <div onClick={() => this.this.submitTest()}>
                                     <Button>submit</Button>
                                 </div> :
                                 <div onClick={this.nextQuestion}>
@@ -149,19 +149,6 @@ class TestViewer extends Component {
             modalVisible: !this.state.modalVisible,
             nowQuestionIdx: targetQuestionIdx
         })
-    }
-
-    checkCompleteTest = () => {
-        let result = true
-        this.state.markingSheet.forEach((data) => {
-            if (data.size === 0) {
-                result = false;
-                return;
-            }
-        })
-        if (result) {
-            this.submitTest();
-        }
     }
 
     prevQuestion = (event) => {
