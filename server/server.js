@@ -276,7 +276,6 @@ app.post('/api/book/question/remove', (req, res) => {
 
 // 初期アクセス
 app.get('*', function (req, res) {
-    console.log("join")
     res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
