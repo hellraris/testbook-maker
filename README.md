@@ -1,11 +1,11 @@
 ## TnaLog(Test And Analytics Log)
-カスタマイズできる問題集を作るアプリケーション
+カスタマイズした問題集を作成及び解くアプリケーション
 
 ## The Development Environment
-front-end: react
-back-end: node.js
-database: MySQL
-etc: redux
+front-end: react <br>
+back-end: node.js <br>
+database: MySQL <br>
+etc: redux <br>
 
 ## Demo
 http://ec2-3-113-133-221.ap-northeast-1.compute.amazonaws.com/testbook
