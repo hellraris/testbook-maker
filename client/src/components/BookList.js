@@ -199,7 +199,10 @@ const styles = theme => ({
     card: {
         marginBottom: 7,
         backgroundColor: '#FFFFF9',
-        border: '1px solid #DFDFDF'
+        border: '1px solid #DFDFDF',
+        "& Button": {
+            margin: '0px 5px' 
+        }
     },
     footer: {
         display: 'flex',
