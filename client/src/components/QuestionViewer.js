@@ -56,7 +56,7 @@ class QuestionViewer extends Component {
                                                     return (
                                                         <div className={classes.selectionItem}
                                                             key={selectionIdx}
-                                                            style={this.choiceSelectionColor(selection.id, subQuestion.answer)}
+                                                            style={this.choiceSelectionColor(subQuestionIdx, selection.id, subQuestion.answer)}
                                                         >
                                                             <Checkbox
                                                                 checked={subQuestion.answer.includes(selection.id)}
@@ -116,8 +116,9 @@ class QuestionViewer extends Component {
 
     // functions
 
-    choiceSelectionColor = (selectionId, answer) => {
-        const isChecked = this.props.location.state.marking.includes(selectionId)
+    choiceSelectionColor = (subQuestionIdx, selectionId, answer) => {
+
+        const isChecked = this.props.location.state.markings[subQuestionIdx].marking.includes(selectionId)
         if (isChecked) {
             const isAnswer = answer.includes(selectionId)
             if (isAnswer) {

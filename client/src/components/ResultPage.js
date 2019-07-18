@@ -45,7 +45,7 @@ class ResultPage extends Component {
                                     </div>
                                     {this.props.location.state.results.map((result, index) => {
                                         return (
-                                            <ListItem className={classes.itemDetail} key={index} onClick={() => this.showQuestionDetail(result)}>
+                                            <ListItem className={classes.itemDetail} key={index} onClick={() => this.showQuestionDetail(result.questionId)}>
                                                 <ListItemText
                                                     primary={"Q." + (result.subQuestionNo + 1)}
                                                     secondary={"Answer: " + (Number(result.answer) + 1) + "  YourMarking: " + (result.marking.length === 0 ? "未回答" : (Number(result.marking) + 1))}
@@ -68,10 +68,15 @@ class ResultPage extends Component {
 
     // functions
 
-    showQuestionDetail = (result) => {
+    showQuestionDetail = (questionId) => {
+
+        const markings = this.props.location.state.results.filter((value)=> {
+            return value.questionId === questionId 
+        })
+
         axios({
             method: 'get',
-            url: '/api/testbook/' + this.props.location.state.bookId + '/question/' + result.questionId
+            url: '/api/testbook/' + this.props.location.state.bookId + '/question/' + questionId
         }).then(res => {
             const question = res.data;
             this.props.history.push({
@@ -79,7 +84,7 @@ class ResultPage extends Component {
                 state: {
                     bookId: this.props.location.state.bookId,
                     question: question,
-                    marking: result.marking
+                    markings: markings
                 }
             });
         })
