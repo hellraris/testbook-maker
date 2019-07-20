@@ -198,7 +198,7 @@ const styles = theme => ({
     },
     card: {
         marginBottom: 7,
-        backgroundColor: '#FFFFF9',
+        backgroundColor: '#FFFDFB',
         border: '1px solid #DFDFDF',
         "& Button": {
             margin: '0px 5px' 
