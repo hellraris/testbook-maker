@@ -1,3 +1,4 @@
+const log = require('./util/logWriter.js');
 const fs = require('fs');
 const path = require('path');
 const express = require(`express`);
@@ -276,6 +277,11 @@ app.post('/api/book/question/remove', (req, res) => {
 
 // 初期アクセス
 app.get('*', function (req, res) {
+    
+    const ClientIp = req.headers['x-forwarded-for'] ||  req.connection.remoteAddress;
+    const logMsg = "ip: " + ClientIp + ", url: " + req.url;
+    log(logMsg);
+    
     res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
