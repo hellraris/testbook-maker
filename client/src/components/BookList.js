@@ -13,7 +13,7 @@ import Modal from '@material-ui/core/Modal';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 
 import BookCreatorModal from './BookCreatorModal'
 
@@ -67,6 +67,11 @@ class BookList extends Component {
                     </DialogActions>
                 </Dialog>
                 <div className={classes.body}>
+                    <div className={classes.header}>
+                        <Breadcrumbs aria-label="Breadcrumb">
+                            <Typography color="textPrimary">BookList</Typography>
+                        </Breadcrumbs>
+                    </div>
                     <div className={classes.contents}>
                         {this.state.bookList ? this.state.bookList.map((book, index) => {
                             return (
@@ -188,6 +193,11 @@ class BookList extends Component {
 const styles = theme => ({
     wrap: {
         display: 'flex'
+    },
+    header: {
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: 5
     },
     body: {
         flex: '0 1 1280px',
