@@ -187,6 +187,10 @@ app.post('/api/book', (req, res) => {
             if (err) {
                 console.log(err);
             }
+
+            const logMsg = "[BOOK_ADD] UserId: " + userId;
+            log(logMsg);
+
             res.send(results);
         }
     );
@@ -227,6 +231,10 @@ app.post('/api/book/question', (req, res) => {
             if (err) {
                 console.log(err);
             }
+
+            const logMsg = "[QUESTION_ADD] BookId: " + testbookId;
+            log(logMsg);
+
             res.send(results);
         }
     );
@@ -247,6 +255,10 @@ app.put('/api/book/remove', (req, res) => {
             if (err) {
                 console.log(err);
             }
+
+            const logMsg = "[BOOK_DELETE] BookId: " + testbookId;
+            log(logMsg);
+
             res.send(results);
         }
     );
@@ -269,6 +281,10 @@ app.put('/api/book/question/remove', (req, res) => {
             if (err) {
                 console.log(err);
             }
+
+            const logMsg = "[QUESTION_DELETE] BookId: " + testbookId + " QuestionId:" + questionId;
+            log(logMsg);
+
             res.send(results);
         }
     );
@@ -278,7 +294,7 @@ app.put('/api/book/question/remove', (req, res) => {
 // 初期アクセス
 app.get('*', function (req, res) {
     
-    const logMsg = "url: " + req.url;
+    const logMsg = "[ACCESS] url: " + req.url;
     log(logMsg);
     
     res.sendFile(path.join(__dirname, "../client/build/index.html"));
