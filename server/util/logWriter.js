@@ -1,4 +1,6 @@
-const winston = require('winston');
+const { createLogger, format, transports} = require('winston');
+const { combine, timestamp, label, prettyPrint } = format;
+
 const moment = require('moment');
 const fs = require('fs');
 const logDir = "/log"
@@ -9,13 +11,16 @@ module.exports = function log(info) {
     fs.mkdirSync(logDir);
   }
 
-  const logger = winston.createLogger({
+  const logger = createLogger({
+    format: combine(
+      timestamp({
+        format: 'YYYY-MM-DD HH:mm:ss'
+      }),
+      prettyPrint()
+    ),
     transports: [
-      new (winston.transports.Console)({
-        level: 'info',
-        timestamp: function () {
-          return moment().format("YYYY-MM-DD HH:mm:ss");
-        }
+      new (transports.Console)({
+        level: 'info'
       }),
       new (require('winston-daily-rotate-file'))({
         level: 'info',
