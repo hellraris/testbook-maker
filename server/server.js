@@ -49,7 +49,9 @@ app.get('/api/:userId/testbook', (req, res) => {
 // Questionリスト取得
 app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
 
-    let sql = "SELECT question_id, title FROM QUESTION WHERE testbook_id = ? AND del_flg = 0";
+    let sql = "SELECT q.question_id, q.title \
+               FROM QUESTION q INNER JOIN TESTBOOK b ON q.testbook_id = b.testbook_id \
+               WHERE q.testbook_id = ? AND b.del_flg = 0 AND q.del_flg = 0;";
     let bookId = req.params.bookId;
     let params = [bookId];
 
@@ -68,7 +70,9 @@ app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
 // Questions取得
 app.get('/api/testbook/:bookId', (req, res) => {
 
-    let sql = "SELECT * FROM QUESTION WHERE testbook_id = ? AND del_flg = 0";
+    let sql = "SELECT q.* \
+               FROM QUESTION q INNER JOIN TESTBOOK b ON q.testbook_id = b.testbook_id \
+               WHERE q.testbook_id = ? AND b.del_flg = 0 AND q.del_flg = 0;";
     let bookId = req.params.bookId;
     let params = [bookId];
 
@@ -136,7 +140,9 @@ app.get('/api/app/testbook/list', (req, res) => {
 
 // Questionリスト取得 (App)
 app.get('/api/app/testbook/:testbookId/', (req, res) => {
-    let sql = "SELECT question_id AS questionId, title, tag, favorite, scripts, subquestions as subQuestions, explanations, files FROM QUESTION WHERE TESTBOOK_ID = ? AND DEL_FLG = 0";
+    let sql = "SELECT question_id AS questionId, title, tag, favorite, scripts, subquestions as subQuestions, explanations, files \
+               FROM QUESTION \
+               WHERE TESTBOOK_ID = ? AND DEL_FLG = 0";
     let testbookId = req.params.testbookId;
     let params = [testbookId];
     connection.query(
