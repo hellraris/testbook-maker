@@ -146,7 +146,7 @@ class QuestionList extends Component {
         }
 
         axios({
-            method: 'post',
+            method: 'put',
             url: '/api/book/question/remove',
             data: requestData
         }).then(res => {

@@ -234,7 +234,7 @@ app.post('/api/book/question', (req, res) => {
 });
 
 // Book削除
-app.post('/api/book/remove', (req, res) => {
+app.put('/api/book/remove', (req, res) => {
 
     const sql = "UPDATE TESTBOOK SET DEL_FLG = 1 WHERE testbook_id = ?";
     const testbookId = req.body.bookId;
@@ -254,7 +254,7 @@ app.post('/api/book/remove', (req, res) => {
 });
 
 // Question削除
-app.post('/api/book/question/remove', (req, res) => {
+app.put('/api/book/question/remove', (req, res) => {
 
     const sql = "UPDATE QUESTION SET DEL_FLG = 1 WHERE testbook_id = ? AND question_id = ?";
     const testbookId = req.body.bookId;

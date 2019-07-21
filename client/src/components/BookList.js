@@ -143,7 +143,7 @@ class BookList extends Component {
         }
 
         axios({
-            method: 'post',
+            method: 'put',
             url: '/api/book/remove',
             data: requestData
         }).then(res => {
