@@ -46,6 +46,8 @@ class ResultPage extends Component {
                                     {this.props.location.state.results.map((result, index) => {
                                         return (
                                             <ListItem className={classes.itemDetail} key={index} onClick={() => this.showQuestionDetail(result.questionId)}>
+                                                <div style={result.isAnswer ? { backgroundColor: '#88c34c', width: '5px', height: '50px', margin: '0 10px' } :
+                                                    { backgroundColor: '#D24D4D', width: '5px', height: '50px', margin: '0 10px' }}></div>
                                                 <ListItemText
                                                     primary={"Q." + (result.subQuestionNo + 1)}
                                                     secondary={"Answer: " + (Number(result.answer) + 1) + "  YourMarking: " + (result.marking.length === 0 ? "未回答" : (Number(result.marking) + 1))}
@@ -70,8 +72,8 @@ class ResultPage extends Component {
 
     showQuestionDetail = (questionId) => {
 
-        const markings = this.props.location.state.results.filter((value)=> {
-            return value.questionId === questionId 
+        const markings = this.props.location.state.results.filter((value) => {
+            return value.questionId === questionId
         })
 
         axios({
@@ -120,6 +122,7 @@ const styles = theme => ({
         alignItems: 'center'
     },
     itemDetail: {
+        paddingLeft: 0,
         marginBottom: 10,
         backgroundColor: '#FFFFF9',
         border: '1px solid #DFDFDF',
@@ -141,7 +144,7 @@ const styles = theme => ({
         backgroundColor: 'navajowhite',
         display: 'flex',
         justifyContent: 'center',
-        "& Button":{
+        "& Button": {
             margin: 7
         }
     }
