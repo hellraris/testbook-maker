@@ -28,7 +28,7 @@ const multer = require('multer');
 const upload = multer({ dest: './upload' })
 
 
-// webからbookリスト取得
+// bookリスト取得
 app.get('/api/:userId/testbook', (req, res) => {
 
     let sql = "SELECT * FROM TESTBOOK WHERE user_id = ? AND del_flg = 0";
@@ -46,7 +46,7 @@ app.get('/api/:userId/testbook', (req, res) => {
     );
 });
 
-// webからQuestionリスト取得
+// Questionリスト取得
 app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
 
     let sql = "SELECT question_id, title FROM QUESTION WHERE testbook_id = ? AND del_flg = 0";
@@ -65,7 +65,7 @@ app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
 });
 
 
-// webからQuestions取得
+// Questions取得
 app.get('/api/testbook/:bookId', (req, res) => {
 
     let sql = "SELECT * FROM QUESTION WHERE testbook_id = ? AND del_flg = 0";
@@ -91,7 +91,7 @@ app.get('/api/testbook/:bookId', (req, res) => {
     );
 });
 
-// webからQuestion取得
+// Question取得
 app.get('/api/testbook/:bookId/question/:questionId', (req, res) => {
 
     const sql = "SELECT * FROM QUESTION WHERE testbook_id = ? AND question_id = ? AND del_flg = 0";
@@ -118,7 +118,7 @@ app.get('/api/testbook/:bookId/question/:questionId', (req, res) => {
     );
 });
 
-// appからQuestionリスト取得
+// Bookリスト取得 (App)
 app.get('/api/app/testbook/list', (req, res) => {
 
     let sql = "SELECT * FROM TESTBOOK WHERE DEL_FLG = 0";
@@ -134,7 +134,7 @@ app.get('/api/app/testbook/list', (req, res) => {
 });
 
 
-// appからQuestionリスト取得
+// Questionリスト取得 (App)
 app.get('/api/app/testbook/:testbookId/', (req, res) => {
     let sql = "SELECT question_id AS questionId, title, tag, favorite, scripts, subquestions as subQuestions, explanations, files FROM QUESTION WHERE TESTBOOK_ID = ? AND DEL_FLG = 0";
     let testbookId = req.params.testbookId;
