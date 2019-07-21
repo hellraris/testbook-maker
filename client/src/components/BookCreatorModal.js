@@ -29,7 +29,6 @@ class BookCreatorModal extends Component {
 
         return (
             <div className={classes.wrap}>
-                <div style={{ backgroundColor: '#00b07b', height: 7 }}></div>
                 <div className={classes.body}>
                     <Typography style={{ marginTop: 10 }} variant="h4">Create Book</Typography>
                     <div className={classes.contents}>
@@ -141,10 +140,10 @@ class BookCreatorModal extends Component {
 
 const styles = theme => ({
     wrap: {
-
+        borderRadius: 5
     },
     body: {
-        padding: '0px 20px'
+        padding: '10px 20px'
     },
     contents: {
         marginLeft: 10
