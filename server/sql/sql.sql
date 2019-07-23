@@ -3,8 +3,8 @@ drop table QUESTION;
 drop table ANALYTICS;
 
 
-CREATE TABLE TESTBOOK ( 
-  testbook_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE BOOK ( 
+  book_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   user_id varchar(30) NOT NULL,
   title varchar(100) NOT NULL,
   description varchar(200),
@@ -17,19 +17,21 @@ CREATE TABLE TESTBOOK (
   PRIMARY KEY (testbook_id)
 );
 
-CREATE TABLE QUESTION ( 
+CREATE TABLE QUESITON_LIST ( 
+  book_id bigint(20) NOT NULL,
+  list JSON,
+  PRIMARY KEY (list_id)
+);
+
+CREATE TABLE QUESTION_SET ( 
   question_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  testbook_id bigint(20) NOT NULL,
+  book_id bigint(20) NOT NULL,
   title varchar(100),
-  tag JSON,
-  favorite char(1),
   version int(4),
-  question_order int(4),
   scripts JSON,
   subquestions JSON,
   explanations JSON,
   files JSON,
-  del_flg char(1),
   reg_date date NOT NULL,
   upd_date date,
   PRIMARY KEY (question_id)
