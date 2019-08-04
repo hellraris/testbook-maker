@@ -63,7 +63,7 @@ class TopPage extends Component {
                     <AppBar style={{ backgroundColor: 'steelblue' }}>
                         <Toolbar variant="dense">
                             <div className={classes.logo} onClick={() => this.checkNowPage()}>
-                                <Typography gutterBottom variant="h5" component="h2">TnaLog</Typography>
+                                <Typography gutterBottom variant="h5" component="h2">TestLog</Typography>
                             </div>
                         </Toolbar>
                     </AppBar>
