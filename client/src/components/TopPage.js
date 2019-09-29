@@ -39,7 +39,7 @@ function HideOnScroll(props) {
             {children}
         </Slide>
     )
-}
+};
 
 class TopPage extends Component {
 
@@ -49,10 +49,8 @@ class TopPage extends Component {
         this.state = {
             openDialog: false
         }
-
         this.setUserId();
-
-    }
+    };
 
     render() {
         const { classes } = this.props;
@@ -96,19 +94,17 @@ class TopPage extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
     // functions
-
     handleChange = (event, newValue) => {
         this.setState({
             ...this.state,
             menu: newValue
-        })
-    }
+        });
+    };
 
     checkNowPage = () => {
-
         // 画面遷移でデータ損失が行う恐れがある遷移元ではDialogで遷移確認する
         if (this.props.location.pathname === "/testbook/start" || this.props.location.pathname === "/testbook/questions/create") {
             this.setState({
@@ -118,30 +114,29 @@ class TopPage extends Component {
             return
         }
         this.goToMainPage(false);
-    }
+    };
 
     goToMainPage = (requiredCloseDialog) => {
         if (requiredCloseDialog) {
             this.closeDialog();
         }
         this.props.history.push('/testbook');
-    }
+    };
 
     closeDialog = () => {
         this.setState({
             ...this.state,
             openDialog: false
-        })
-    }
+        });
+    };
 
     //　TODO: ログイン機能開発
     setUserId = () => {
         this.props.setUserId('test');
-    }
-}
+    };
+};
 
 // styles
-
 const styles = theme => ({
     wrap: {
     },
@@ -157,8 +152,6 @@ const styles = theme => ({
         }
     }
 });
-
-
 
 export default withStyles(styles)(
     connect(

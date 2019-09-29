@@ -15,8 +15,8 @@ class ResultPage extends Component {
             results: null,
             correctCnt: 0,
             incorrectCnt: 0,
-        }
-    }
+        };
+    };
 
     render() {
         const { classes } = this.props;
@@ -66,15 +66,13 @@ class ResultPage extends Component {
                 </div>
             </div>
         )
-    }
+    };
 
     // functions
-
     showQuestionDetail = (questionId) => {
-
         const markings = this.props.location.state.results.filter((value) => {
             return value.questionId === questionId
-        })
+        });
 
         axios({
             method: 'get',
@@ -89,13 +87,11 @@ class ResultPage extends Component {
                     markings: markings
                 }
             });
-        })
-            .catch(err => console.log(err));
-    }
-}
+        }).catch(err => console.log(err));
+    };
+};
 
 // styles
-
 const styles = theme => ({
     wrap: {
         display: 'flex',

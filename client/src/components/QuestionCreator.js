@@ -15,7 +15,7 @@ const questionData = {
     scripts: null,
     subQuestions: null,
     explanations: null
-}
+};
 
 class QuestionCreator extends Component {
 
@@ -41,26 +41,25 @@ class QuestionCreator extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
     // functions
-
     updateScriptData = (data) => {
         questionData.scripts = data;
-    }
+    };
 
     updateSubQuestionData = (data) => {
         questionData.subQuestions = data;
-    }
+    };
 
     updateExplanationData = (data) => {
         questionData.explanations = data;
-    }
+    };
 
     updateInfoData = (data) => {
         questionData.title = data.title;
         questionData.tagList = data.tagList;
-    }
+    };
 
     // TODO: Validationチェック処理
     addQuestion = () => {
@@ -68,7 +67,7 @@ class QuestionCreator extends Component {
             scripts: JSON.stringify(questionData.scripts),
             subQuestions: JSON.stringify(questionData.subQuestions),
             explanations: JSON.stringify(questionData.explanations),
-        }
+        };
         requestData.testbookId = this.props.location.state.bookId;
         requestData.title = questionData.title;
         requestData.tagList = JSON.stringify(questionData.tagList);
@@ -91,12 +90,10 @@ class QuestionCreator extends Component {
                 }
             }
         );
-    }
-
-}
+    };
+};
 
 // styles
-
 const styles = theme => ({
     wrap: {
         display: 'flex'

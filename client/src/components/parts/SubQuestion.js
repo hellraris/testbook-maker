@@ -20,17 +20,14 @@ class Question extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: false
-        }
-
-        this.state = {
+            expanded: false,
             subQuestions: []
-        }
-    }
+        };
+    };
 
     componentDidUpdate() {
         this.props.updateSubQuestionData(this.state.subQuestions);
-    }
+    };
 
     render() {
         const { classes } = this.props;
@@ -96,24 +93,19 @@ class Question extends Component {
                                                                 </Icon>
                                                             </ListItem>
                                                         )
-                                                    })
-                                                    : null
-                                                }
+                                                    }) : null }
                                             </List>
                                         </div>
                                     </div>
-                                })
-                                : null
-                            }
+                                }) : null }
                         </div>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             </div>
         );
-    }
+    };
 
     // functions
-
     addSubQuestion = () => {
         this.setState({
             ...this.state,
@@ -125,8 +117,8 @@ class Question extends Component {
                 selections: [],
                 answer: []
             })
-        })
-    }
+        });
+    };
 
     addSelection = (subQuestionIdx) => {
         this.setState({
@@ -146,15 +138,15 @@ class Question extends Component {
                     return subQuestion;
                 }
             })
-        })
-    }
+        });
+    };
 
     deleteSubQuestion = (subQuestionIdx) => {
         this.setState({
             ...this.state,
             subQuestions: this.state.subQuestions.filter((_, index) => index !== subQuestionIdx)
         });
-    }
+    };
 
     deleteSelection = (subQuestionIdx, selectionId) => {
         const updatedSelections = this.state.subQuestions[subQuestionIdx].selections.filter((selection) => selection.id !== selectionId);
@@ -179,7 +171,7 @@ class Question extends Component {
                 }
             })
         });
-    }
+    };
 
     updateSubtilte = (subQuestionIdx, event) => {
         this.setState({
@@ -187,8 +179,8 @@ class Question extends Component {
             subQuestions: this.state.subQuestions.map((subQuestion, index) => {
                 return index === subQuestionIdx ? { ...subQuestion, subtilte: event.target.value } : subQuestion
             })
-        })
-    }
+        });
+    };
 
     updateSelection = (subQuestionIdx, selectionIdx, event) => {
         const updatedSelections = this.state.subQuestions[subQuestionIdx].selections.map((selection, index) => {
@@ -207,8 +199,8 @@ class Question extends Component {
                     return subQuestion;
                 }
             })
-        })
-    }
+        });
+    };
 
     handleAnswerChecked = (subQuestionIdx, selectionId) => {
 
@@ -232,24 +224,23 @@ class Question extends Component {
                     return subQuestion;
                 }
             })
-        })
-    }
+        });
+    };
 
     handleExpanded = () => {
         this.setState({
             ...this,
             expanded: !this.state.expanded
-        })
-    }
+        });
+    };
 
     // 選択肢がチェックされているか確認する。
     confirmSelectionChecked = (subQuestionIdx, selectionId) => {
         return this.state.subQuestions[subQuestionIdx].answer.includes(selectionId);
-    }
-}
+    };
+};
 
 // styles
-
 const ExpansionPanel = withStyles({
     root: {
         border: '1px solid rgba(0,0,0,.125)',

@@ -6,7 +6,6 @@ const fs = require('fs');
 const logDir = "/log"
 
 module.exports = function log(info) {
-  console.log(info);
   if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir);
   }

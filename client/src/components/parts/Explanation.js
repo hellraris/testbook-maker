@@ -12,7 +12,6 @@ import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 class Explanation extends Component {
-
     constructor(props) {
         super(props)
 
@@ -20,11 +19,11 @@ class Explanation extends Component {
             explanations: [],
             expanded: false
         }
-    }
+    };
 
     componentDidUpdate() {
         this.props.updateExplanationData(this.state.explanations);
-    }
+    };
 
     render() {
         const { classes } = this.props;
@@ -73,39 +72,35 @@ class Explanation extends Component {
                                             />
                                         </div>
                                     </div>
-                                })
-                                :
-                                ''
-                            }
+                                }) : '' }
                         </div>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             </div>
         );
-    }
+    };
 
     // functions
-
     handleExpanded = () => {
         this.setState({
             ...this,
             expanded: !this.state.expanded
-        })
-    }
+        });
+    };
 
     addExplanation = () => {
         this.setState({
             ...this.state,
             explanations: this.state.explanations.concat({ subtilte: '', contents: '' })
-        })
-    }
+        });
+    };
 
     deleteExplanation = (explanationIdx) => {
         this.setState({
             ...this.state,
             explanations: this.state.explanations.filter((_, index) => index !== explanationIdx)
-        })
-    }
+        });
+    };
 
     updateSubtitle = (explanationIdx, event) => {
         this.setState({
@@ -113,8 +108,8 @@ class Explanation extends Component {
             explanations: this.state.explanations.map((explanation, index) => {
                 return index === explanationIdx ? { ...explanation, subtilte: event.target.value } : explanation
             })
-        })
-    }
+        });
+    };
 
     updateExplanation = (explanationIdx, event) => {
         this.setState({
@@ -122,13 +117,11 @@ class Explanation extends Component {
             explanations: this.state.explanations.map((explanation, index) => {
                 return index === explanationIdx ? { ...explanation, contents: event.target.value } : explanation
             })
-        })
-    }
-
-}
+        });
+    };
+};
 
 // styles
-
 const styles = theme => ({
     body: {
         margin: '5px'

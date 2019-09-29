@@ -29,11 +29,11 @@ class QuestionList extends Component {
             dialogTitle: null,
             removeTarget: null
         }
-    }
+    };
 
     componentDidMount() {
         this.getQuestionList()
-    }
+    };
 
     render() {
         const { classes } = this.props;
@@ -57,7 +57,6 @@ class QuestionList extends Component {
                 </Dialog>
                 <div className={classes.body}>
                     <div className={classes.header}>
-    
                     </div>
                     <div className={classes.contents}>
                         {this.state.questionList ? this.state.questionList.map((question, index) => {
@@ -90,10 +89,9 @@ class QuestionList extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
     // functions
-
     showQuestionDetail = (questionId) => {
         axios({
             method: 'get',
@@ -108,9 +106,8 @@ class QuestionList extends Component {
                     marking: []
                 }
             });
-        })
-            .catch(err => console.log(err));
-    }
+        }).catch(err => console.log(err));
+    };
 
     getQuestionList = () => {
         axios({
@@ -119,24 +116,22 @@ class QuestionList extends Component {
         }).then(res => {
             const list = res.data;
             this.setState({ questionList: list })
-        })
-            .catch(err => console.log(err));
-    }
+        }).catch(err => console.log(err));
+    };
 
     confirmRemove = (question) => {
         this.setState({
             openDialog: true,
             dialogTitle: 'Are you sure you want to remove ' + question.title + '?',
             removeTarget: question.question_id
-        })
-    }
+        });
+    };
 
     removeQuestion = () => {
-
         const requestData = {
             bookId: this.state.bookId,
             questionId: this.state.removeTarget
-        }
+        };
 
         axios({
             method: 'put',
@@ -145,21 +140,19 @@ class QuestionList extends Component {
         }).then(res => {
             this.getQuestionList();
             this.closeDialog();
-        })
-            .catch(err => console.log(err));
-    }
+        }).catch(err => console.log(err));
+    };
 
     closeDialog = () => {
         this.setState({
             ...this.state,
             openDialog: false,
             removeTarget: null
-        })
-    }
-}
+        });
+    };
+};
 
 // styles
-
 const styles = theme => ({
     wrap: {
         display: 'flex',
@@ -198,7 +191,6 @@ const styles = theme => ({
         }
     }
 });
-
 
 export default withStyles(styles)(
     connect(

@@ -21,15 +21,15 @@ class Info extends Component {
             tag: '',
             tagList: [],
             expanded: true
-        }
-    }
+        };
+    };
 
     componentDidUpdate() {
         this.props.updateInfoData({
             title: this.state.title,
             tagList: this.state.tagList
         });
-    }
+    };
 
     render() {
         const { classes } = this.props;
@@ -80,7 +80,7 @@ class Info extends Component {
                 </ExpansionPanel>
             </div>
         );
-    }
+    };
 
     // functions
 
@@ -88,34 +88,33 @@ class Info extends Component {
         this.setState({
             ...this,
             expanded: !this.state.expanded
-        })
-    }
+        });
+    };
 
     addInfoTag = (tag) => {
         this.setState({
             ...this.state,
             tag: '',
             tagList: this.state.tagList.concat(tag)
-        })
-    }
+        });
+    };
 
     deleteInfoTag = (index) => {
         this.setState({
             ...this.state,
             tagList: this.state.tagList.filter((_, i) => i !== index)
-        })
-    }
+        });
+    };
 
     handleTextChange = (event) => {
         this.setState({
             ...this.state,
             [event.target.name]: event.target.value
-        })
-    }
-}
+        });
+    };
+};
 
 // styles
-
 const styles = theme => ({
     wrap: {
         margin: '5px'

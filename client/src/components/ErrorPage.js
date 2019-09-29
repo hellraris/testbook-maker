@@ -8,6 +8,6 @@ class ErrorPage extends Component {
             </div>
         );
     }
-}
+};
 
 export default ErrorPage;

@@ -16,11 +16,11 @@ class TestViewer extends Component {
             markingSheet: null,
             nowQuestionIdx: 0,
         }
-    }
+    };
 
     componentDidMount() {
         this.getQuestions()
-    }
+    };
 
     render() {
         if (this.state.questions === null) {
@@ -57,7 +57,7 @@ class TestViewer extends Component {
                                     </div>
                                 )
                             })
-                                : null}
+                                : null }
                         </div>
                         <div className={classes.subQuestion}>
                             {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
@@ -91,7 +91,7 @@ class TestViewer extends Component {
                                     </div>
                                 )
                             })
-                                : null}
+                                : null }
                         </div>
                     </div>
                     <div className={classes.footer}>
@@ -99,8 +99,8 @@ class TestViewer extends Component {
                             this.state.nowQuestionIdx !== 0 ?
                                 <div onClick={this.prevQuestion}>
                                     <Button variant="contained" size="small">prev</Button>
-                                </div>
-                                : null
+                                </div> : 
+                                null
                         }
                         {
                             this.state.nowQuestionIdx === this.state.questions.length - 1 ?
@@ -115,12 +115,10 @@ class TestViewer extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
     // functions
-
     getQuestions = () => {
-
         const bookId = this.props.location.state.bookId
 
         axios({
@@ -128,12 +126,10 @@ class TestViewer extends Component {
             url: '/api/testbook/' + bookId
         }).then(res => {
             this.setTestingState(res.data);
-        })
-            .catch(err => console.log(err));
-    }
+        }).catch(err => console.log(err));
+    };
 
     goToQuestion = (index) => {
-
         let targetQuestionIdx = -1;
 
         this.state.questions.forEach((question, questionIdx) => {
@@ -142,14 +138,14 @@ class TestViewer extends Component {
                     targetQuestionIdx = questionIdx;
                 }
             })
-        })
+        });
 
         this.setState({
             ...this.state,
             modalVisible: !this.state.modalVisible,
             nowQuestionIdx: targetQuestionIdx
-        })
-    }
+        });
+    };
 
     prevQuestion = (event) => {
         event.stopPropagation();
@@ -158,9 +154,9 @@ class TestViewer extends Component {
             this.setState({
                 ...this.state,
                 nowQuestionIdx: newQuestionIdx
-            })
-        }
-    }
+            });
+        };
+    };
 
     nextQuestion = (event) => {
         event.stopPropagation();
@@ -169,13 +165,12 @@ class TestViewer extends Component {
             this.setState({
                 ...this.state,
                 nowQuestionIdx: newQuestionIdx
-            })
-        }
-    }
+            });
+        };
+    };
 
     // テスト準備セッチング
     setTestingState = async (questions) => {
-
         if (questions.length === 0) return;
 
         let subQuestionNo = 0;
@@ -201,7 +196,7 @@ class TestViewer extends Component {
         const newMarkingSheet = []
         for (let index = 0; index < subQuestionNo; index++) {
             newMarkingSheet.push(new Set());
-        }
+        };
 
         await this.setState({
             ...this.state,
@@ -209,7 +204,7 @@ class TestViewer extends Component {
             markingSheet: newMarkingSheet,
             updated: true
         });
-    }
+    };
 
     handleMarking = (selectionType, subQuestionNo, selectionId, answerCnt) => {
 
@@ -219,14 +214,13 @@ class TestViewer extends Component {
         switch (selectionType) {
             // 選択肢の制限なし
             case 0: {
-
                 newMarkingSheet[subQuestionNo].has(selectionId) ? newMarkingSheet[subQuestionNo].delete(selectionId) : newMarkingSheet[subQuestionNo].add(selectionId);
 
                 this.setState({
                     ...this.state,
                     markingSheet: newMarkingSheet
                 })
-                return
+                return;
             }
             // １つの選択肢に選択可能
             case 1: {
@@ -235,13 +229,13 @@ class TestViewer extends Component {
                 } else {
                     newMarkingSheet[subQuestionNo].clear();
                     newMarkingSheet[subQuestionNo].add(selectionId);
-                }
+                };
 
                 this.setState({
                     ...this.state,
                     markingSheet: newMarkingSheet
-                })
-                return
+                });
+                return;
             }
             // 正答ほど選択肢を選択可能
             case 2: {
@@ -249,28 +243,27 @@ class TestViewer extends Component {
                     newMarkingSheet[subQuestionNo].delete(selectionId)
                 } else {
                     if (newMarkingSheet[subQuestionNo].size >= answerCnt) {
-                        return
-                    }
+                        return;
+                    };
                     newMarkingSheet[subQuestionNo].add(selectionId);
-                }
+                };
 
                 this.setState({
                     ...this.state,
                     markingSheet: newMarkingSheet
-                })
-                return
+                });
+                return;
             }
             default:
-                return
-        }
-    }
+                return;
+        };
+    };
 
     confirmMarking = (subQuestionNo, selectionId) => {
         return this.state.markingSheet[subQuestionNo].has(selectionId);
-    }
+    };
 
     submitTest = () => {
-
         const results = this.setResult();
 
         let correctCnt = 0;
@@ -278,7 +271,7 @@ class TestViewer extends Component {
 
         results.forEach((data) => {
             data.isAnswer ? correctCnt = correctCnt + 1 : incorrectCnt = incorrectCnt + 1
-        })
+        });
 
         this.props.history.push({
             pathname: "/testbook/result",
@@ -289,11 +282,9 @@ class TestViewer extends Component {
                 incorrectCnt: incorrectCnt
             }
         });
-
-    }
+    };
 
     setResult = () => {
-
         const results = [];
 
         this.state.questions.forEach((question, questionIdx) => {
@@ -309,7 +300,7 @@ class TestViewer extends Component {
                     })
                 } else {
                     isAnswer = false;
-                }
+                };
 
                 const answerList = subQuestion.answer;
                 const markingList = [...this.state.markingSheet[subQuestion.subQuestionNo]];
@@ -317,16 +308,14 @@ class TestViewer extends Component {
                 results.push({
                     questionId: question.question_id, subQuestionNo: subQuestion.subQuestionNo,
                     answer: answerList.sort(), marking: markingList.sort(), isAnswer: isAnswer
-                })
-            })
-        })
-
+                });
+            });
+        });
         return results;
-    }
-}
+    };
+};
 
 // styles
-
 const styles = theme => ({
     wrap: {
         display: 'flex'

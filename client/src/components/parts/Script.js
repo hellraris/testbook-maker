@@ -18,12 +18,12 @@ class Script extends Component {
         this.state = {
             scripts: [],
             expanded: false
-        }
-    }
+        };
+    };
     
     componentDidUpdate () {
         this.props.updateScriptData(this.state.scripts);
-    }
+    };
 
     render() {
         const { classes } = this.props;
@@ -73,10 +73,7 @@ class Script extends Component {
                                             />
                                         </div>
                                     </div>
-                                })
-                                :
-                                ''
-                            }
+                                }) : '' }
                         </div>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
@@ -85,27 +82,26 @@ class Script extends Component {
     }
 
     // functions
-
     handleExpanded = () => {
         this.setState({
             ...this,
             expanded: !this.state.expanded
-        })
-    }
+        });
+    };
 
     addScript = () => {
         this.setState({
             ...this.state,
             scripts: this.state.scripts.concat({ subtilte: '', contents: '' })
-        })
-    }
+        });
+    };
 
     deleteScript = (scriptIdx) => {
         this.setState({
             ...this.state,
             scripts: this.state.scripts.filter((_, index) => index !== scriptIdx)
-        })
-    }
+        });
+    };
 
     updateSubtilte = (scriptIdx, event) => {
         this.setState({
@@ -113,8 +109,8 @@ class Script extends Component {
             scripts: this.state.scripts.map((script, index) => {
                 return index === scriptIdx ? { ...script, subtilte: event.target.value } : script
             })
-        })
-    }
+        });
+    };
 
     updateScript = (scriptIdx, event) => {
         this.setState({
@@ -122,12 +118,11 @@ class Script extends Component {
             scripts: this.state.scripts.map((script, index) => {
                 return index === scriptIdx ? { ...script, contents: event.target.value } : script
             })
-        })
-    }
-}
+        });
+    };
+};
 
 // styles
-
 const styles = theme => ({
     body: {
         margin: '5px'

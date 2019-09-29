@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import axios from 'axios';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -31,12 +30,12 @@ class BookList extends Component {
             openDialog: false,
             dialogTitle: null,
             removeTarget: null
-        }
-    }
+        };
+    };
 
     componentDidMount() {
         this.getBookList()
-    }
+    };
 
     render() {
         const { classes } = this.props;
@@ -109,12 +108,11 @@ class BookList extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
     // functions
 
     getBookList = () => {
-
         axios({
             method: 'get',
             url: '/api/' + this.props.userId + '/testbook'
@@ -122,21 +120,20 @@ class BookList extends Component {
             this.setState({ bookList: res.data })
         })
             .catch(err => console.log(err));
-    }
+    };
 
     confirmRemove = (book) => {
         this.setState({
             openDialog: true,
             dialogTitle: 'Are you sure you want to remove ' + book.title + '?',
             removeTarget: book.testbook_id
-        })
-    }
+        });
+    };
 
     removeBook = () => {
-
         const requestData = {
             bookId: this.state.removeTarget
-        }
+        };
 
         axios({
             method: 'put',
@@ -147,10 +144,9 @@ class BookList extends Component {
             this.closeDialog();
         })
             .catch(err => console.log(err));
-    }
+    };
 
     exportBookJson = (testbook) => {
-        
         const link = document.createElement('a');
         var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(testbook));
         link.href = dataStr;
@@ -158,19 +154,17 @@ class BookList extends Component {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
-    }
+    };
 
     closeDialog = () => {
         this.setState({
             ...this.state,
             openDialog: false,
             removeTarget: null
-        })
-    }
+        });
+    };
 
     showModal = () => {
-
         // モーダルを閉じる時はBookリストを更新する。
         if (this.state.openModal) {
             this.getBookList()
@@ -179,10 +173,9 @@ class BookList extends Component {
         this.setState({
             ...this.state,
             openModal: !this.state.openModal
-        })
-    }
-
-}
+        });
+    };
+};
 
 // styles
 
@@ -238,7 +231,6 @@ const styles = theme => ({
     }
 
 });
-
 
 export default withStyles(styles)(
     connect(

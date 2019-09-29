@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import axios from 'axios';
 
 import Typography from '@material-ui/core/Typography';
@@ -21,8 +20,8 @@ class BookCreatorModal extends Component {
             tag: '',
             description: '',
             tagList: []
-        }
-    }
+        };
+    };
 
     render() {
         const { classes } = this.props;
@@ -74,8 +73,7 @@ class BookCreatorModal extends Component {
                                         className={classes.chip}
                                     />
                                 )
-                            })
-                            }
+                            })}
                         </div>
                     </div>
                     <div className={classes.footer}>
@@ -85,12 +83,10 @@ class BookCreatorModal extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
     // functions
-
     addInfoTag = (tag) => {
-
         if (tag === null || tag === '') {
             return;
         }
@@ -99,31 +95,30 @@ class BookCreatorModal extends Component {
             ...this.state,
             tag: '',
             tagList: this.state.tagList.concat(tag)
-        })
-    }
+        });
+    };
 
     deleteInfoTag = (index) => {
         this.setState({
             ...this.state,
             tagList: this.state.tagList.filter((_, i) => i !== index)
-        })
-    }
+        });
+    };
 
     handleTextChange = (event) => {
         this.setState({
             ...this.state,
             [event.target.name]: event.target.value
-        })
-    }
+        });
+    };
 
     createBook = () => {
-
         const requestData = {
             userId: this.props.userId,
             title: this.state.title,
             description: this.state.description,
             tag: this.state.tagList,
-        }
+        };
 
         axios({
             method: 'post',
@@ -132,12 +127,11 @@ class BookCreatorModal extends Component {
         }).then(res => {
             this.props.closeModal()
         }).catch(err => console.log(err));
-    }
+    };
 
-}
+};
 
 // styles
-
 const styles = theme => ({
     wrap: {
         borderRadius: 5

@@ -7,7 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
 class QuestionViewer extends Component {
-
+  
     render() {
         const { scripts, subQuestions, explanations } = this.props.location.state.question;
         const { classes } = this.props;
@@ -41,7 +41,7 @@ class QuestionViewer extends Component {
                                         </div>
                                     )
                                 })
-                                    : null}
+                                    : null }
                             </div>
                             <div className={classes.subQuestion}>
                                 {subQuestions ? subQuestions.map((subQuestion, subQuestionIdx) => {
@@ -73,8 +73,7 @@ class QuestionViewer extends Component {
                                             </div>
                                         </div>
                                     )
-                                })
-                                    : null}
+                                }) : null }
                             </div>
                         </div>
                         {explanations ?
@@ -102,8 +101,7 @@ class QuestionViewer extends Component {
                                         </div>
                                     )
                                 })}
-                            </div> : null
-                        }
+                            </div> : null }
                     </div>
                     <div className={classes.footer}>
                         <div>
@@ -113,12 +111,10 @@ class QuestionViewer extends Component {
                 </div>
             </div>
         );
-    }
+    };
 
     // functions
-
     choiceSelectionColor = (subQuestionIdx, selectionId, answer) => {
-
         const isChecked = this.props.location.state.markings[subQuestionIdx].marking.includes(selectionId)
         if (isChecked) {
             const isAnswer = answer.includes(selectionId)
@@ -132,12 +128,11 @@ class QuestionViewer extends Component {
                 }
             }
         }
-        return null
-    }
-}
+        return null;
+    };
+};
 
 // styles
-
 const styles = theme => ({
     wrap: {
         display: 'flex'

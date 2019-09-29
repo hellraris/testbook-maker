@@ -20,7 +20,7 @@ CREATE TABLE BOOK (
 CREATE TABLE QUESITON_LIST ( 
   book_id bigint(20) NOT NULL,
   list JSON,
-  PRIMARY KEY (list_id)
+  PRIMARY KEY (book_id)
 );
 
 CREATE TABLE QUESTION_SET ( 

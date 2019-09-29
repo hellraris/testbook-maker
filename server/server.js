@@ -27,7 +27,6 @@ connection.connect();
 const multer = require('multer');
 const upload = multer({ dest: './upload' })
 
-
 // bookリスト取得
 app.get('/api/:userId/testbook', (req, res) => {
 
@@ -65,7 +64,6 @@ app.get('/api/:userId/testbook/:bookId/questions', (req, res) => {
         }
     );
 });
-
 
 // Questions取得
 app.get('/api/testbook/:bookId', (req, res) => {
@@ -136,7 +134,6 @@ app.get('/api/app/testbook/list', (req, res) => {
         }
     );
 });
-
 
 // Questionリスト取得 (App)
 app.get('/api/app/testbook/:testbookId/', (req, res) => {
